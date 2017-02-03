@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": false,
-    "lib": ["es6", "dom"],
+    "lib": ["es2015", "es6", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
@@ -12,13 +12,13 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "noEmitHelpers": false,
-    "outDir": "../dist"
+    "outDir": "../"
   },
   "exclude": [
     "node_modules"
   ],
   "files": [
     "./ng2-dragon.ts",
-    "./index.ts"
+    "../index.ts"
   ]
 }
