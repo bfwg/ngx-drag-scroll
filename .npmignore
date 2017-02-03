@@ -1,0 +1,16 @@
+# Node generated files
+node_modules
+npm-debug.log
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+protractor.conf.js
+gulpfile
+karma.conf.js
+README.md
+webpack.config.js
+Procfile
+typedoc.json
+tslint.json

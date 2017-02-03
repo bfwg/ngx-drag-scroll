@@ -4,10 +4,10 @@
   "description": "Angular2 library for one-directional scrolling and dragging content.",
   "main": "dist/ng2-dragon.js",
   "scripts": {
-    "prepublish": "npm run clean && npm run tsc",
+    "prepublish": "npm run rimraf -- dist && npm run tsc",
     "clean": "npm cache clean && npm run rimraf -- node_modules dist",
     "rimraf": "rimraf",
-    "tsc": "tsc"
+    "tsc": "tsc -p src"
   },
   "repository": {
     "type": "git",

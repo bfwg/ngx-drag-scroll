@@ -12,7 +12,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "noEmitHelpers": false,
-    "outDir": "dist"
+    "outDir": "../dist"
   },
   "exclude": [
     "node_modules"
