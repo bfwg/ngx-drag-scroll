@@ -1,0 +1,38 @@
+{
+  "name": "ng2-dragon",
+  "version": "1.0.0",
+  "description": "Angular2 library for one-directional scrolling and dragging content.",
+  "main": "dist/ng2-dragon.js",
+  "scripts": {
+    "prepublish": "npm run clean && npm run tsc",
+    "clean": "npm cache clean && npm run rimraf -- node_modules dist",
+    "rimraf": "rimraf",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bfwg/ng2-dragon.git"
+  },
+  "keywords": [
+    "Angular 2"
+  ],
+  "author": "Fan Jin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bfwg/ng2-dragon/issues"
+  },
+  "homepage": "https://github.com/bfwg/ng2-dragon#readme",
+  "peerDependencies": {
+    "@angular/common": "~2.2.0",
+    "@angular/compiler": "~2.2.0",
+    "@angular/core": "~2.2.0"
+  },
+  "devDependencies": {
+    "@angular/common": "~2.2.0",
+    "@angular/compiler": "~2.2.0",
+    "@angular/core": "~2.2.0",
+    "rxjs": "5.0.0-beta.12",
+    "rimraf": "2.5.4",
+    "typescript": "2.0.3"
+  }
+}
