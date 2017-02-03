@@ -18,6 +18,7 @@
     "node_modules"
   ],
   "files": [
-    "./ng2-dragon.ts"
+    "./ng2-dragon.ts",
+    "./index.ts"
   ]
 }

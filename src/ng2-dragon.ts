@@ -7,7 +7,7 @@ import {
   OnInit,
   NgModule
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @Directive({
@@ -90,8 +90,8 @@ export class Dragon implements OnDestroy, OnInit {
 const DRAGON_DIRECTIVES: any[] = [Dragon];
 
 @NgModule({
-  imports: [CommonModule],
-  exports: DRAGON_DIRECTIVES,
-  declarations: DRAGON_DIRECTIVES
+  imports: [BrowserModule],
+  exports: [Dragon],
+  declarations: [Dragon]
 })
 export class DragonModule { }
