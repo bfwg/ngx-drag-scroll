@@ -1,6 +1,6 @@
 {
   "name": "ng2-dragon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular2 library for one-directional scrolling and dragging content.",
   "main": "dist/ng2-dragon.js",
   "scripts": {
