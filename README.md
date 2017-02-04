@@ -1,10 +1,11 @@
 # ng2-dragon
-Angular2 library for one-directional scrolling and dragging content.
+Angular2 library for one-directional content dragging with mouse or touch.
 
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.6.0&x2=0)](https://www.npmjs.com/package/ng2-dragon)
 [![Maintenance Status][status-image]][status-url]
 [status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
 [status-url]: https://github.com/bfwg/relay-gallery
+
 # Install
 
 You can get it on npm.
