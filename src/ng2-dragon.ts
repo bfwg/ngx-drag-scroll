@@ -28,6 +28,8 @@ export class Dragon implements OnDestroy, OnInit {
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
+    el.nativeElement.style.overflow = 'scroll';
+    el.nativeElement.style.whiteSpace = 'noWrap';
     document.addEventListener('mousemove', this.onDragHandler, false);
     document.addEventListener('mouseup', this.onDragEndHandler, false);
   }
