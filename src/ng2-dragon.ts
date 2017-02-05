@@ -5,9 +5,9 @@ import {
   OnDestroy,
   Input,
   OnInit,
-  NgModule
+  OnChanges,
+  SimpleChange
 } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
 
 @Directive({
@@ -16,15 +16,25 @@ import { BrowserModule } from '@angular/platform-browser';
     '(mousedown)': 'onDragStart($event)'
   }
 })
-export class Dragon implements OnDestroy, OnInit {
-  @Input() dragX: boolean = true;
-  @Input() dragY: boolean = true;
-  down: boolean = false;
+export class Dragon implements OnDestroy, OnInit, OnChanges {
+
+  /** Set this to 'disabled' will disable drag/scroll horizontally and vertically */
+  @Input() dragon: string = 'active';
+
+  /** Set this to 'disabled' will disable drag/scroll horizontally */
+  @Input() dragX: string = 'active';
+
+  /** Set this to 'disabled' will disable drag/scroll vertically */
+  @Input() dragY: string = 'active';
+
+  isPressed: boolean = false;
   downX: number = 0;
   downY: number = 0;
   rect: ClientRect;
+
   onDragHandler = this.onDrag.bind(this);
   onDragEndHandler = this.onDragEnd.bind(this);
+
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
@@ -34,15 +44,30 @@ export class Dragon implements OnDestroy, OnInit {
     document.addEventListener('mouseup', this.onDragEndHandler, false);
   }
 
+  ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+    const changedInputs = Object.keys(changes);
+    // Only update the css attributes  if the inputs changed, to avoid unnecessary DOM operations.
+    if (changedInputs.indexOf('disableX') != -1 ||
+        changedInputs.indexOf('disableY') != -1 ||
+        changedInputs.indexOf('dragon') != -1) {
+      if (this.dragX === 'disabled' || this.dragon === 'disabled') {
+        this.el.nativeElement.style['overflow-x'] = 'hidden';
+      }
+      if (this.dragY === 'disabled' || this.dragon === 'disabled') {
+        this.el.nativeElement.style['overflow-y'] = 'hidden';
+      }
+    }
+  }
+
+
   public ngOnInit(): void {
     this.rect = this.el.nativeElement.getBoundingClientRect();
-    console.log(this.rect);
     this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'true');
   }
 
   onDragStart(e: MouseEvent) {
     e.preventDefault();
-    this.down = true;
+    this.isPressed = true;
     this.downX = e.clientX;
     this.downY = e.clientY;
     return false;
@@ -57,9 +82,9 @@ export class Dragon implements OnDestroy, OnInit {
   onDrag(e: MouseEvent) {
     e.preventDefault();
 
-    if (this.down) {
+    if (this.isPressed) {
       // Drag X
-      if (this.dragX === true) {
+      if (this.dragX !== 'disabled' && this.dragon !== 'disabled') {
         let rectRight = this.rect.left + this.el.nativeElement.offsetWidth;
         let offsetX = e.pageX > rectRight ? e.pageX - rectRight :
           e.pageX < this.rect.left ? e.pageX - this.rect.left : 0;
@@ -68,7 +93,7 @@ export class Dragon implements OnDestroy, OnInit {
       }
 
       // Drag Y
-      if (this.dragY === true) {
+      if (this.dragY !== 'disabled' && this.dragon !== 'disabled') {
         let rectBottom = this.rect.top + this.el.nativeElement.offsetHeight;
         let offsetY = e.pageY > rectBottom ? e.pageY - rectBottom :
           e.pageY < this.rect.top ? e.pageY - this.rect.top : 0;
@@ -81,15 +106,11 @@ export class Dragon implements OnDestroy, OnInit {
 
   onDragEnd(e: MouseEvent) {
     e.preventDefault();
-    this.down = false;
+    this.isPressed = false;
     return false;
   }
 
 }
-
-
-
-const DRAGON_DIRECTIVES: any[] = [Dragon];
 
 @NgModule({
   imports: [BrowserModule],

@@ -43,7 +43,7 @@ export class AppModule {
 @Component({
   selector: 'sample',
   template:`
-  <div dragging>
+  <div dragon>
     <!-- content here can be drag around -->
   </div>
   `
@@ -54,14 +54,21 @@ class Sample {}
 
 | Event Name |      Listener Arguments      |  Event Description | Default Value
 | :---------: |:---|:-----|:---|
-| dragX | boolean | disable drag horizontally | true |
-| dragY | boolean | disable drag vertically | true |
+| dragX | string | disable drag horizontally | 'active' |
+| dragY | string | disable drag vertically | 'active' |
+| dragon | string | disable drag vertically and horizontally | 'active' |
 
 ```typescript
 @Component({
   selector: 'sample',
   template:`
-  <div dragging dragX="false">
+  <div dragon dragY="disabled">
+    <!-- content here can be drag around vertically -->
+  </div>
+  <div dragon dragX="disabled">
+    <!-- content here can be drag around vertically -->
+  </div>
+  <div dragon="disabled">
     <!-- content here can be drag around vertically -->
   </div>
   `
