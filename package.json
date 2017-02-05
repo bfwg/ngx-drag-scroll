@@ -15,7 +15,11 @@
     "url": "git+https://github.com/bfwg/ng2-dragon.git"
   },
   "keywords": [
-    "Angular 2"
+    "Angular 2",
+    "directive",
+    "scrolling",
+    "dragging",
+    "library"
   ],
   "author": "Fan Jin",
   "license": "MIT",
