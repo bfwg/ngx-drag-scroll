@@ -1,4 +1,7 @@
 # ng2-dragon
+
+*Scroll on drag!*
+
 Angular2 library for one-directional content dragging with mouse or touch.
 
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.0.9&x2=0)](https://www.npmjs.com/package/ng2-dragon)
