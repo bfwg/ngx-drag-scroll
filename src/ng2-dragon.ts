@@ -1,5 +1,4 @@
 import {
-  BrowserModule,
   NgModule,
   Directive,
   ElementRef,
@@ -10,7 +9,7 @@ import {
   OnChanges,
   SimpleChange
 } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
   selector: '[dragon]',
