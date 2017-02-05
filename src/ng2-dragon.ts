@@ -1,4 +1,6 @@
 import {
+  BrowserModule,
+  NgModule,
   Directive,
   ElementRef,
   Renderer,
