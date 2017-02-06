@@ -1,1 +1,1 @@
-export * from './src/ng2-dragon';
+export * from './src/angular2-drag-scroll';

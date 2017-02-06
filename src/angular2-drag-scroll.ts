@@ -12,21 +12,42 @@ import {
 import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
-  selector: '[dragon]',
+  selector: '[drag-scroll]',
   host: {
     '(mousedown)': 'onDragStart($event)'
   }
 })
-export class Dragon implements OnDestroy, OnInit, OnChanges {
+export class DragScroll implements OnDestroy, OnInit, OnChanges {
 
-  /** Set this to 'disabled' will disable drag/scroll horizontally and vertically */
-  @Input() dragon: string = 'active';
+  /**
+   * Whether horizontally and vertically draging and scrolling events will be disabled
+   */
+  @Input('dragScrollDisabled') disabled: boolean;
 
-  /** Set this to 'disabled' will disable drag/scroll horizontally */
-  @Input() dragX: string = 'active';
+  /** @deprecated */
+  @Input('drag-scroll-disabled')
+  get _dragScrollDisabledDeprecated() { return this.disabled; }
+  set _dragScrollDisabledDeprecated(value: boolean) { this.disabled = value; };
 
-  /** Set this to 'disabled' will disable drag/scroll vertically */
-  @Input() dragY: string = 'active';
+  /**
+   * Whether horizontally dragging and scrolling events will be disabled
+   */
+  @Input('dragScrollXDisabled') xDisabled: boolean;
+
+  /** @deprecated */
+  @Input('drag-scroll-x-disabled')
+  get _dragScrollXDisabledDeprecated() { return this.xDisabled; }
+  set _dragScrollXDisabledDeprecated(value: boolean) { this.xDisabled = value; };
+
+  /**
+   * Whether vertically dragging and scrolling events will be disabled
+   */
+  @Input('dragScrollYDisabled') yDisabled: boolean;
+
+  /** @deprecated */
+  @Input('drag-scroll-y-disabled')
+  get _dragScrollYDisabledDeprecated() { return this.yDisabled; }
+  set _dragScrollYDisabledDeprecated(value: boolean) { this.yDisabled = value; };
 
   isPressed: boolean = false;
   downX: number = 0;
@@ -46,24 +67,24 @@ export class Dragon implements OnDestroy, OnInit, OnChanges {
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-    const changedInputs = Object.keys(changes);
-    // Only update the css attributes  if the inputs changed, to avoid unnecessary DOM operations.
-    if (changedInputs.indexOf('disableX') != -1 ||
-        changedInputs.indexOf('disableY') != -1 ||
-        changedInputs.indexOf('dragon') != -1) {
-      if (this.dragX === 'disabled' || this.dragon === 'disabled') {
-        this.el.nativeElement.style['overflow-x'] = 'hidden';
-      }
-      if (this.dragY === 'disabled' || this.dragon === 'disabled') {
-        this.el.nativeElement.style['overflow-y'] = 'hidden';
-      }
+
+    if (this.xDisabled || this.disabled) {
+      this.el.nativeElement.style['overflow-x'] = 'hidden';
+    }
+    if (this.yDisabled || this.disabled) {
+      this.el.nativeElement.style['overflow-y'] = 'hidden';
     }
   }
 
-
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.rect = this.el.nativeElement.getBoundingClientRect();
     this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'true');
+  }
+
+  ngOnDestroy() {
+    this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'false');
+    document.removeEventListener('mousemove', this.onDragHandler, false);
+    document.removeEventListener('mouseup', this.onDragEndHandler, false);
   }
 
   onDragStart(e: MouseEvent) {
@@ -74,18 +95,13 @@ export class Dragon implements OnDestroy, OnInit, OnChanges {
     return false;
   }
 
-  ngOnDestroy() {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'false');
-    document.removeEventListener('mousemove', this.onDragHandler, false);
-    document.removeEventListener('mouseup', this.onDragEndHandler, false);
-  }
 
   onDrag(e: MouseEvent) {
     e.preventDefault();
 
-    if (this.isPressed) {
+    if (this.isPressed && !this.disabled) {
       // Drag X
-      if (this.dragX !== 'disabled' && this.dragon !== 'disabled') {
+      if (!this.xDisabled) {
         let rectRight = this.rect.left + this.el.nativeElement.offsetWidth;
         let offsetX = e.pageX > rectRight ? e.pageX - rectRight :
           e.pageX < this.rect.left ? e.pageX - this.rect.left : 0;
@@ -94,7 +110,7 @@ export class Dragon implements OnDestroy, OnInit, OnChanges {
       }
 
       // Drag Y
-      if (this.dragY !== 'disabled' && this.dragon !== 'disabled') {
+      if (!this.yDisabled) {
         let rectBottom = this.rect.top + this.el.nativeElement.offsetHeight;
         let offsetY = e.pageY > rectBottom ? e.pageY - rectBottom :
           e.pageY < this.rect.top ? e.pageY - this.rect.top : 0;
@@ -115,7 +131,7 @@ export class Dragon implements OnDestroy, OnInit, OnChanges {
 
 @NgModule({
   imports: [BrowserModule],
-  exports: [Dragon],
-  declarations: [Dragon]
+  exports: [DragScroll],
+  declarations: [DragScroll]
 })
-export class DragonModule { }
+export class DragScrollModule { }

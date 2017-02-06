@@ -1,7 +1,13 @@
 {
-  "name": "ng2-dragon",
+  "name": "angular2-drag-scroll",
   "version": "1.0.9",
-  "description": "Angular2 library for one-directional scrolling and dragging content.",
+  "description": "Lightweight drag to scroll directive for Angular2",
+  "contributors": [
+    {
+      "name": "Fan Jin",
+      "email": "fanjin1989@gmail.com"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "prepublish": "npm run clean:build && npm run tsc",
@@ -12,21 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bfwg/ng2-dragon.git"
+    "url": "git+https://github.com/bfwg/angular2-drag-scroll.git"
   },
   "keywords": [
     "Angular 2",
-    "directive",
-    "scrolling",
-    "dragging",
-    "library"
+    "drag",
+    "scroll"
   ],
   "author": "Fan Jin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bfwg/ng2-dragon/issues"
+    "url": "https://github.com/bfwg/angular2-drag-scroll.git"
   },
-  "homepage": "https://github.com/bfwg/ng2-dragon#readme",
+  "homepage": "https://github.com/bfwg/angular2-drag-scroll#readme",
   "peerDependencies": {
     "@angular/common": "~2.2.0",
     "@angular/compiler": "~2.2.0",

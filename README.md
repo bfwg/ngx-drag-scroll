@@ -1,20 +1,21 @@
-# ng2-dragon
+# Angular2 Drag to Scroll
 
 *Scroll on drag!*
 
-Angular2 library for one-directional content dragging with mouse or touch.
+Lightweight drag to scroll directive for Angular2
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.0.9&x2=0)](https://www.npmjs.com/package/ng2-dragon)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.0.9&x2=0)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Maintenance Status][status-image]][status-url]
 [status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
 [status-url]: https://github.com/bfwg/relay-gallery
+[![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
 
 # Install
 
 You can get it on npm.
 
 ```shell
-npm install ng2-dragon --save
+npm install angular2-drag-scroll --save
 ```
 
 # Setup
@@ -22,7 +23,7 @@ npm install ng2-dragon --save
 You'll need to add `DragonModule` to your application module.
 
 ```typescript
-import { DragonModule } from 'ng2-dragon';
+import { DragScrollModule } from 'angular2-drag-scroll';
 ...
 
 @NgModule({
@@ -30,7 +31,7 @@ import { DragonModule } from 'ng2-dragon';
     AppComponent
   ],
   imports: [
-    DragonModule,
+    DragScrollModule,
     ...
   ],
   providers: [],
@@ -46,32 +47,32 @@ export class AppModule {
 @Component({
   selector: 'sample',
   template:`
-  <div dragon>
+  <div drag-scroll>
     <!-- content here can be drag around -->
   </div>
   `
 })
 class Sample {}
 ```
-## Special Inputs for ng2-dragon
+## Special Inputs for Angular2 Drag to Scroll Driective
 
 | Event Name |      Listener Arguments      |  Event Description | Default Value
 | :---------: |:---|:-----|:---|
-| dragX | string | disable drag horizontally | 'active' |
-| dragY | string | disable drag vertically | 'active' |
-| dragon | string | disable drag vertically and horizontally | 'active' |
+| drag-scroll-disabled | boolean | Whether horizontally and vertically draging and scrolling events will be disabled | false |
+| drag-scroll-x-disabled | boolean | Whether horizontally dragging and scrolling events will be disabled | false |
+| drag-scroll-y-disabled | boolean | Whether vertically dragging and scrolling events will be disabled | false |
 
 ```typescript
 @Component({
   selector: 'sample',
   template:`
-  <div dragon dragY="disabled">
+  <div drag-scroll drag-scroll-disabled="true">
     <!-- content here can be drag around vertically -->
   </div>
-  <div dragon dragX="disabled">
+  <div drag-scroll drag-scroll-x-disabled="true">
     <!-- content here can be drag around vertically -->
   </div>
-  <div dragon="disabled">
+  <div drag-scroll drag-scroll-y-disabled="true">
     <!-- content here can be drag around vertically -->
   </div>
   `

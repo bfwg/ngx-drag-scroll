@@ -18,7 +18,7 @@
     "node_modules"
   ],
   "files": [
-    "./ng2-dragon.ts",
+    "./angular2-drag-scroll.ts",
     "../index.ts"
   ]
 }
