@@ -10,7 +10,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run clean:build && npm run tsc",
+    "prepublishOnly": "npm run clean:build && npm run tsc",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts index.js index.d.ts",
     "clean": "npm cache clean && npm run rimraf -- node_modules && npm run clean:build",
     "rimraf": "rimraf",
