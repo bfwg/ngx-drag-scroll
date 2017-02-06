@@ -4,7 +4,7 @@
 
 Lightweight drag to scroll directive for Angular2
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.0.9&x2=0)](https://www.npmjs.com/package/angular2-drag-scroll)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.1.4&x2=0)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Maintenance Status][status-image]][status-url]
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
 
