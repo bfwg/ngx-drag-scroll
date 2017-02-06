@@ -78,11 +78,11 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
 
   ngOnInit(): void {
     this.rect = this.el.nativeElement.getBoundingClientRect();
-    this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'true');
+    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
   ngOnDestroy() {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'dragon', 'false');
+    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
     document.removeEventListener('mousemove', this.onDragHandler, false);
     document.removeEventListener('mouseup', this.onDragEndHandler, false);
   }

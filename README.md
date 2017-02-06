@@ -6,8 +6,6 @@ Lightweight drag to scroll directive for Angular2
 
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.0.9&x2=0)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Maintenance Status][status-image]][status-url]
-[status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
-[status-url]: https://github.com/bfwg/relay-gallery
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
 
 # Install
@@ -20,7 +18,7 @@ npm install angular2-drag-scroll --save
 
 # Setup
 
-You'll need to add `DragonModule` to your application module.
+You'll need to add `DragScrollModule` to your application module.
 
 ```typescript
 import { DragScrollModule } from 'angular2-drag-scroll';
@@ -79,3 +77,6 @@ class Sample {}
 })
 class Sample {}
 ```
+
+[status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
+[status-url]: https://github.com/bfwg/relay-gallery
