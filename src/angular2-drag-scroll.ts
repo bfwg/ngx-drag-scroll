@@ -7,63 +7,82 @@ import {
   Input,
   OnInit,
   OnChanges,
+  HostListener,
   SimpleChange
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
-  selector: '[drag-scroll]',
-  host: {
-    '(mousedown)': 'onDragStart($event)'
-  }
+  selector: '[drag-scroll]'
 })
 export class DragScroll implements OnDestroy, OnInit, OnChanges {
+
+  private _disabled: boolean;
+
+  private _xDisabled: boolean;
+
+  private _yDisabled: boolean;
+
+  /**
+   * Is the user currently pressing the element
+   */
+  isPressed: boolean = false;
+
+  /**
+   * The x coordinates on the element
+   */
+  downX: number = 0;
+
+  /**
+   * The y coordinates on the element
+   */
+  downY: number = 0;
+
+  /**
+   * The bounding ClientRect on the element
+   */
+  rect: ClientRect;
 
   /**
    * Whether horizontally and vertically draging and scrolling events will be disabled
    */
-  @Input('dragScrollDisabled') disabled: boolean;
-
-  /** @deprecated */
   @Input('drag-scroll-disabled')
-  get _dragScrollDisabledDeprecated() { return this.disabled; }
-  set _dragScrollDisabledDeprecated(value: boolean) { this.disabled = value; };
+  get disabled() { return this._disabled; }
+  set disabled(value: boolean) { this._disabled = value; };
 
   /**
    * Whether horizontally dragging and scrolling events will be disabled
    */
-  @Input('dragScrollXDisabled') xDisabled: boolean;
-
-  /** @deprecated */
   @Input('drag-scroll-x-disabled')
-  get _dragScrollXDisabledDeprecated() { return this.xDisabled; }
-  set _dragScrollXDisabledDeprecated(value: boolean) { this.xDisabled = value; };
+  get xDisabled() { return this._xDisabled; }
+  set xDisabled(value: boolean) { this._xDisabled = value; };
 
   /**
    * Whether vertically dragging and scrolling events will be disabled
    */
-  @Input('dragScrollYDisabled') yDisabled: boolean;
-
-  /** @deprecated */
   @Input('drag-scroll-y-disabled')
-  get _dragScrollYDisabledDeprecated() { return this.yDisabled; }
-  set _dragScrollYDisabledDeprecated(value: boolean) { this.yDisabled = value; };
+  get yDisabled() { return this._yDisabled; }
+  set yDisabled(value: boolean) { this._yDisabled = value; };
 
-  isPressed: boolean = false;
-  downX: number = 0;
-  downY: number = 0;
-  rect: ClientRect;
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(e: MouseEvent) {
+    e.preventDefault();
+    this.isPressed = true;
+    this.downX = e.clientX;
+    this.downY = e.clientY;
+    return false;
+  }
 
-  onDragHandler = this.onDrag.bind(this);
-  onDragEndHandler = this.onDragEnd.bind(this);
+  onMouseMoveHandler = this.onMouseMove.bind(this);
+  onMouseUpHandler = this.onMouseUp.bind(this);
 
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
     el.nativeElement.style.overflow = 'scroll';
     el.nativeElement.style.whiteSpace = 'noWrap';
-    document.addEventListener('mousemove', this.onDragHandler, false);
-    document.addEventListener('mouseup', this.onDragEndHandler, false);
+    document.addEventListener('mousemove', this.onMouseMoveHandler, false);
+    document.addEventListener('mouseup', this.onMouseUpHandler, false);
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
@@ -83,23 +102,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
 
   ngOnDestroy() {
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    document.removeEventListener('mousemove', this.onDragHandler, false);
-    document.removeEventListener('mouseup', this.onDragEndHandler, false);
+    document.removeEventListener('mousemove', this.onMouseMoveHandler, false);
+    document.removeEventListener('mouseup', this.onMouseUpHandler, false);
   }
 
-  onDragStart(e: MouseEvent) {
-    e.preventDefault();
-    this.isPressed = true;
-    this.downX = e.clientX;
-    this.downY = e.clientY;
-    return false;
-  }
-
-
-  onDrag(e: MouseEvent) {
-    e.preventDefault();
-
+  onMouseMove(e: MouseEvent) {
     if (this.isPressed && !this.disabled) {
+      e.preventDefault();
       // Drag X
       if (!this.xDisabled) {
         let rectRight = this.rect.left + this.el.nativeElement.offsetWidth;
@@ -121,7 +130,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
     return false;
   }
 
-  onDragEnd(e: MouseEvent) {
+  onMouseUp(e: MouseEvent) {
     e.preventDefault();
     this.isPressed = false;
     return false;
