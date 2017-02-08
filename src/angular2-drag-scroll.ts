@@ -17,6 +17,8 @@ import { BrowserModule } from '@angular/platform-browser';
 })
 export class DragScroll implements OnDestroy, OnInit, OnChanges {
 
+  private _scrollbarHidden: boolean;
+
   private _disabled: boolean;
 
   private _xDisabled: boolean;
@@ -42,6 +44,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
    * The bounding ClientRect on the element
    */
   rect: ClientRect;
+
+  /**
+   * Whether the scrollbar is hidden
+   */
+  @Input('hide-scrollbar')
+  get scrollbarHidden() { return this._scrollbarHidden; }
+  set scrollbarHidden(value: boolean) { this._scrollbarHidden = value; };
 
   /**
    * Whether horizontally and vertically draging and scrolling events will be disabled
@@ -87,11 +96,22 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
 
-    if (this.xDisabled || this.disabled) {
-      this.el.nativeElement.style['overflow-x'] = 'hidden';
+    if (this.scrollbarHidden) {
+      this.hideScrollbar();
+    } else {
+      this.showScrollbar();
     }
+
+    if (this.xDisabled || this.disabled) {
+      this.disableScroll('x');
+    } else {
+      this.enableScroll('x');
+    }
+
     if (this.yDisabled || this.disabled) {
-      this.el.nativeElement.style['overflow-y'] = 'hidden';
+      this.disableScroll('y');
+    } else {
+      this.enableScroll('y');
     }
   }
 
@@ -136,6 +156,33 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges {
     return false;
   }
 
+  private disableScroll(axis: string): void {
+    this.el.nativeElement.style[`overflow-${axis}`] = 'hidden';
+  }
+
+  private enableScroll(axis: string): void {
+    this.el.nativeElement.style[`overflow-${axis}`] = 'auto';
+  }
+
+  private hideScrollbar(): void {
+    this.parentNode = this.el.nativeElement.parentNode;
+    this.wrapper = document.createElement('div');
+    this.wrapper.style.width = this.el.nativeElement.style.width;
+    this.wrapper.style.height = this.el.nativeElement.style.height;
+    this.wrapper.style.overflow = 'hidden';
+    this.el.nativeElement.style.width = this.el.nativeElement.style.height = 'calc(100% + 20px)';
+    // set the wrapper as child (instead of the element)
+    this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+    // set element as child of wrapper
+    this.wrapper.appendChild(this.el.nativeElement);
+  }
+
+  private showScrollbar(): void {
+    this.el.nativeElement.style.width = this.wrapper.style.width;
+    this.el.nativeElement.style.height = this.wrapper.style.height;
+    this.parentNode.removeChild(this.wrapper);
+    this.parentNode.appendChild(this.el.nativeElement);
+  }
 }
 
 @NgModule({
