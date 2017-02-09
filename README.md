@@ -1,12 +1,14 @@
-# Angular2 Drag to Scroll
-
-*Scroll on drag!*
+# [Angular2 Drag to Scroll](https://bfwg.github.io/angular2-drag-scroll/)
 
 Lightweight drag to scroll directive for Angular2
 
 [![npm version](https://img.shields.io/npm/v/angular2-drag-scroll.svg)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Maintenance Status][status-image]][status-url]
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
+
+*Scroll on drag!*
+
+Try out the [demo](https://bfwg.github.io/angular2-drag-scroll/)!
 
 # Install
 
