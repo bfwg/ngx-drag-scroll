@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": false,
-    "lib": ["es2015", "es6", "dom"],
+    "baseUrl": "",
+    "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": true,
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "declaration": true,
-    "noEmitHelpers": false,
-    "outDir": "../"
+    "lib": ["es6", "dom"],
+    "mapRoot": "./",
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "../",
+    "sourceMap": true,
+    "target": "es5",
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
   },
   "exclude": [
     "node_modules"

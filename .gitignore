@@ -38,7 +38,8 @@ jspm_packages
 
 dist
 
-index.d.ts
-index.js
-src/*.d.ts
-src/*js
+*.d.ts
+*.js
+*.map
+
+.DS_Store
