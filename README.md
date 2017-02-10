@@ -8,6 +8,8 @@ Lightweight drag to scroll directive for Angular2
 
 *Scroll on drag!*
 
+![Scroll](https://raw.githubusercontent.com/bfwg/angular2-drag-scroll/demo/src/assets/img/GW1KcqTDgj.gif)
+
 Try out the [demo](https://bfwg.github.io/angular2-drag-scroll/)!
 
 # Install
@@ -42,43 +44,29 @@ export class AppModule {
 }
 
 ```
-
+Add the `drag-scroll` attribute to a scrollable element:
 ```typescript
 @Component({
   selector: 'sample',
   template:`
   <div drag-scroll>
-    <!-- content here can be drag around -->
+    Big text goes here...
   </div>
   `
 })
 class Sample {}
 ```
-## Special Inputs for Angular2 Drag to Scroll Driective
+That's it! Now you can scroll it by dragging. 
 
-| Event Name |      Listener Arguments      |  Event Description | Default Value
-| :---------: |:---|:-----|:---|
-| drag-scroll-disabled | boolean | Whether horizontally and vertically draging and scrolling events will be disabled | false |
-| drag-scroll-x-disabled | boolean | Whether horizontally dragging and scrolling events will be disabled | false |
-| drag-scroll-y-disabled | boolean | Whether vertically dragging and scrolling events will be disabled | false |
+## API REFERENCE
 
-```typescript
-@Component({
-  selector: 'sample',
-  template:`
-  <div drag-scroll drag-scroll-disabled="true">
-    <!-- content here can be drag around vertically -->
-  </div>
-  <div drag-scroll drag-scroll-x-disabled="true">
-    <!-- content here can be drag around vertically -->
-  </div>
-  <div drag-scroll drag-scroll-y-disabled="true">
-    <!-- content here can be drag around vertically -->
-  </div>
-  `
-})
-class Sample {}
-```
+| Name                   | Type    | Description                                                                   |Default|
+|------------------------|---------|-------------------------------------------------------------------------------|-------|
+| scrollbar-hidden       | @Input  | Whether the scroll bar for this element is hidden.                            | false |
+| drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
+| drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
+| drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
+
 
 [status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
 [status-url]: https://github.com/bfwg/relay-gallery
