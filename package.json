@@ -12,7 +12,7 @@
   "scripts": {
     "prepublish": "npm run tsc",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
-    "clean": "npm run clean:build && npm run rimraf -- node_modules && npm cache clean",
+    "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
     "tsc": "tsc -p src"
   },
@@ -31,7 +31,7 @@
     "url": "https://github.com/bfwg/angular2-drag-scroll.git"
   },
   "homepage": "https://github.com/bfwg/angular2-drag-scroll#readme",
-  "dependencies": {
+  "peerDependencies": {
     "@angular/common": "~2.2.0",
     "@angular/compiler": "~2.2.0",
     "@angular/core": "~2.2.0",
@@ -39,9 +39,11 @@
     "@angular/platform-browser-dynamic": "~2.2.0"
   },
   "devDependencies": {
-    "@types/node": "^6.0.42",
-    "@types/selenium-webdriver": "~2.53.39",
-    "@types/jasmine": "2.5.38",
+    "@angular/common": "~2.2.0",
+    "@angular/compiler": "~2.2.0",
+    "@angular/core": "~2.2.0",
+    "@angular/platform-browser": "~2.2.0",
+    "@angular/platform-browser-dynamic": "~2.2.0",
     "rxjs": "5.0.0-beta.12",
     "rimraf": "2.5.4",
     "typescript": "2.0.3"
