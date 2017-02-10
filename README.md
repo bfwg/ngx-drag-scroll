@@ -70,3 +70,8 @@ That's it! Now you can scroll it by dragging.
 
 [status-image]: https://img.shields.io/badge/status-maintained-brightgreen.svg
 [status-url]: https://github.com/bfwg/relay-gallery
+
+___
+
+# License
+ [MIT](/LICENSE)
