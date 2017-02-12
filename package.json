@@ -13,8 +13,6 @@
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",
-    "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
@@ -69,7 +67,6 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
-    "protractor": "~4.0.13",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
     "typescript": "~2.0.3"
