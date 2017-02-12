@@ -1,0 +1,23 @@
+.md-elevation-z6 {
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+:host {
+  position: relative;
+  z-index: 10;
+  color: #fff;
+}
+
+.demo-navbar {
+  background: #00bcd4;
+  padding: 8px 16px;
+}
+
+.demo-navbar span {
+  text-transform: uppercase !important;
+}
+
+.demo-angular-logo {
+  margin: 0 4px 3px 0;
+  height: 26px;
+}

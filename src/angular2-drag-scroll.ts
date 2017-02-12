@@ -49,6 +49,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   wrapper: HTMLDivElement;
 
+  scrollbarWidth: string;
   /**
    * Whether the scrollbar is hidden
    */
@@ -92,6 +93,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
+    this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
     el.nativeElement.style.whiteSpace = 'noWrap';
     document.addEventListener('mousemove', this.onMouseMoveHandler, false);
@@ -176,8 +178,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.wrapper.style.width = this.el.nativeElement.offsetWidth + 'px';
     this.wrapper.style.height = this.el.nativeElement.offsetHeight + 'px';
     this.wrapper.style.overflow = 'hidden';
-    this.el.nativeElement.style.width = 'calc(100% + 20px)';
-    this.el.nativeElement.style.height = 'calc(100% + 20px)';
+    this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
+    this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
     // set the wrapper as child (instead of the element)
     this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
     // set element as child of wrapper
@@ -198,14 +200,53 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.el.nativeElement.scrollWidth <= this.el.nativeElement.clientWidth) {
       this.el.nativeElement.style.height = '100%';
     } else {
-      this.el.nativeElement.style.height = 'calc(100% + 20px)';
+      this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
     }
     if (this.el.nativeElement.scrollHeight <= this.el.nativeElement.clientHeight) {
       this.el.nativeElement.style.width = '100%';
     } else {
-      this.el.nativeElement.style.width = 'calc(100% + 20px)';
+      this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
     }
   }
+
+  private getScrollbarWidth() {
+    /**
+     * Browser Scrollbar Widths (2016)
+     * OSX (Chrome, Safari, Firefox) - 15px
+     * Windows XP (IE7, Chrome, Firefox) - 17px
+     * Windows 7 (IE10, IE11, Chrome, Firefox) - 17px
+     * Windows 8.1 (IE11, Chrome, Firefox) - 17px
+     * Windows 10 (IE11, Chrome, Firefox) - 17px
+     * Windows 10 (Edge 12/13) - 12px
+     */
+    let outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.width = "100px";
+    outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+    document.body.appendChild(outer);
+
+    let widthNoScroll = outer.offsetWidth;
+    // force scrollbars
+    outer.style.overflow = "scroll";
+
+    // add innerdiv
+    let inner = document.createElement("div");
+    inner.style.width = "100%";
+    outer.appendChild(inner);
+
+    let widthWithScroll = inner.offsetWidth;
+
+    // remove divs
+    outer.parentNode.removeChild(outer);
+    /**
+     * Scrollbar width will be 0 on Mac OS with the
+     * default "Only show scrollbars when scrolling" setting (Yosemite and up).
+     * setting defult with to 20;
+     */
+    return widthNoScroll - widthWithScroll || 20;
+  }
+
 }
 
 @NgModule({
