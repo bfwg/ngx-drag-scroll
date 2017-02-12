@@ -8,7 +8,7 @@ Lightweight drag to scroll directive for Angular2
 
 *Scroll on drag!*
 
-![Scroll](https://raw.githubusercontent.com/bfwg/angular2-drag-scroll/demo/src/assets/img/GW1KcqTDgj.gif)
+![Scroll](https://raw.githubusercontent.com/bfwg/angular2-drag-scroll/master/demo/assets/img/Wp03zyitgY.gif)
 
 Try out the [demo](https://bfwg.github.io/angular2-drag-scroll/)!
 
