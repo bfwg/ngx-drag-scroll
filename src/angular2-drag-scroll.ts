@@ -28,17 +28,17 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   /**
    * Is the user currently pressing the element
    */
-  isPressed: boolean = false;
+  isPressed = false;
 
   /**
    * The x coordinates on the element
    */
-  downX: number = 0;
+  downX = 0;
 
   /**
    * The y coordinates on the element
    */
-  downY: number = 0;
+  downY = 0;
 
   /**
    * The bounding ClientRect on the element
@@ -50,6 +50,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   wrapper: HTMLDivElement;
 
   scrollbarWidth: string;
+
+  onMouseMoveHandler = this.onMouseMove.bind(this);
+  onMouseUpHandler = this.onMouseUp.bind(this);
   /**
    * Whether the scrollbar is hidden
    */
@@ -87,8 +90,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     return false;
   }
 
-  onMouseMoveHandler = this.onMouseMove.bind(this);
-  onMouseUpHandler = this.onMouseUp.bind(this);
 
   constructor(
     private el: ElementRef, private renderer: Renderer
@@ -219,23 +220,23 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
      * Windows 10 (IE11, Chrome, Firefox) - 17px
      * Windows 10 (Edge 12/13) - 12px
      */
-    let outer = document.createElement("div");
-    outer.style.visibility = "hidden";
-    outer.style.width = "100px";
-    outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+    const outer = document.createElement('div');
+    outer.style.visibility = 'hidden';
+    outer.style.width = '100px';
+    outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
 
     document.body.appendChild(outer);
 
-    let widthNoScroll = outer.offsetWidth;
+    const widthNoScroll = outer.offsetWidth;
     // force scrollbars
-    outer.style.overflow = "scroll";
+    outer.style.overflow = 'scroll';
 
     // add innerdiv
-    let inner = document.createElement("div");
-    inner.style.width = "100%";
+    const inner = document.createElement('div');
+    inner.style.width = '100%';
     outer.appendChild(inner);
 
-    let widthWithScroll = inner.offsetWidth;
+    const widthWithScroll = inner.offsetWidth;
 
     // remove divs
     outer.parentNode.removeChild(outer);

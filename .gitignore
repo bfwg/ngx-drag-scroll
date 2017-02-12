@@ -38,3 +38,8 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
+
+*.map
+*.d.ts
+index.js
+angular2-drag-scroll.js

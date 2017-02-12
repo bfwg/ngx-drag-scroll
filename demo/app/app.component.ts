@@ -26,7 +26,7 @@ export class AppComponent {
     'varder.png',
     'yoda.png',
     'yolo.png'
-  ]
+  ];
   constructor(mdIconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
     mdIconRegistry
         .addSvgIcon('github',
