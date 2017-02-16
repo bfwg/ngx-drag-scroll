@@ -16,6 +16,7 @@ typedoc.json
 tslint.json
 
 demo
+dist
 config
 angular-cli.json
 LICENSE
