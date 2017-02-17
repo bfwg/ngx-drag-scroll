@@ -10,7 +10,6 @@ import {
   AfterViewChecked,
   HostListener
 } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
   selector: '[drag-scroll]'
@@ -44,6 +43,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
    * The bounding ClientRect on the element
    */
   rect: ClientRect;
+
+  displayType = 'block';
 
   parentNode: HTMLElement;
 
@@ -122,6 +123,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   ngOnInit(): void {
+    // auto assign computed css
+    this.displayType = window.getComputedStyle(this.el.nativeElement).display;
+    this.el.nativeElement.style.display = this.displayType;
     this.rect = this.el.nativeElement.getBoundingClientRect();
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
@@ -174,17 +178,19 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   private hideScrollbar(): void {
-    this.parentNode = this.el.nativeElement.parentNode;
-    this.wrapper = document.createElement('div');
-    this.wrapper.style.width = this.el.nativeElement.offsetWidth + 'px';
-    this.wrapper.style.height = this.el.nativeElement.offsetHeight + 'px';
-    this.wrapper.style.overflow = 'hidden';
-    this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
-    this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
-    // set the wrapper as child (instead of the element)
-    this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
-    // set element as child of wrapper
-    this.wrapper.appendChild(this.el.nativeElement);
+    if (this.el.nativeElement.style.display !== 'none') {
+      this.parentNode = this.el.nativeElement.parentNode;
+      this.wrapper = document.createElement('div');
+      this.wrapper.style.width = this.el.nativeElement.offsetWidth + 'px';
+      this.wrapper.style.height = this.el.nativeElement.offsetHeight + 'px';
+      this.wrapper.style.overflow = 'hidden';
+      this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
+      this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
+      // set the wrapper as child (instead of the element)
+      this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+      // set element as child of wrapper
+      this.wrapper.appendChild(this.el.nativeElement);
+    }
   }
 
   private showScrollbar(): void {
@@ -251,7 +257,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 }
 
 @NgModule({
-  imports: [BrowserModule],
   exports: [DragScroll],
   declarations: [DragScroll]
 })
