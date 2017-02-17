@@ -10,7 +10,6 @@ import {
   AfterViewChecked,
   HostListener
 } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Directive({
   selector: '[drag-scroll]'
@@ -251,7 +250,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 }
 
 @NgModule({
-  imports: [BrowserModule],
   exports: [DragScroll],
   declarations: [DragScroll]
 })
