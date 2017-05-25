@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "lib": ["es2015", "es6", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
