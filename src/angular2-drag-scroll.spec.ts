@@ -10,6 +10,7 @@ import {
   By
 } from '@angular/platform-browser';
 
+setTimeout(() => {},  0);
 import {
   inject,
   async,
