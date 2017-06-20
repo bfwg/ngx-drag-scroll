@@ -91,6 +91,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     return false;
   }
 
+  private mouseMoveListener: Function;
+  private mouseDownListener: Function;
 
   constructor(
     private el: ElementRef, private renderer: Renderer
@@ -98,8 +100,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
     el.nativeElement.style.whiteSpace = 'noWrap';
-    document.addEventListener('mousemove', this.onMouseMoveHandler, false);
-    document.addEventListener('mouseup', this.onMouseUpHandler, false);
+
+    this.mouseMoveListener = renderer.listenGlobal('document', 'mousemove', this.onMouseMoveHandler);
+    this.mouseDownListener = renderer.listenGlobal('document', 'mouseup', this.onMouseUpHandler);
   }
 
   ngOnChanges() {
@@ -139,8 +142,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   ngOnDestroy() {
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    document.removeEventListener('mousemove', this.onMouseMoveHandler, false);
-    document.removeEventListener('mouseup', this.onMouseUpHandler, false);
+    this.mouseMoveListener();
+    this.mouseDownListener();
   }
 
   onMouseMove(e: MouseEvent) {
