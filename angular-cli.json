@@ -30,7 +30,7 @@
   ],
   "lint": [
     {
-      "files": "demo/**/*.ts",
+      "files": "src/**/*.ts",
       "project": "demo/tsconfig.json"
     }
   ],

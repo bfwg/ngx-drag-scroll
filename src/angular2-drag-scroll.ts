@@ -54,6 +54,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   onMouseMoveHandler = this.onMouseMove.bind(this);
   onMouseUpHandler = this.onMouseUp.bind(this);
+
+  mouseMoveListener: Function;
+  mouseDownListener: Function;
   /**
    * Whether the scrollbar is hidden
    */
@@ -91,8 +94,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     return false;
   }
 
-  private mouseMoveListener: Function;
-  private mouseDownListener: Function;
 
   constructor(
     private el: ElementRef, private renderer: Renderer
@@ -219,7 +220,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     }
   }
 
-  private getScrollbarWidth() {
+  private getScrollbarWidth(): number {
     /**
      * Browser Scrollbar Widths (2016)
      * OSX (Chrome, Safari, Firefox) - 15px

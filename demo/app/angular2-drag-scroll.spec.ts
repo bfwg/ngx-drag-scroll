@@ -4,13 +4,12 @@ import {
   Renderer,
   ElementRef
 } from '@angular/core';
-import { DragScroll } from './angular2-drag-scroll.ts';
+import { DragScroll } from '../../src/angular2-drag-scroll';
 
 import {
   By
 } from '@angular/platform-browser';
 
-setTimeout(() => {},  0);
 import {
   inject,
   async,
@@ -18,28 +17,18 @@ import {
 } from '@angular/core/testing';
 
 @Component({
-  selector: 'qhr-test-component',
-  template: '',
-  directives: [DragScroll]
+  selector: 'app-test-component',
+  template: ''
 })
 export class TestComponent {
 }
 
 describe('Directive: DragScroll', () => {
-  let scrollbarWidth;
+  const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, DragScroll]
     });
-    let mockElementRef = {
-      nativeElement: {
-        style: {
-          overflow: '',
-          whiteSpace: ''
-        }
-      }
-    }
-    scrollbarWidth = new DragScroll(mockElementRef).scrollbarWidth;
   });
 
   it('should drag to scroll horizontally and vertically', async(() => {
@@ -50,9 +39,9 @@ describe('Directive: DragScroll', () => {
     }});
 
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
@@ -76,9 +65,9 @@ describe('Directive: DragScroll', () => {
     }});
 
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
@@ -104,9 +93,9 @@ describe('Directive: DragScroll', () => {
     }});
 
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
@@ -132,9 +121,9 @@ describe('Directive: DragScroll', () => {
     }});
 
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
@@ -159,9 +148,9 @@ describe('Directive: DragScroll', () => {
                 </div>`
     }});
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe('100%');
       expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
     });
@@ -174,9 +163,9 @@ describe('Directive: DragScroll', () => {
                 </div>`
     }})
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe(`calc(100% + ${scrollbarWidth})`);
       expect(compiled.nativeElement.style.height).toBe('100%');
     });
@@ -189,10 +178,10 @@ describe('Directive: DragScroll', () => {
                 </div>`
     }});
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
 
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe(`calc(100% + ${scrollbarWidth})`);
       expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
     });
@@ -205,10 +194,10 @@ describe('Directive: DragScroll', () => {
                 </div>`
     }});
     TestBed.compileComponents().then(() => {
-      let fixture = TestBed.createComponent(TestComponent);
+      const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
 
-      let compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe('50px');
       expect(compiled.nativeElement.style.height).toBe('50px');
     });
