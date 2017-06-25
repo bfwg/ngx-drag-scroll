@@ -68,7 +68,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   prevBtnDownListener: Function;
   nextBtnDownListener: Function;
   navBtnDiv: HTMLElement;
-  navInterval: Function;
+  navInterval: number;
 
   /**
    * Whether the scrollbar is hidden
@@ -187,7 +187,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   onMouseUp(e: MouseEvent) {
     e.preventDefault();
-    clearInterval(this.navInterval);
+    window.clearInterval(this.navInterval);
     this.isPressed = false;
     return false;
   }
@@ -286,13 +286,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.nextBtn.innerHTML = 'next';
 
     this.nextBtnDownListener = this.renderer.listen(this.nextBtn, 'mousedown', () => {
-      this.navInterval = setInterval(() => {
+      this.navInterval = window.setInterval(() => {
         this.el.nativeElement.scrollLeft += 8;
       }, 10);
     });
 
     this.prevBtnDownListener = this.renderer.listen(this.prevBtn, 'mousedown', () => {
-      this.navInterval = setInterval(() => {
+      this.navInterval = window.setInterval(() => {
         this.el.nativeElement.scrollLeft -= 8;
       }, 10);
     });
