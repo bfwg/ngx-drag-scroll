@@ -67,8 +67,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   nextBtn = document.createElement('button');
   prevBtnDownListener: Function;
   nextBtnDownListener: Function;
-  navBtnDiv;
-  navInterval;
+  navBtnDiv: HTMLElement;
+  navInterval: Function;
 
   /**
    * Whether the scrollbar is hidden
