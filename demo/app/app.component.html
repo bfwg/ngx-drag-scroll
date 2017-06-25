@@ -6,6 +6,12 @@
       <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" />
     </div>
   </div>
+  <p class="title">Navigation Buttons</p>
+  <div class="demo-border">
+    <div class="demo-one" drag-scroll-nav="true" drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" >
+      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" />
+    </div>
+  </div>
   <p class="title">PLAY WITH IT!</p>
   <div class="toggle-box">
     <md-slide-toggle (change)="toggleHideSB()">Hide scrollbar</md-slide-toggle>
@@ -67,6 +73,15 @@
           <code class="docs-api-property-type"></code>
         </td>
         <td class="docs-api-property-description"> Whether vertically dragging and scrolling events is disabled. </td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> drag-scroll-nav </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether show navigation buttons. </td>
         <td class="docs-api-property-description">false</td>
       </tr>
     </tbody>

@@ -24,6 +24,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   private _yDisabled: boolean;
 
+  private _nav: boolean;
   /**
    * Is the user currently pressing the element
    */
@@ -57,6 +58,18 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   mouseMoveListener: Function;
   mouseDownListener: Function;
+
+
+  /*
+   * Nav buttons
+   */
+  prevBtn = document.createElement('button');
+  nextBtn = document.createElement('button');
+  prevBtnDownListener: Function;
+  nextBtnDownListener: Function;
+  navBtnDiv;
+  navInterval;
+
   /**
    * Whether the scrollbar is hidden
    */
@@ -84,6 +97,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   @Input('drag-scroll-y-disabled')
   get yDisabled() { return this._yDisabled; }
   set yDisabled(value: boolean) { this._yDisabled = value; };
+
+  @Input('drag-scroll-nav')
+  get nav() { return this._nav; }
+  set nav(value: boolean) { this._nav = value; };
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(e: MouseEvent) {
@@ -113,6 +130,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.showScrollbar();
     }
 
+    if (this.nav) {
+      this.showNavButton();
+    } else {
+      this.hideNavButton();
+    }
+
     if (this.xDisabled || this.disabled) {
       this.disableScroll('x');
     } else {
@@ -124,6 +147,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     } else {
       this.enableScroll('y');
     }
+
   }
 
   ngOnInit(): void {
@@ -139,12 +163,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.wrapper) {
       this.checkScrollbar();
     }
-  }
-
-  ngOnDestroy() {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    this.mouseMoveListener();
-    this.mouseDownListener();
   }
 
   onMouseMove(e: MouseEvent) {
@@ -169,6 +187,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   onMouseUp(e: MouseEvent) {
     e.preventDefault();
+    clearInterval(this.navInterval);
     this.isPressed = false;
     return false;
   }
@@ -258,6 +277,44 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     return widthNoScroll - widthWithScroll || 20;
   }
 
+  showNavButton() {
+    this.navBtnDiv = document.createElement('div');
+    this.navBtnDiv.style.position = 'absolute';
+    this.navBtnDiv.style.left = '50%';
+    this.navBtnDiv.style.transform = 'translate(-50%, 0)';
+    this.prevBtn.innerHTML = 'prev';
+    this.nextBtn.innerHTML = 'next';
+
+    this.nextBtnDownListener = this.renderer.listen(this.nextBtn, 'mousedown', () => {
+      this.navInterval = setInterval(() => {
+        this.el.nativeElement.scrollLeft += 8;
+      }, 10);
+    });
+
+    this.prevBtnDownListener = this.renderer.listen(this.prevBtn, 'mousedown', () => {
+      this.navInterval = setInterval(() => {
+        this.el.nativeElement.scrollLeft -= 8;
+      }, 10);
+    });
+
+    this.navBtnDiv.appendChild(this.prevBtn);
+    this.navBtnDiv.appendChild(this.nextBtn);
+    this.el.nativeElement.parentNode.appendChild(this.navBtnDiv);
+  }
+
+  hideNavButton() {
+    if (this.navBtnDiv) {
+      this.el.nativeElement.parentNode.removeChild(this.navBtnDiv);
+    }
+  }
+
+  ngOnDestroy() {
+    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
+    this.mouseMoveListener();
+    this.mouseDownListener();
+    this.nextBtnDownListener();
+    this.prevBtnDownListener();
+  }
 }
 
 @NgModule({

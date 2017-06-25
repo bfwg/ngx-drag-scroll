@@ -203,5 +203,53 @@ describe('Directive: DragScroll', () => {
     });
   }));
 
+  it('should show navigation buttons', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-nav="true">
+                  <div style="width: 300px; height: 300px;"></div>
+                </div>`
+    }});
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      const element = fixture.nativeElement;
+      fixture.detectChanges();
+
+      expect(element.querySelectorAll('button').length).toBe(2);
+    });
+  }));
+
+  it('should not show navigation buttons', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-nav="false">
+                  <div style="width: 300px; height: 300px;"></div>
+                </div>`
+    }});
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      const element = fixture.nativeElement;
+      fixture.detectChanges();
+
+      expect(element.querySelectorAll('button').length).toBe(0);
+    });
+
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 50px; height: 50px;" drag-scroll>
+                  <div style="width: 300px; height: 300px;"></div>
+                </div>`
+    }});
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      const element = fixture.nativeElement;
+      fixture.detectChanges();
+
+      expect(element.querySelectorAll('button').length).toBe(0);
+    });
+  }));
+
+
+
 });
 
