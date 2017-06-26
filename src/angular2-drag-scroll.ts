@@ -305,6 +305,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   hideNavButton() {
     if (this.navBtnDiv) {
       this.el.nativeElement.parentNode.removeChild(this.navBtnDiv);
+      this.nextBtnDownListener();
+      this.prevBtnDownListener();
     }
   }
 
@@ -312,8 +314,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
     this.mouseMoveListener();
     this.mouseDownListener();
-    this.nextBtnDownListener();
-    this.prevBtnDownListener();
+    this.hideNavButton();
   }
 }
 

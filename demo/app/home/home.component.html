@@ -1,0 +1,107 @@
+<div class="demo-content">
+  <p class="title">DRAG AND SCROLL!</p>
+  <div class="demo-border">
+    <div class="demo-one" drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" >
+      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" />
+    </div>
+  </div>
+  <p class="title">Navigation Buttons</p>
+  <div class="demo-border">
+    <div class="demo-one" drag-scroll-nav="true" drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" >
+      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" />
+    </div>
+  </div>
+  <p class="title">PLAY WITH IT!</p>
+  <div class="toggle-box">
+    <md-slide-toggle (change)="toggleHideSB()">Hide scrollbar</md-slide-toggle>
+    <md-slide-toggle (change)="toggleDisable()">Disable drag/scroll</md-slide-toggle>
+  </div>
+  <div class="toggle-box">
+    <md-slide-toggle (change)="toggleXDisable()">Disable horizontal drag/scroll</md-slide-toggle>
+    <md-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</md-slide-toggle>
+  </div>
+  <div class="demo-border">
+    <div class="demo-two"
+        drag-scroll [scrollbar-hidden]="hideScrollbar"
+        [drag-scroll-disabled]="disabled"
+        [drag-scroll-x-disabled]="xDisabled"
+        [drag-scroll-y-disabled]="yDisabled"
+      >
+      <img src='assets/img/star-wars-big.jpg' />
+    </div>
+  </div>
+  <p class="title">API REFERENCE</p>
+  <table class="docs-api-properties-table">
+    <tbody>
+      <tr class="docs-api-properties-header-row">
+        <th class="docs-api-properties-th">Name</th>
+        <th class="docs-api-properties-th">Description</th>
+        <th class="docs-api-properties-th">Default</th>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> scrollbar-hidden </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether the scroll bar for this element is hidden.</td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> drag-scroll-disabled </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether horizontally and vertically draging and scrolling events is disabled.</td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> drag-scroll-x-disabled </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether horizontally dragging and scrolling events is disabled.  </td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> drag-scroll-y-disabled </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether vertically dragging and scrolling events is disabled. </td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+      <tr class="docs-api-properties-row">
+        <td class="docs-api-properties-name-cell">
+          <div class="docs-api-input-marker"> @Input()</div>
+          <p class="docs-api-property-name"> drag-scroll-nav </p>
+          <code class="docs-api-property-type"></code>
+        </td>
+        <td class="docs-api-property-description"> Whether show navigation buttons. </td>
+        <td class="docs-api-property-description">false</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="fullwidth-box">
+  <h3>Want to help make this project awesome? Check out our repo.</h3>
+    <a href="https://github.com/bfwg/angular2-drag-scroll" md-raised-button md-ripple>
+      <span>GITHUB</span>
+    </a>
+</div>
+<div class="footer fullwidth-box">
+  <p style="margin: 0px auto; padding: 0px; color: rgba(255, 255, 255, 0.541176); max-width: 356px;"><!-- react-text: 103 -->
+    Hand crafted with love by <!-- /react-text -->
+    <a href="https://github.com/bfwg" style="color: rgba(255, 255, 255, 0.870588);">Fan Jin</a>
+    <!-- react-text: 105 --> and our awesome <!-- /react-text -->
+    <a href="https://github.com/bfwg" style="color: rgba(255, 255, 255, 0.870588);">contributors</a><!-- react-text: 107 -->.<!-- /react-text -->
+  </p>
+  <a style="margin-top: 22px;" md-icon-button href="https://github.com/bfwg/angular2-drag-scroll">
+    <img src="assets/img/github.png"/>
+  </a>
+</div>
