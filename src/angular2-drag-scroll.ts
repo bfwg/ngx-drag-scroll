@@ -104,11 +104,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(e: MouseEvent) {
-    e.preventDefault();
     this.isPressed = true;
     this.downX = e.clientX;
     this.downY = e.clientY;
-    return false;
   }
 
 
