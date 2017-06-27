@@ -66,6 +66,7 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
+| drag-scroll-nav        | @Input  | Whether show the navigation buttons.                                          | false |
 
 ___
 
