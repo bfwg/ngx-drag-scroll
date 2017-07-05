@@ -58,6 +58,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   mouseMoveListener: Function;
   mouseDownListener: Function;
+  touchEndListener: Function;
 
 
   /*
@@ -66,7 +67,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   prevBtn = document.createElement('button');
   nextBtn = document.createElement('button');
   prevBtnDownListener: Function;
+  prevTouchStartListener: Function;
   nextBtnDownListener: Function;
+  nextTouchStartListener: Function;
   navBtnDiv: HTMLElement;
   navInterval: number;
 
@@ -119,6 +122,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
     this.mouseMoveListener = renderer.listenGlobal('document', 'mousemove', this.onMouseMoveHandler);
     this.mouseDownListener = renderer.listenGlobal('document', 'mouseup', this.onMouseUpHandler);
+    this.touchEndListener = renderer.listenGlobal('document', 'touchend', this.onMouseUpHandler);
   }
 
   ngOnChanges() {
@@ -126,12 +130,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.hideScrollbar();
     } else {
       this.showScrollbar();
-    }
-
-    if (this.nav) {
-      this.showNavButton();
-    } else {
-      this.hideNavButton();
     }
 
     if (this.xDisabled || this.disabled) {
@@ -144,6 +142,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.disableScroll('y');
     } else {
       this.enableScroll('y');
+    }
+
+    if (this.nav) {
+      this.showNavButton();
+    } else {
+      this.hideNavButton();
     }
 
   }
@@ -284,20 +288,37 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.nextBtn.innerHTML = 'next';
 
     this.nextBtnDownListener = this.renderer.listen(this.nextBtn, 'mousedown', () => {
-      this.navInterval = window.setInterval(() => {
-        this.el.nativeElement.scrollLeft += 8;
-      }, 10);
+      this.moveRight(10);
     });
 
+    this.nextTouchStartListener = this.renderer.listen(this.nextBtn, 'touchstart', () => {
+      this.moveRight(10);
+    });
+
+
     this.prevBtnDownListener = this.renderer.listen(this.prevBtn, 'mousedown', () => {
-      this.navInterval = window.setInterval(() => {
-        this.el.nativeElement.scrollLeft -= 8;
-      }, 10);
+      this.moveLeft(10);
+    });
+
+    this.prevTouchStartListener = this.renderer.listen(this.prevBtn, 'touchstart', () => {
+      this.moveLeft(10);
     });
 
     this.navBtnDiv.appendChild(this.prevBtn);
     this.navBtnDiv.appendChild(this.nextBtn);
-    this.el.nativeElement.parentNode.appendChild(this.navBtnDiv);
+    this.el.nativeElement.appendChild(this.navBtnDiv);
+  }
+
+  moveLeft(speed: number) {
+    this.navInterval = window.setInterval(() => {
+      this.el.nativeElement.scrollLeft -= 8;
+    }, speed);
+  }
+
+  moveRight(speed: number) {
+    this.navInterval = window.setInterval(() => {
+      this.el.nativeElement.scrollLeft += 8;
+    }, speed);
   }
 
   hideNavButton() {
@@ -305,6 +326,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.el.nativeElement.parentNode.removeChild(this.navBtnDiv);
       this.nextBtnDownListener();
       this.prevBtnDownListener();
+      this.nextTouchStartListener();
+      this.nextTouchStartListener();
     }
   }
 
