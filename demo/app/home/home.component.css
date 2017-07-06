@@ -1,8 +1,3 @@
-.demo-content {
-  display: block;
-  margin: 50px 70px;
-}
-
 .title {
   margin-top: 60px;
 }
@@ -18,9 +13,33 @@
   margin-right: 10px;
 }
 
+.demo-one-nav img {
+  width: auto;
+}
+
+.demo-border >>> button {
+  margin: 20px;
+  background-color: #4099FF;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 5px 10px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.demo-border >>> button:focus {
+  outline: 0;
+}
+
 .demo-one img:last-of-type {
   margin-right: 0;
 }
+
 .demo-two {
   height: 500px;
 }
@@ -36,6 +55,11 @@
 .toggle-box {
   width: 49%;
   display: inline-block;
+}
+
+.toggle-box md-slide-toggle {
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .fullwidth-box {
@@ -97,6 +121,9 @@
   border: 1px solid rgba(0,0,0,.03);
 }
 
+app-github {
+  margin: 50px -70px -50px;
+}
 
 @media only screen and  (max-width: 960px) {
   .toggle-box {
