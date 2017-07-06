@@ -11,12 +11,16 @@ import { DragScrollModule } from '../../src/angular2-drag-scroll';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
+import { FooterComponent } from './footer/footer.component';
+import { GithubComponent } from './github/github.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     NotFoundComponent,
+    FooterComponent,
+    GithubComponent,
     HomeComponent
   ],
   imports: [

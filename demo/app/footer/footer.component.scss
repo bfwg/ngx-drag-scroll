@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  font-weight: 300;
+  font-size: 15px;
+  display: block;
+  background-color: rgb(33, 33, 33);
+  height: 236px;
+  padding: 72px 24px;
+  box-sizing: border-box;
+  text-align: center;
+  a {
+    text-decoration: none;
+    cursor: auto;
+    color: #FFFFFF;
+    margin-top: 32px;
+  }
+
+  h3 {
+    margin: 0px;
+    padding: 0px;
+    font-weight: 300;
+    font-size: 22px;
+  }
+
+}
