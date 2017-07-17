@@ -10,6 +10,7 @@ import {
   AfterViewChecked,
   HostListener
 } from '@angular/core';
+import { DragScrollOption } from './interface/drag-scroll-option';
 
 @Directive({
   selector: '[drag-scroll]'
@@ -54,10 +55,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   scrollbarWidth: string;
 
   onMouseMoveHandler = this.onMouseMove.bind(this);
+  onMouseDownHandler = this.onMouseDown.bind(this);
   onMouseUpHandler = this.onMouseUp.bind(this);
 
   mouseMoveListener: Function;
   mouseDownListener: Function;
+  mouseUpListener: Function;
   touchEndListener: Function;
 
 
@@ -105,14 +108,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   get nav() { return this._nav; }
   set nav(value: boolean) { this._nav = value; };
 
-  @HostListener('mousedown', ['$event'])
-  onMouseDown(e: MouseEvent) {
-    this.isPressed = true;
-    this.downX = e.clientX;
-    this.downY = e.clientY;
-  }
-
-
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
@@ -121,8 +116,18 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     el.nativeElement.style.whiteSpace = 'noWrap';
 
     this.mouseMoveListener = renderer.listenGlobal('document', 'mousemove', this.onMouseMoveHandler);
-    this.mouseDownListener = renderer.listenGlobal('document', 'mouseup', this.onMouseUpHandler);
+    this.mouseDownListener = renderer.listenGlobal(el.nativeElement, 'mousedown', this.onMouseDownHandler);
+    this.mouseUpListener = renderer.listenGlobal('document', 'mouseup', this.onMouseUpHandler);
     this.touchEndListener = renderer.listenGlobal('document', 'touchend', this.onMouseUpHandler);
+  }
+
+  public attach({disabled, scrollbarHidden, yDisabled, xDisabled, nav}: DragScrollOption): void {
+    this.disabled = disabled;
+    this.scrollbarHidden = scrollbarHidden;
+    this.yDisabled = yDisabled;
+    this.xDisabled = xDisabled;
+    this.nav = nav;
+    this.ngOnChanges();
   }
 
   ngOnChanges() {
@@ -167,6 +172,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     }
   }
 
+  ngOnDestroy() {
+    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
+    this.mouseMoveListener();
+    this.mouseUpListener();
+    this.hideNavButton();
+  }
+
   onMouseMove(e: MouseEvent) {
     if (this.isPressed && !this.disabled) {
       e.preventDefault();
@@ -185,6 +197,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       }
     }
     return false;
+  }
+
+  onMouseDown(e: MouseEvent) {
+    this.isPressed = true;
+    this.downX = e.clientX;
+    this.downY = e.clientY;
   }
 
   onMouseUp(e: MouseEvent) {
@@ -329,13 +347,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.nextTouchStartListener();
       this.nextTouchStartListener();
     }
-  }
-
-  ngOnDestroy() {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    this.mouseMoveListener();
-    this.mouseDownListener();
-    this.hideNavButton();
   }
 }
 

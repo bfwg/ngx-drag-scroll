@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
+
 import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
 
 import { AppComponent } from './app.component';
@@ -14,6 +15,9 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +28,7 @@ import { GithubComponent } from './github/github.component';
     HomeComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     AppRoutingModule,
     DragScrollModule,
     BrowserModule,
