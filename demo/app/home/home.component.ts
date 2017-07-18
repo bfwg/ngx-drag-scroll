@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
   ngAfterViewInit() {
     this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
     this.dragScrollRef = new ElementRef(this.dragScrollDom );
+
     this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
     this.dragScroll.attach({
       disabled: false,
@@ -60,14 +61,6 @@ export class HomeComponent implements OnInit {
       xDisabled: false,
       nav: false
     });
-    // this.dragScroll.disabled = false;
-    // this.dragScroll.scrollbarHidden = true;
-    // this.dragScroll.yDisabled = true;
-    // this.dragScroll.xDisabled = false;
-    // this.dragScroll.ngOnChanges();
-    // this.renderer.listen(this.dragScrollDom , 'mousedown', (event) => {
-      // this.dragScroll.onMouseDown(event);
-    // });
   }
 
   remove() {
