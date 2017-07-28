@@ -70,8 +70,5 @@
     "ts-node": "3.0.6",
     "tslint": "5.3.2",
     "typescript": "2.3.4"
-  },
-  "dependencies": {
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.28"
   }
 }

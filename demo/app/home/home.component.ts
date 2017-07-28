@@ -50,17 +50,17 @@ export class HomeComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
-    this.dragScrollRef = new ElementRef(this.dragScrollDom );
+    // this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
+    // this.dragScrollRef = new ElementRef(this.dragScrollDom );
 
-    this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
-    this.dragScroll.attach({
-      disabled: false,
-      scrollbarHidden: true,
-      yDisabled: true,
-      xDisabled: false,
-      nav: false
-    });
+    // this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
+    // this.dragScroll.attach({
+      // disabled: false,
+      // scrollbarHidden: true,
+      // yDisabled: true,
+      // xDisabled: false,
+      // nav: false
+    // });
   }
 
   remove() {
