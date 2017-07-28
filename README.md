@@ -56,7 +56,7 @@ Add the `drag-scroll` attribute to a scrollable element:
 })
 class Sample {}
 ```
-That's it! Now you can scroll it by dragging. 
+That's it! Now you can scroll it by dragging.
 
 ## API REFERENCE
 
@@ -69,6 +69,30 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-nav        | @Input  | Whether show the navigation buttons.                                          | false |
 
 ___
+
+## Dynamically apply the plugin to a DOM element
+
+This was brought by @tommykamkcm. The below code block demonstrates how to attach the directive dynamically on a DOM i.e. deep rendered element.
+```javascript
+dragScrollDom: any;
+dragScrollRef: ElementRef;
+dragScroll: DragScroll;
+
+ngAfterViewInit() {
+  // attach to .nav-tabs element
+  this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
+  this.dragScrollRef = new ElementRef(this.dragScrollDom );
+
+  this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
+  this.dragScroll.attach({
+    disabled: false,
+    scrollbarHidden: true,
+    yDisabled: true,
+    xDisabled: false,
+    nav: false
+  });
+}
+```
 
 # License
  [MIT](/LICENSE)

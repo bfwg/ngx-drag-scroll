@@ -43,6 +43,7 @@ describe('Directive: DragScroll', () => {
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
 
+
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
       document.dispatchEvent(new MouseEvent('mouseup'));

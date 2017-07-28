@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdIconRegistry } from '@angular/material';
+import { DragScroll } from '../../../src/angular2-drag-scroll';
 
 @Component({
   selector: 'app-home',
@@ -27,14 +28,39 @@ export class HomeComponent implements OnInit {
     'yoda.png',
     'yolo.png'
   ];
-  constructor(mdIconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
+
+  dragScrollDom: any;
+  dragScrollRef: ElementRef;
+  dragScroll: DragScroll;
+
+  constructor(
+    mdIconRegistry: MdIconRegistry,
+    sanitizer: DomSanitizer,
+    private element: ElementRef,
+    private renderer: Renderer
+  ) {
     mdIconRegistry
         .addSvgIcon('github',
             sanitizer.bypassSecurityTrustResourceUrl('/assets/img/github.svg'))
         .registerFontClassAlias('fontawesome', 'fa');
   }
 
+
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    // this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
+    // this.dragScrollRef = new ElementRef(this.dragScrollDom );
+
+    // this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
+    // this.dragScroll.attach({
+      // disabled: false,
+      // scrollbarHidden: true,
+      // yDisabled: true,
+      // xDisabled: false,
+      // nav: false
+    // });
   }
 
   remove() {
