@@ -24,7 +24,7 @@ export class TestComponent {
 }
 
 describe('Directive: DragScroll', () => {
-  const scrollbarWidth = '20px';
+  const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, DragScroll]
