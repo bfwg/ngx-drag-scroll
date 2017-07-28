@@ -24,7 +24,7 @@ export class TestComponent {
 }
 
 describe('Directive: DragScroll', () => {
-  const scrollbarWidth = '15px';
+  const scrollbarWidth = '20px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, DragScroll]
@@ -42,6 +42,7 @@ describe('Directive: DragScroll', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
+
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));

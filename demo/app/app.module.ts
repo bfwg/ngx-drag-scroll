@@ -16,7 +16,6 @@ import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     HomeComponent
   ],
   imports: [
-    NgbModule.forRoot(),
     AppRoutingModule,
     DragScrollModule,
     BrowserModule,
