@@ -10,14 +10,14 @@
   ],
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run tsc",
+    "prepublish": "npm run ngc",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
-    "tsc": "tsc -p src"
+    "ngc": "ngc -p src/tsconfig.json"
   },
   "repository": {
     "type": "git",

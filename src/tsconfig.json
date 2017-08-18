@@ -20,5 +20,11 @@
   "files": [
     "./angular2-drag-scroll.ts",
     "../index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleId": "angular2-drag-scroll",
+    "skipTemplateCodegen": true
+  }
 }
