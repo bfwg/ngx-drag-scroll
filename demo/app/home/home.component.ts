@@ -63,6 +63,10 @@ export class HomeComponent implements OnInit {
     // });
   }
 
+  dosomething() {
+    alert('abc');
+  }
+
   remove() {
     this.imagelist.pop();
   }
