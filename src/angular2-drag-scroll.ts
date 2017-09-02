@@ -112,7 +112,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   set nav(value: boolean) { this._nav = value; };
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize() {
     this.setScrollBar(true);
   }
 
