@@ -62,27 +62,6 @@
   margin-bottom: 15px;
 }
 
-.fullwidth-box {
-  height: 236px;
-  padding: 72px 24px;
-  box-sizing: border-box;
-  background-color: rgb(238, 238, 238);
-  text-align: center
-}
-
-.fullwidth-box h3 {
-  margin: 0px;
-  padding: 0px;
-  font-weight: 300;
-  font-size: 22px;
-}
-
-.fullwidth-box a {
-  color: #FFFFFF;
-  margin-top: 32px;
-  background-color: rgb(0, 188, 212);
-}
-
 .footer {
   font-weight: 300;
   font-size: 15px;
@@ -121,9 +100,6 @@
   border: 1px solid rgba(0,0,0,.03);
 }
 
-app-github {
-  margin: 50px -70px -50px;
-}
 
 @media only screen and  (max-width: 960px) {
   .toggle-box {
@@ -135,3 +111,23 @@ app-github {
     margin: 16px;
   }
 }
+
+.content {
+  margin: 50px 70px;
+}
+
+@media screen and (min-width: 600px) and (max-width: 1279px) {
+  .content {
+    margin: 20px 30px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .content {
+    margin: 8px 12px;
+  }
+  .api-table-containter {
+    display: none;
+  }
+}
+

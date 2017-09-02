@@ -111,6 +111,11 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   get nav() { return this._nav; }
   set nav(value: boolean) { this._nav = value; };
 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.setScrollBar(true);
+  }
+
   constructor(
     private el: ElementRef, private renderer: Renderer
   ) {
@@ -133,11 +138,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   ngOnChanges() {
-    if (this.scrollbarHidden) {
-      this.hideScrollbar();
-    } else {
-      this.showScrollbar();
-    }
+    this.setScrollBar();
 
     if (this.xDisabled || this.disabled) {
       this.disableScroll('x');
@@ -222,7 +223,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   private hideScrollbar(): void {
-    if (this.el.nativeElement.style.display !== 'none') {
+    if (this.el.nativeElement.style.display !== 'none' && !this.wrapper) {
       this.parentNode = this.el.nativeElement.parentNode;
       this.wrapper = document.createElement('div');
       this.wrapper.style.width = this.el.nativeElement.offsetWidth + 'px';
@@ -239,7 +240,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   private showScrollbar(): void {
     if (this.wrapper) {
-      this.el.nativeElement.style.width = this.wrapper.style.width;
+      this.el.nativeElement.style.width = '100%';
       this.el.nativeElement.style.height = this.wrapper.style.height;
       this.parentNode.removeChild(this.wrapper);
       this.parentNode.appendChild(this.el.nativeElement);
@@ -257,6 +258,17 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.el.nativeElement.style.width = '100%';
     } else {
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
+    }
+  }
+
+  private setScrollBar(reset?: boolean): void {
+    if (this.scrollbarHidden && reset) {
+      this.showScrollbar();
+      this.hideScrollbar();
+    } else if (this.scrollbarHidden) {
+      this.hideScrollbar();
+    } else {
+      this.showScrollbar();
     }
   }
 
@@ -297,6 +309,11 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
      */
     return widthNoScroll - widthWithScroll || 20;
   }
+
+
+  /*
+   * Nav button
+   */
 
   showNavButton() {
     this.navBtnDiv = document.createElement('div');

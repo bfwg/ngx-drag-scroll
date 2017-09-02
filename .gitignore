@@ -40,6 +40,7 @@ testem.log
 Thumbs.db
 
 *.map
+*.metadata.json
 *.d.ts
 index.js
 angular2-drag-scroll.js

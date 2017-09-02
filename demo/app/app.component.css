@@ -4,19 +4,3 @@
   font-family: Roboto,"Helvetica Neue";
 }
 
-.content {
-  margin: 50px 70px;
-}
-
-@media screen and (min-width: 600px) and (max-width: 1279px) {
-  .content {
-    margin: 20px 30px;
-  }
-}
-
-@media screen and (max-width: 599px) {
-  .content {
-    margin: 8px 12px;
-  }
-}
-
