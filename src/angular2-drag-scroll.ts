@@ -48,11 +48,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
    */
   downY = 0;
 
-  /**
-   * The bounding ClientRect on the element
-   */
-  rect: ClientRect;
-
   displayType = 'block';
 
   parentNode: HTMLElement;
@@ -161,7 +156,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.displayType = window.getComputedStyle(this.el.nativeElement).display;
     this.el.nativeElement.style.display = this.displayType;
 
-    this.rect = this.el.nativeElement.getBoundingClientRect();
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
@@ -245,8 +239,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.el.nativeElement.style.display !== 'none' && !this.wrapper) {
       this.parentNode = this.el.nativeElement.parentNode;
       this.wrapper = document.createElement('div');
-      this.wrapper.style.width = this.el.nativeElement.offsetWidth + 'px';
-      this.wrapper.style.height = this.el.nativeElement.offsetHeight + 'px';
+      this.wrapper.style.width = '100%';
+      this.wrapper.style.height = this.el.nativeElement.style.height || this.el.nativeElement.offsetHeight + 'px';
       this.wrapper.style.overflow = 'hidden';
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
       this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
@@ -277,7 +271,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       this.el.nativeElement.style.width = '100%';
     } else {
       let lastChild = this.el.nativeElement.children[this.el.nativeElement.children.length - 1];
-      lastChild.style['margin-right'] = this.scrollbarWidth;
+      lastChild.style['padding-right'] = this.scrollbarWidth;
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
     }
   }

@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   dragScrollRef: ElementRef;
   dragScroll: DragScroll;
 
-  @ViewChild('nav', {read: DragScroll}) ds:DragScroll;
+  @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
 
   constructor(
     mdIconRegistry: MdIconRegistry,
