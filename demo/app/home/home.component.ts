@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdIconRegistry } from '@angular/material';
 import { DragScroll } from '../../../src/angular2-drag-scroll';
@@ -28,10 +28,14 @@ export class HomeComponent implements OnInit {
     'yoda.png',
     'yolo.png'
   ];
+  leftNavDisabled = false;
+  rightNavDisabled = false;
 
   dragScrollDom: any;
   dragScrollRef: ElementRef;
   dragScroll: DragScroll;
+
+  @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
 
   constructor(
     mdIconRegistry: MdIconRegistry,
@@ -63,8 +67,8 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  dosomething() {
-    alert('abc');
+  clickItem(item) {
+    console.log('itmen clicked');
   }
 
   remove() {
@@ -84,4 +88,21 @@ export class HomeComponent implements OnInit {
   toggleYDisable() {
     this.yDisabled = !this.yDisabled;
   }
+
+  moveLeft() {
+    this.ds.moveLeft();
+  }
+
+  moveRight() {
+    this.ds.moveRight();
+  }
+
+  leftBoundStat(reachesLeftBound: boolean) {
+    this.leftNavDisabled = reachesLeftBound;
+  }
+
+  rightBoundStat(reachesRightBound: boolean) {
+    this.rightNavDisabled = reachesRightBound;
+  }
+
 }

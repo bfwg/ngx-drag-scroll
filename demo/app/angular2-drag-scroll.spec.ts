@@ -153,7 +153,7 @@ describe('Directive: DragScroll', () => {
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe('100%');
-      expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
+      expect(compiled.nativeElement.style.height).toBe('100%');
     });
   }));
 
@@ -184,7 +184,7 @@ describe('Directive: DragScroll', () => {
 
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe(`calc(100% + ${scrollbarWidth})`);
-      expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
+      expect(compiled.nativeElement.style.height).toBe('100%');
     });
   }));
 
@@ -203,54 +203,6 @@ describe('Directive: DragScroll', () => {
       expect(compiled.nativeElement.style.height).toBe('50px');
     });
   }));
-
-  it('should show navigation buttons', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-nav="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
-    }});
-
-    TestBed.compileComponents().then(() => {
-      const fixture = TestBed.createComponent(TestComponent);
-      const element = fixture.nativeElement;
-      fixture.detectChanges();
-
-      expect(element.querySelectorAll('button').length).toBe(2);
-    });
-  }));
-
-  it('should not show navigation buttons', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-nav="false">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
-    }});
-
-    TestBed.compileComponents().then(() => {
-      const fixture = TestBed.createComponent(TestComponent);
-      const element = fixture.nativeElement;
-      fixture.detectChanges();
-
-      expect(element.querySelectorAll('button').length).toBe(0);
-    });
-
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll>
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
-    }});
-
-    TestBed.compileComponents().then(() => {
-      const fixture = TestBed.createComponent(TestComponent);
-      const element = fixture.nativeElement;
-      fixture.detectChanges();
-
-      expect(element.querySelectorAll('button').length).toBe(0);
-    });
-  }));
-
-
 
 });
 

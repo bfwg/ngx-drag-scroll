@@ -10,35 +10,12 @@
 .demo-one img {
   height: 260px;
   width: 260px;
-  margin-right: 10px;
 }
 
-.demo-one-nav img {
-  width: auto;
-}
-
-.demo-border >>> button {
-  margin: 20px;
-  background-color: #4099FF;
-  border: solid 1px rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.15);
-  color: #fff;
-  display: inline-block;
-  font-size: 13px;
-  font-weight: bold;
-  padding: 5px 10px;
+.demo-button-group {
   text-align: center;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 
-.demo-border >>> button:focus {
-  outline: 0;
-}
-
-.demo-one img:last-of-type {
-  margin-right: 0;
-}
 
 .demo-two {
   height: 500px;

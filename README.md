@@ -58,6 +58,7 @@ class Sample {}
 ```
 That's it! Now you can scroll it by dragging.
 
+
 ## API REFERENCE
 
 | Name                   | Type    | Description                                                                   |Default|
@@ -66,9 +67,35 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
-| drag-scroll-nav        | @Input  | Whether show the navigation buttons.                                          | false |
+| drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
 
 ___
+
+## Add navigation button
+
+```typescript
+@Component({
+  selector: 'sample',
+  template:`
+  <div drag-scroll #nav>
+    Big text goes here...
+  </div>
+  <button (click)="moveLeft()">Left</button>
+  <button (click)="moveRight()">Right</button>
+  `
+})
+class Sample {
+  @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
+  
+  leftBoundStat(reachesLeftBound: boolean) {
+    this.leftNavDisabled = reachesLeftBound;
+  }
+
+  rightBoundStat(reachesRightBound: boolean) {
+    this.rightNavDisabled = reachesRightBound;
+  }
+}
+```
 
 ## Dynamically apply the plugin to a DOM element
 
@@ -89,7 +116,6 @@ ngAfterViewInit() {
     scrollbarHidden: true,
     yDisabled: true,
     xDisabled: false,
-    nav: false
   });
 }
 ```

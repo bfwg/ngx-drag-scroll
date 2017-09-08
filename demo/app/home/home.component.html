@@ -1,17 +1,20 @@
 <div class="content">
   <p class="title">DRAG AND SCROLL!</p>
   <div class="demo-border">
-    <div class="demo-one" drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" >
-      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" />
+    <div class="demo-one"
+      drag-scroll
+      drag-scroll-y-disabled="true"
+      scrollbar-hidden="true"
+      (leftBound)="leftBoundStat($event)"
+      (rightBound)="rightBoundStat($event)"
+      #nav
+      >
+      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
     </div>
   </div>
-  <p class="title">Navigation Buttons</p>
-  <div class="demo-border">
-    <div class="demo-one-nav demo-one" drag-scroll-nav="true" drag-scroll drag-scroll-y-disabled="true" scrollbar-hidden="true" >
-      <img src="assets/img/sw_art1.jpg" />
-      <img src="assets/img/sw_art2.jpg" />
-      <img src="assets/img/sw_art3.jpg" />
-    </div>
+  <div class="demo-button-group">
+    <button md-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
+    <button md-raised-button color="primary" [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
   </div>
   <p class="title">PLAY WITH IT!</p>
   <div class="toggle-box">
@@ -80,10 +83,10 @@
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
             <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> drag-scroll-nav </p>
+            <p class="docs-api-property-name"> drag-disabled </p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether show navigation buttons. </td>
+          <td class="docs-api-property-description"> Disable drag event. </td>
           <td class="docs-api-property-description">false</td>
         </tr>
       </tbody>
