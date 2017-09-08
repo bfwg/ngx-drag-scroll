@@ -87,12 +87,12 @@ ___
 class Sample {
   @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
   
-  leftBoundStat(reachesLeftBound: boolean) {
-    this.leftNavDisabled = reachesLeftBound;
+  moveLeft() {
+    this.ds.moveLeft();
   }
 
-  rightBoundStat(reachesRightBound: boolean) {
-    this.rightNavDisabled = reachesRightBound;
+  moveRight() {
+    this.ds.moveRight();
   }
 }
 ```
