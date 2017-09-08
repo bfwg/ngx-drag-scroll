@@ -38,7 +38,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
    */
   isScrolling = false;
 
-  scrollTimer;
+  scrollTimer: number;
 
   /**
    * The x coordinates on the element
@@ -205,7 +205,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.downY = e.clientY;
   }
 
-  onScroll(e) {
+  onScroll() {
     const ele = this.el.nativeElement;
     if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
       this.scrollReachesRightEnd = true;
@@ -216,7 +216,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (!this.isPressed && !this.isAnimating) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
-      this.scrollTimer = setTimeout(() => {
+      this.scrollTimer = window.setTimeout(() => {
         this.isScrolling = false;
         this.snapToCurrentIndex();
       }, 500);
@@ -362,7 +362,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   * The below solution is heavily inspired from
   * https://gist.github.com/andjosh/6764939
   */
-  private scrollTo(element, to, duration, animationFinished?) {
+  private scrollTo(element: Element, to: number, duration: number, animationFinished?: Function) {
     //t = current time
     //b = start value
     //c = change in value
@@ -393,7 +393,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
         }
       };
 
-      let easeInOutQuad = function (t, b, c, d) {
+      let easeInOutQuad = function (t: number, b: number, c: number, d: number) {
         t /= d / 2;
         if (t < 1) return c / 2 * t * t + b;
         t--;
