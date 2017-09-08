@@ -26,6 +26,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   private _xDisabled: boolean;
 
   private _yDisabled: boolean;
+
+  private _dragDisabled: boolean;
   /**
    * Is the user currently pressing the element
    */
@@ -111,6 +113,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
   @Output('rightBound') reachesRightBound = new EventEmitter<boolean>();
 
+  @Input('drag-disabled')
+  get dragDisabled() { return this._dragDisabled; }
+  set dragDisabled(value: boolean) { this._dragDisabled = value; };
+
 
   constructor(
     private el: ElementRef, private renderer: Renderer
@@ -176,14 +182,14 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.isPressed && !this.disabled) {
       e.preventDefault();
       // Drag X
-      if (!this.xDisabled) {
+      if (!this.xDisabled && !this.dragDisabled) {
         this.el.nativeElement.scrollLeft =
           this.el.nativeElement.scrollLeft - e.clientX + this.downX;
         this.downX = e.clientX;
       }
 
       // Drag Y
-      if (!this.yDisabled) {
+      if (!this.yDisabled && !this.dragDisabled) {
         this.el.nativeElement.scrollTop =
           this.el.nativeElement.scrollTop - e.clientY + this.downY;
         this.downY = e.clientY;
