@@ -153,7 +153,7 @@ describe('Directive: DragScroll', () => {
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe('100%');
-      expect(compiled.nativeElement.style.height).toBe('100%');
+      expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
     });
   }));
 
@@ -184,7 +184,7 @@ describe('Directive: DragScroll', () => {
 
       const compiled = fixture.debugElement.query(By.directive(DragScroll));
       expect(compiled.nativeElement.style.width).toBe(`calc(100% + ${scrollbarWidth})`);
-      expect(compiled.nativeElement.style.height).toBe('100%');
+      expect(compiled.nativeElement.style.height).toBe(`calc(100% + ${scrollbarWidth})`);
     });
   }));
 

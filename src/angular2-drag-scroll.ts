@@ -255,10 +255,11 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   private hideScrollbar(): void {
     if (this.el.nativeElement.style.display !== 'none' && !this.wrapper) {
       this.parentNode = this.el.nativeElement.parentNode;
-      this.wrapper = document.createElement('div');
-      this.wrapper.style.width = '100%';
-      this.wrapper.style.height = this.el.nativeElement.style.height || this.el.nativeElement.offsetHeight + 'px';
+
+      // clone a rapper copy of element
+      this.wrapper = this.el.nativeElement.cloneNode(true);
       this.wrapper.style.overflow = 'hidden';
+
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
       this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
       // set the wrapper as child (instead of the element)
