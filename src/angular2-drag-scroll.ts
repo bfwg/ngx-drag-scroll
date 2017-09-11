@@ -55,6 +55,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   displayType = 'block';
 
+  elWidth: string;
+
+  elHeight: string;
+
   parentNode: HTMLElement;
 
   wrapper: HTMLDivElement;
@@ -109,7 +113,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.setScrollBar(true);
+    this.markElDimension();
     this.resetScrollLocation();
   }
 
@@ -166,6 +170,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     // auto assign computed css
     this.displayType = window.getComputedStyle(this.el.nativeElement).display;
     this.el.nativeElement.style.display = this.displayType;
+
+    // store ele width height for later user
+    this.markElDimension();
 
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
@@ -256,8 +263,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.el.nativeElement.style.display !== 'none' && !this.wrapper) {
       this.parentNode = this.el.nativeElement.parentNode;
 
-      // clone a rapper copy of element
+      // clone
       this.wrapper = this.el.nativeElement.cloneNode(true);
+      // remove all children
+      while (this.wrapper.hasChildNodes()) {
+          this.wrapper.removeChild(this.wrapper.lastChild);
+      }
       this.wrapper.style.overflow = 'hidden';
 
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
@@ -271,8 +282,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   private showScrollbar(): void {
     if (this.wrapper) {
-      this.el.nativeElement.style.width = '100%';
-      this.el.nativeElement.style.height = this.wrapper.style.height;
+      this.el.nativeElement.style.width = this.elWidth;
+      this.el.nativeElement.style.height = this.elHeight;
       this.parentNode.removeChild(this.wrapper);
       this.parentNode.appendChild(this.el.nativeElement);
       this.wrapper = null;
@@ -288,17 +299,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     if (this.el.nativeElement.scrollHeight <= this.el.nativeElement.clientHeight) {
       this.el.nativeElement.style.width = '100%';
     } else {
-      let lastChild = this.el.nativeElement.children[this.el.nativeElement.children.length - 1];
-      lastChild.style['padding-right'] = this.scrollbarWidth;
       this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
     }
   }
 
-  private setScrollBar(reset?: boolean): void {
-    if (this.scrollbarHidden && reset) {
-      this.showScrollbar();
-      this.hideScrollbar();
-    } else if (this.scrollbarHidden) {
+  private setScrollBar(): void {
+    if (this.scrollbarHidden) {
       this.hideScrollbar();
     } else {
       this.showScrollbar();
@@ -361,7 +367,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   moveRight() {
     const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
-    if (!this.scrollReachesRightEnd && childrenArr[this.currIndex]) {
+    if (!this.scrollReachesRightEnd && childrenArr[this.currIndex + 1]) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(ele, this.toChildrenLocation(), 500);
@@ -475,6 +481,16 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     const ele = this.el.nativeElement;
     this.scrollTo(ele, 0, 0);
     this.currIndex = 0;
+  }
+
+  private markElDimension() {
+    if (this.wrapper) {
+      this.elWidth = this.wrapper.style.width;
+      this.elHeight = this.wrapper.style.height;
+    } else {
+      this.elWidth = this.el.nativeElement.style.width;
+      this.elHeight = this.el.nativeElement.style.height;
+    }
   }
 }
 
