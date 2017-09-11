@@ -83,7 +83,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   prevChildrenLength = 0;
 
-  childrenArr = [];
+  childrenArr: Array<Element> = [];
 
 
 
