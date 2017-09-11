@@ -239,7 +239,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
-      console.log('drag snap');
       this.snapToCurrentIndex();
     }
     return false;
