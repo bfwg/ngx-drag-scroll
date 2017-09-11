@@ -81,6 +81,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   scrollReachesRightEnd = false;
 
+  prevChildrenLength = 0;
+
+  childrenArr = [];
+
 
 
   /**
@@ -177,15 +181,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
-  ngAfterViewInit() {
-    this.setNavStatus();
-    this.cdr.detectChanges();
-  }
-
   ngAfterViewChecked() {
+    this.childrenArr = this.el.nativeElement.children || [];
     // avoid extra ckecks
-    if (this.wrapper) {
-      this.checkScrollbar();
+    if (this.childrenArr.length !== this.prevChildrenLength) {
+      if (this.wrapper) {
+        this.checkScrollbar();
+      }
+      this.prevChildrenLength = this.childrenArr.length;
+      this.setNavStatus();
     }
   }
 
@@ -354,7 +358,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
    * Nav button
    */
   moveLeft() {
-    const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
     if (this.currIndex !== 0) {
       // reach left most
@@ -365,9 +368,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   moveRight() {
-    const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
-    if (!this.scrollReachesRightEnd && childrenArr[this.currIndex + 1]) {
+    if (!this.scrollReachesRightEnd && this.childrenArr[this.currIndex + 1]) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(ele, this.toChildrenLocation(), 500);
@@ -413,19 +415,18 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   }
 
   private snapToCurrentIndex() {
-    const childrenArr = this.el.nativeElement.children;
     let childrenWidth = 0;
     const ele = this.el.nativeElement;
-    for (let i = 0; i < childrenArr.length; i++) {
-      if (i === childrenArr.length - 1) {
-        this.currIndex = childrenArr.length;
+    for (let i = 0; i < this.childrenArr.length; i++) {
+      if (i === this.childrenArr.length - 1) {
+        this.currIndex = this.childrenArr.length;
         break;
       }
 
-      const nextChildrenWidth = childrenWidth + childrenArr[i + 1].clientWidth;
+      const nextChildrenWidth = childrenWidth + this.childrenArr[i + 1].clientWidth;
 
-      const currentClildWidth = childrenArr[i].clientWidth;
-      const nextClildWidth = childrenArr[i + 1].clientWidth;
+      const currentClildWidth = this.childrenArr[i].clientWidth;
+      const nextClildWidth = this.childrenArr[i + 1].clientWidth;
 
       if (ele.scrollLeft >= childrenWidth &&
           ele.scrollLeft <= nextChildrenWidth) {
@@ -442,23 +443,21 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
         break;
 
       }
-      childrenWidth += childrenArr[i].clientWidth;
+      childrenWidth += this.childrenArr[i].clientWidth;
     }
   }
 
   private toChildrenLocation(): number {
     let to = 0;
-    const childrenArr = this.el.nativeElement.children;
     for (let i = 0; i < this.currIndex; i++) {
-      to += childrenArr[this.currIndex].clientWidth;
+      to += this.childrenArr[this.currIndex].clientWidth;
     }
     return to;
   }
 
   private setNavStatus() {
-    const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
-    if (childrenArr.length <= 1) {
+    if (this.childrenArr.length <= 1 || this.el.nativeElement.scrollWidth <= this.el.nativeElement.clientWidth) {
       // only one element
       this.reachesLeftBound.emit(true);
       this.reachesRightBound.emit(true);
@@ -466,15 +465,17 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       // reached right end
       this.reachesLeftBound.emit(false);
       this.reachesRightBound.emit(true);
-    } else if (ele.scrollLeft === 0) {
+    } else if (ele.scrollLeft === 0 &&
+               this.el.nativeElement.scrollWidth > this.el.nativeElement.clientWidth) {
       // reached left end
-      this.reachesRightBound.emit(false);
       this.reachesLeftBound.emit(true);
+      this.reachesRightBound.emit(false);
     } else {
       // in the middle
       this.reachesLeftBound.emit(false);
       this.reachesRightBound.emit(false);
     }
+    this.cdr.detectChanges();
   }
 
   private resetScrollLocation() {
