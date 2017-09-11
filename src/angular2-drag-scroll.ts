@@ -10,6 +10,7 @@ import {
   OnChanges,
   AfterViewChecked,
   EventEmitter,
+  ChangeDetectorRef,
   HostListener
 } from '@angular/core';
 import { DragScrollOption } from './interface/drag-scroll-option';
@@ -39,6 +40,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   isScrolling = false;
 
   scrollTimer: number;
+
+  scrollToTimer: number;
 
   /**
    * The x coordinates on the element
@@ -119,7 +122,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
 
   constructor(
-    private el: ElementRef, private renderer: Renderer
+    private el: ElementRef,
+    private renderer: Renderer,
+    private cdr:ChangeDetectorRef
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
@@ -165,12 +170,18 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
+  ngAfterViewInit() {
+    this.setNavStatus();
+    this.cdr.detectChanges();
+  }
+
   ngAfterViewChecked() {
     // avoid extra ckecks
     if (this.wrapper) {
       this.checkScrollbar();
     }
   }
+
 
   ngOnDestroy() {
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
@@ -203,6 +214,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.isPressed = true;
     this.downX = e.clientX;
     this.downY = e.clientY;
+    clearTimeout(this.scrollToTimer);
   }
 
   onScroll() {
@@ -212,7 +224,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     } else {
       this.scrollReachesRightEnd = false;
     }
-    // if (!this.isPressed && !this.isAnimating) {
+    this.setNavStatus();
     if (!this.isPressed && !this.isAnimating) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
@@ -221,13 +233,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
         this.snapToCurrentIndex();
       }, 500);
     }
-    // }
   }
 
   onMouseUp(e: MouseEvent) {
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
+      console.log('drag snap');
       this.snapToCurrentIndex();
     }
     return false;
@@ -340,21 +352,19 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     const ele = this.el.nativeElement;
     if (this.currIndex !== 0) {
       // reach left most
-      const scrollTo = ele.scrollLeft - childrenArr[this.currIndex - 1].clientWidth;
-      this.scrollTo(ele, scrollTo, 500, () => {
-        this.currIndex--;
-      });
+      this.currIndex--;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(ele, this.toChildrenLocation(), 500);
     }
   }
 
   moveRight() {
     const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
-    if (!this.scrollReachesRightEnd) {
-      const scrollTo = ele.scrollLeft + childrenArr[this.currIndex].clientWidth;
-      this.scrollTo(ele, scrollTo, 500, () => {
-        this.currIndex++;
-      });
+    if (!this.scrollReachesRightEnd && childrenArr[this.currIndex]) {
+      this.currIndex++;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(ele, this.toChildrenLocation(), 500);
     }
   }
 
@@ -362,45 +372,38 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   * The below solution is heavily inspired from
   * https://gist.github.com/andjosh/6764939
   */
-  private scrollTo(element: Element, to: number, duration: number, animationFinished?: Function) {
+  private scrollTo(element: Element, to: number, duration: number) {
+    let self = this;
+    self.isAnimating = true;
+    let start = element.scrollLeft,
+      change = to - start,
+      currentTime = 0,
+      increment = 20;
+
+    let animateScroll = function() {
+      currentTime += increment;
+      let val = easeInOutQuad(currentTime, start, change, duration);
+      element.scrollLeft = val;
+      if (currentTime < duration) {
+          self.scrollToTimer = window.setTimeout(animateScroll, increment);
+      } else {
+        // run one more frame to make sure the animation is fully finished
+        setTimeout(() => {
+          self.isAnimating = false;
+        }, increment);
+      }
+    };
     //t = current time
     //b = start value
     //c = change in value
     //d = duration
-    let self = this;
-    if (!self.isAnimating) {
-      self.isAnimating = true;
-      let start = element.scrollLeft,
-        change = to - start,
-        currentTime = 0,
-        increment = 20;
-
-      let animateScroll = function() {
-        currentTime += increment;
-        let val = easeInOutQuad(currentTime, start, change, duration);
-        element.scrollLeft = val;
-        if(currentTime < duration) {
-            setTimeout(animateScroll, increment);
-        } else {
-          // run one more frame to make sure the animation is fully finished
-          setTimeout(() => {
-            self.isAnimating = false;
-            if (animationFinished) {
-              animationFinished();
-            }
-            self.setNavStatus();
-          }, increment);
-        }
-      };
-
-      let easeInOutQuad = function (t: number, b: number, c: number, d: number) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-      };
-      animateScroll();
-    }
+    let easeInOutQuad = function (t: number, b: number, c: number, d: number) {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t + b;
+      t--;
+      return -c / 2 * (t * (t - 2) - 1) + b;
+    };
+    animateScroll();
   }
 
   private snapToCurrentIndex() {
@@ -421,7 +424,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       if (ele.scrollLeft >= childrenWidth &&
           ele.scrollLeft <= nextChildrenWidth) {
 
-        if (nextChildrenWidth - ele.scrollLeft > currentClildWidth / 2) {
+        if (nextChildrenWidth - ele.scrollLeft > currentClildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
           this.currIndex = i;
           this.scrollTo(ele, childrenWidth, 500);
@@ -437,6 +440,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     }
   }
 
+  private toChildrenLocation(): number {
+    let to = 0;
+    const childrenArr = this.el.nativeElement.children;
+    for (let i = 0; i < this.currIndex; i++) {
+      to += childrenArr[this.currIndex].clientWidth;
+    }
+    return to;
+  }
+
   private setNavStatus() {
     const childrenArr = this.el.nativeElement.children;
     const ele = this.el.nativeElement;
@@ -448,7 +460,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       // reached right end
       this.reachesLeftBound.emit(false);
       this.reachesRightBound.emit(true);
-    } else if (this.currIndex === 0) {
+    } else if (ele.scrollLeft === 0) {
       // reached left end
       this.reachesRightBound.emit(false);
       this.reachesLeftBound.emit(true);
