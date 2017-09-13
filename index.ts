@@ -1,1 +1,2 @@
-export * from './src/angular2-drag-scroll';
+export { DragScrollModule, DragScroll, DragScrollSnap } from './src/index';
+

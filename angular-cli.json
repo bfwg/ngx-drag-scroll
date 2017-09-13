@@ -1,12 +1,12 @@
 {
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0-beta.28.3",
     "name": "angular2-drag-scroll"
   },
   "apps": [
     {
       "root": "demo",
-      "outDir": "dist",
+      "outDir": "dist/browser",
       "assets": [
         "assets",
         "favicon.ico"
@@ -15,9 +15,38 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.json",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "serviceWorker": false,
+      "styles": [
+        "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "root": "demo",
+      "outDir": "dist/server",
+      "assets": [
+        "assets",
+        "favicon.ico",
+        "express.server.js"
+      ],
+      "platform": "server",
+      "index": "index.html",
+      "main": "main.server.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.server.json",
+      "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
         "styles.css"
       ],
       "scripts": [],
@@ -28,10 +57,23 @@
       }
     }
   ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
   "lint": [
     {
-      "files": "src/**/*.ts",
-      "project": "demo/tsconfig.json"
+      "project": "demo/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "demo/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
     }
   ],
   "test": {

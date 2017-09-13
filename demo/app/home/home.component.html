@@ -7,9 +7,8 @@
       scrollbar-hidden="true"
       (leftBound)="leftBoundStat($event)"
       (rightBound)="rightBoundStat($event)"
-      #nav
-      >
-      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+      #nav>
+      <img *ngFor="let image of imagelist" drag-scroll-snap [src]="'assets/img/' + image" (click)="clickItem(image)"/>
     </div>
   </div>
   <div class="demo-button-group">
@@ -30,8 +29,7 @@
         drag-scroll [scrollbar-hidden]="hideScrollbar"
         [drag-scroll-disabled]="disabled"
         [drag-scroll-x-disabled]="xDisabled"
-        [drag-scroll-y-disabled]="yDisabled"
-      >
+        [drag-scroll-y-disabled]="yDisabled">
       <img src='assets/img/star-wars-big.jpg' />
     </div>
   </div>

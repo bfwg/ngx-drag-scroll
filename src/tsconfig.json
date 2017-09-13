@@ -18,7 +18,9 @@
     "node_modules"
   ],
   "files": [
-    "./angular2-drag-scroll.ts",
+    "./drag-scroll.ts",
+    "./drag-scroll-snap.ts",
+    "./index.ts",
     "../index.ts"
   ],
   "angularCompilerOptions": {

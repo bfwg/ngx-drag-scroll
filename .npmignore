@@ -6,6 +6,7 @@ npm-debug.log
 Thumbs.db
 .DS_Store
 
+/.idea
 protractor.conf.js
 gulpfile
 karma.conf.js
