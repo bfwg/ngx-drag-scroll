@@ -41,13 +41,15 @@ describe('Directive: DragScroll', () => {
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      const compiled = fixture.debugElement.query(By.directive(DragScroll));
+      // const compiled = fixture.debugElement.query(By.directive(DragScroll));
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
+      // expect(compiled.nativeElement.scrollLeft).toBe(100);
       expect(compiled.nativeElement.scrollLeft).toBe(100);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));

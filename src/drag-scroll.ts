@@ -212,7 +212,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     }
 
     if (this.snaps.length) {
-      console.log('this.snaps', this.snaps)
+      // console.log('this.snaps', this.snaps)
     }
 
   }
@@ -236,7 +236,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
 
   onMouseMove(e: MouseEvent) {
     if (this.isPressed && !this.disabled && e.which !== 2) {
-      // console.log('e', e);
       e.preventDefault();
       // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
@@ -327,10 +326,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   private showScrollbar(): void {
     if (this.wrapper) {
 
-      console.log('showScrollbar');
       this._renderer.setStyle(this._contentRef.nativeElement, 'width', '100%');
       this._renderer.setStyle(this._contentRef.nativeElement, 'height', this.wrapper.style.height);
-      console.log(this.wrapper.style.height);
 
       // Append content element to component element.
       this._renderer.appendChild(this._elementRef.nativeElement, this._contentRef.nativeElement);
