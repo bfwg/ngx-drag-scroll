@@ -4,7 +4,7 @@ import {
   Renderer,
   ElementRef
 } from '@angular/core';
-import { DragScroll } from '../../src/index';
+import { DragScroll, DragScrollSnap } from '../../src/index';
 
 import {
   By
@@ -16,6 +16,7 @@ import {
   TestBed
 } from '@angular/core/testing';
 
+
 @Component({
   selector: 'app-test-component',
   template: ''
@@ -23,11 +24,11 @@ import {
 export class TestComponent {
 }
 
-describe('Directive: DragScroll', () => {
+describe('Component: DragScroll', () => {
   const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, DragScroll]
+      declarations: [TestComponent, DragScroll, DragScrollSnap]
     });
   });
 

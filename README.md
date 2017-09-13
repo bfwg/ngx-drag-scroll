@@ -101,6 +101,12 @@ class Sample {
 
 This was brought by @tommykamkcm. The below code block demonstrates how to attach the directive dynamically on a DOM i.e. deep rendered element.
 ```javascript
+
+constructor(
+  private cdr: ChangeDetectorRef,
+  private element: ElementRef,
+  private renderer: Renderer
+) {}
 dragScrollDom: any;
 dragScrollRef: ElementRef;
 dragScroll: DragScroll;
@@ -110,7 +116,7 @@ ngAfterViewInit() {
   this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
   this.dragScrollRef = new ElementRef(this.dragScrollDom );
 
-  this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer);
+  this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer, this.cdr);
   this.dragScroll.attach({
     disabled: false,
     scrollbarHidden: true,
