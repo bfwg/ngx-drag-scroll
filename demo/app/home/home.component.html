@@ -8,7 +8,7 @@
       (leftBound)="leftBoundStat($event)"
       (rightBound)="rightBoundStat($event)"
       #nav>
-      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+      <img *ngFor="let image of imagelist" drag-scroll-snap [src]="'assets/img/' + image" (click)="clickItem(image)"/>
     </div>
   </div>
   <div class="demo-button-group">
