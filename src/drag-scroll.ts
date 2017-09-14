@@ -210,11 +210,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     if (this.wrapper) {
       this.checkScrollbar();
     }
-
-    if (this.snaps.length) {
-      // console.log('this.snaps', this.snaps)
-    }
-
+    this.setNavStatus();
   }
 
   ngAfterViewChecked() {
@@ -264,8 +260,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
 
   onScroll() {
     // const ele = this._elementRef.nativeElement;
-    const ele = this._contentRef.nativeElement;
-    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
+    const contentElement = this._contentRef.nativeElement;
+    if ((contentElement.scrollLeft + contentElement.offsetWidth) >= contentElement.scrollWidth) {
       this.scrollReachesRightEnd = true;
     } else {
       this.scrollReachesRightEnd = false;
@@ -420,21 +416,29 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   moveLeft() {
     const childrenArray = this.snaps['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (this.currIndex !== 0) {
+    if (this.currIndex !== 0 && this.snaps.length !== 0) {
       // reach left most
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+    } else if (this.snaps.length === 0) {
+      this.currIndex--;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(contentElement, this._contentRef.nativeElement.scrollLeft - 200, 500);
     }
   }
 
   moveRight() {
     const childrenArray = this.snaps['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (!this.scrollReachesRightEnd && childrenArray[this.currIndex + 1]) {
+    if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+    } else if (this.snaps.length === 0) {
+      this.currIndex++;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(contentElement, this._contentRef.nativeElement.scrollLeft + 200, 500);
     }
   }
 
@@ -521,10 +525,17 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     return to;
   }
 
+  /**
+   * TODO: Optimization
+   * - Stop setNavStatus() getting called every time scrollTo is called, only once scroll transition has finished.
+   */
   private setNavStatus() {
+
+    console.log('debug setNavStatus() method call needs Optimization');
+
     const contentElement = this._contentRef.nativeElement;
     const childrenArray = this.snaps['_results'];
-    if (childrenArray.length <= 1 || contentElement.scrollWidth <= contentElement.clientWidth) {
+    if (childrenArray.length <= 1 && this.snaps.length !== 0 || contentElement.scrollWidth <= contentElement.clientWidth) {
       // only one element
       this.reachesLeftBound.emit(true);
       this.reachesRightBound.emit(true);
