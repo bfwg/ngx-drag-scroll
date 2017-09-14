@@ -28,7 +28,7 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
   templateUrl: './drag-scroll.html',
   styles: [`
     .drag-scroll-content {
-      overflow: auto;
+      overflow: hidden;
       white-space: nowrap;
     }
   `]
@@ -194,7 +194,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
     }
     this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
-    this._renderer.setStyle(this._contentRef.nativeElement, 'overflow', 'auto');
+    // this._renderer.setStyle(this._contentRef.nativeElement, 'overflow', 'auto');
     this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
 
     // store ele width height for later user
