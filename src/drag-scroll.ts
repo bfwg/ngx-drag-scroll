@@ -95,6 +95,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
 
   isAnimating = false;
 
+  scrollReachesLeftEnd = true;
+
   scrollReachesRightEnd = false;
 
   prevChildrenLength = 0;
@@ -263,10 +265,21 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     const contentElement = this._contentRef.nativeElement;
     if ((contentElement.scrollLeft + contentElement.offsetWidth) >= contentElement.scrollWidth) {
       this.scrollReachesRightEnd = true;
-    } else {
+      this.setNavStatus();
+    } else if (this.scrollReachesRightEnd) {
       this.scrollReachesRightEnd = false;
+      this.setNavStatus();
     }
-    this.setNavStatus();
+
+    if (contentElement.scrollLeft === 0 &&
+      contentElement.scrollWidth > contentElement.clientWidth) {
+      this.scrollReachesLeftEnd = true;
+      this.setNavStatus();
+    } else if (this.scrollReachesLeftEnd) {
+      this.scrollReachesLeftEnd = false;
+      this.setNavStatus();
+    }
+
     if (!this.isPressed && !this.isAnimating) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
@@ -535,7 +548,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
 
     const contentElement = this._contentRef.nativeElement;
     const childrenArray = this.snaps['_results'];
-    if (childrenArray.length <= 1 && this.snaps.length !== 0 || contentElement.scrollWidth <= contentElement.clientWidth) {
+    if (contentElement.scrollLeft === 0 &&
+      contentElement.scrollWidth < contentElement.clientWidth) {
       // only one element
       this.reachesLeftBound.emit(true);
       this.reachesRightBound.emit(true);
@@ -543,8 +557,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       // reached right end
       this.reachesLeftBound.emit(false);
       this.reachesRightBound.emit(true);
-    } else if (contentElement.scrollLeft === 0 &&
-      contentElement.scrollWidth > contentElement.clientWidth) {
+    } else if (this.scrollReachesLeftEnd) {
       // reached left end
       this.reachesLeftBound.emit(true);
       this.reachesRightBound.emit(false);
