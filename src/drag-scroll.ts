@@ -18,9 +18,11 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+
 import { DragScrollOption } from './interface/drag-scroll-option';
 import { DragScrollSnap } from './drag-scroll-snap';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { DeviceService } from './device-info/device.service';
 
 
 @Component({
@@ -34,6 +36,8 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
   `]
 })
 export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+
+  private _deviceInfo: any;
 
   private _scrollbarHidden: boolean;
 
@@ -109,7 +113,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   @ContentChildren(DragScrollSnap) snaps: QueryList<DragScrollSnap>;
 
 
-
   @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
   @Output('rightBound') reachesRightBound = new EventEmitter<boolean>();
 
@@ -155,8 +158,27 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _deviceService: DeviceService,
     @Inject(PLATFORM_ID) private _platformId: Object) {
-    this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
+
+    this._deviceInfo = _deviceService.getDeviceInfo();
+    console.log(this._deviceInfo);
+    const scrollbarWidth = {
+      osx: {
+        'chrome': '15px',
+        'safari': '15px',
+        'firefox': '15px',
+      },
+      windows: {
+        'chrome': '17px',
+        'firefox': '17px',
+        'ie': '17px',
+        'ms-edge': '12px',
+      }
+    };
+    console.log( 'scrollbarWidth', scrollbarWidth[this._deviceInfo.os][this._deviceInfo.browser] );
+    this.scrollbarWidth = scrollbarWidth[this._deviceInfo.os][this._deviceInfo.browser] || `${this.getScrollbarWidth()}px`;
+    console.log('this.scrollbarWidth', this.scrollbarWidth);
   }
 
   public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
@@ -189,7 +211,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   }
 
   ngAfterViewInit(): void {
-    // this._renderer.setAttribute(this._elementRef.nativeElement, 'drag-scroll', 'true');
+    this._renderer.setAttribute(this._elementRef.nativeElement, 'drag-scroll', 'true');
 
     if (isPlatformBrowser(this._platformId)) {
       // auto assign computed css
@@ -209,10 +231,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     this.scrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler);
     this.mouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler);
     this.mouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler);
+
     if (this.wrapper) {
       this.checkScrollbar();
     }
-    this.setNavStatus();
+
+    // fix: Expression has changed after it was checked. Previous value: 'false'. Current value: 'true'.
+    setTimeout(() => {
+      this.setNavStatus();
+    }, 100);
   }
 
   ngAfterViewChecked() {
@@ -294,7 +321,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
-      this.snapToCurrentIndex();
+      if (this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled) {
+        this.snapToCurrentIndex();
+      }
     }
     return false;
   }
@@ -311,14 +340,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    * TODO: JOE
    */
   private hideScrollbar(): void {
-    if (isPlatformBrowser(this._platformId) && this._elementRef.nativeElement.style.display !== 'none' && !this.wrapper) {
+    if (isPlatformServer(this._platformId) || this._elementRef.nativeElement.style.display !== 'none' && !this.wrapper) {
 
       // create container element
       this.wrapper = this._renderer.createElement('div');
       this._renderer.addClass(this.wrapper, 'drag-scroll-container');
 
       this._renderer.setStyle(this.wrapper, 'width', '100%');
-      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height || this._elementRef.nativeElement.offsetHeight + 'px');
+      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
+        || this._elementRef.nativeElement.offsetHeight + 'px');
       this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
       this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
@@ -379,7 +409,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     }
 
 
-
     /**
      * Browser Scrollbar Widths (2016)
      * OSX (Chrome, Safari, Firefox) - 15px
@@ -429,11 +458,16 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   moveLeft() {
     const childrenArray = this.snaps['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (this.currIndex !== 0 && this.snaps.length !== 0) {
+    if (this.currIndex !== 0 && this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled === true) {
       // reach left most
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+    } else if (this.currIndex !== 0 && this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled === false) {
+      this.currIndex--;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+      console.log('snaps="false"');
     } else if (this.snaps.length === 0) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
@@ -444,7 +478,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   moveRight() {
     const childrenArray = this.snaps['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]) {
+    if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]
+      && this.snaps['_results'][this.currIndex].enabled === true) {
+      this.currIndex++;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+    } else if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]
+      && this.snaps['_results'][this.currIndex].enabled === false) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
@@ -543,11 +583,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    * - Stop setNavStatus() getting called every time scrollTo is called, only once scroll transition has finished.
    */
   private setNavStatus() {
-
-    console.log('debug setNavStatus() method call needs Optimization');
-
     const contentElement = this._contentRef.nativeElement;
-    const childrenArray = this.snaps['_results'];
     if (contentElement.scrollLeft === 0 &&
       contentElement.scrollWidth < contentElement.clientWidth) {
       // only one element
@@ -585,4 +621,5 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       }
     }
   }
+
 }

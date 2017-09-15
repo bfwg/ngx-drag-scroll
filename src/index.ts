@@ -2,10 +2,20 @@ import { NgModule } from '@angular/core';
 
 import { DragScroll } from './drag-scroll';
 import { DragScrollSnap } from './drag-scroll-snap';
+import { DeviceDetectorModule } from './device-info/index';
 
 @NgModule({
-  exports: [DragScroll, DragScrollSnap],
-  declarations: [DragScroll, DragScrollSnap]
+  imports: [
+    DeviceDetectorModule
+  ],
+  exports: [
+    DragScroll,
+    DragScrollSnap
+  ],
+  declarations: [
+    DragScroll,
+    DragScrollSnap
+  ]
 })
 export class DragScrollModule { }
 

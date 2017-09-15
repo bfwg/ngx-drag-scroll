@@ -18,10 +18,10 @@
     "node_modules"
   ],
   "files": [
-    "./drag-scroll.ts",
-    "./drag-scroll-snap.ts",
+    "../index.ts",
     "./index.ts",
-    "../index.ts"
+    "./drag-scroll.ts",
+    "./drag-scroll-snap.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

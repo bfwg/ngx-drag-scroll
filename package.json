@@ -60,6 +60,7 @@
     "@angular/router": "4.3.6",
     "@nguniversal/express-engine": "^1.0.0-beta.3",
     "@types/core-js": "^0.9.43",
+    "@types/express": "^4.0.37",
     "@types/jasmine": "2.5.53",
     "@types/node": "6.0.88",
     "codelyzer": "3.1.1",
