@@ -174,6 +174,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
         'firefox': '17px',
         'ie': '17px',
         'ms-edge': '12px',
+      },
+      linux: {
+        'chrome': '17px',
+        'firefox': '17px',
       }
     };
     console.log( 'scrollbarWidth', scrollbarWidth[this._deviceInfo.os][this._deviceInfo.browser] );
