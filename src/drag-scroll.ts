@@ -347,8 +347,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this._renderer.addClass(this.wrapper, 'drag-scroll-container');
 
       this._renderer.setStyle(this.wrapper, 'width', '100%');
-      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
-        || this._elementRef.nativeElement.offsetHeight + 'px');
+      if (isPlatformBrowser(this._platformId)) {
+        this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
+          || this._elementRef.nativeElement.offsetHeight + 'px');
+      }
       this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
       this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);

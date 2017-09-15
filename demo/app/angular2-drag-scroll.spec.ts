@@ -15,6 +15,7 @@ import {
   async,
   TestBed
 } from '@angular/core/testing';
+import { DeviceDetectorModule } from '../../src/device-info/index';
 
 
 function getScrollbarWidth(): number {
@@ -68,6 +69,7 @@ describe('Component: DragScroll', () => {
   const scrollbarWidth = getScrollbarWidth() + 'px';
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [DeviceDetectorModule],
       declarations: [TestComponent, DragScroll, DragScrollSnap]
     });
   });
