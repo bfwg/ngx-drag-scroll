@@ -164,7 +164,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     this._deviceInfo = _deviceService.getDeviceInfo();
     console.log(this._deviceInfo);
     const scrollbarWidth = {
-      osx: {
+      mac: {
         'chrome': '15px',
         'safari': '15px',
         'firefox': '15px',
