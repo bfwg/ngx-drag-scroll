@@ -21,7 +21,7 @@ import {
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 
 import { DragScrollOption } from './interface/drag-scroll-option';
-import { DragScrollSnap } from './drag-scroll-snap';
+import { DragScrollSnap } from './drag-scroll-item';
 import { DeviceService } from './device-info/device.service';
 
 

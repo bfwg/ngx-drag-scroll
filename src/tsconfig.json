@@ -21,7 +21,7 @@
     "../index.ts",
     "./index.ts",
     "./drag-scroll.ts",
-    "./drag-scroll-snap.ts"
+    "./drag-scroll-item.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

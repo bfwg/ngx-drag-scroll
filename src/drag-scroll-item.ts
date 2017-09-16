@@ -10,7 +10,7 @@ function coerceBooleanProperty(value: any): boolean {
   selector: '[drag-scroll-snap], [dragScrollSnap]',
   exportAs: 'dragScrollSnap'
 })
-export class DragScrollSnap {
+export class DragScrollItem {
 
   _enabled = true;
 

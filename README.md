@@ -67,7 +67,7 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
-| drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
+| drag-disabled          | @Input  | Whether dragging is disabled.                                                 | false |
 
 ___
 
