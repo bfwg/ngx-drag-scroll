@@ -4,7 +4,7 @@ import {
   Renderer,
   ElementRef
 } from '@angular/core';
-import { DragScroll, DragScrollSnap } from '../../src/index';
+import { DragScroll, DragScrollItem } from '../../src/index';
 
 import {
   By
@@ -70,7 +70,7 @@ describe('Component: DragScroll', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DeviceDetectorModule],
-      declarations: [TestComponent, DragScroll, DragScrollSnap]
+      declarations: [TestComponent, DragScroll, DragScrollItem]
     });
   });
 
