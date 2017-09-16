@@ -21,7 +21,7 @@ import {
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 
 import { DragScrollOption } from './interface/drag-scroll-option';
-import { DragScrollSnap } from './drag-scroll-item';
+import { DragScrollItem } from './drag-scroll-item';
 import { DeviceService } from './device-info/device.service';
 
 
@@ -110,7 +110,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    */
   @ViewChild('contentRef') _contentRef: ElementRef;
 
-  @ContentChildren(DragScrollSnap) snaps: QueryList<DragScrollSnap>;
+  @ContentChildren(DragScrollItem) snaps: QueryList<DragScrollItem>;
 
 
   @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
