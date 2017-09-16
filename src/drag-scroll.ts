@@ -253,7 +253,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
         this.checkScrollbar();
       }
       this.prevChildrenLength = this.children.length;
-      this.setNavStatus();
+      // fix: Expression has changed after it was checked. Previous value: 'false'. Current value: 'true'.
+      setTimeout(() => {
+        this.setNavStatus();
+      }, 100);
     }
   }
 
@@ -311,7 +314,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.setNavStatus();
     }
 
-    if (!this.isPressed && !this.isAnimating && this.children['_results'][this.currIndex].enabled) {
+    if (!this.isPressed && !this.isAnimating) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
       this.scrollTimer = window.setTimeout(() => {
@@ -325,9 +328,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
-      if (this.children.length !== 0 && this.children['_results'][this.currIndex].enabled) {
-        this.snapToCurrentIndex();
-      }
+      this.snapToCurrentIndex();
     }
     return false;
   }
@@ -541,9 +542,14 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   }
 
   private snapToCurrentIndex() {
-    const childrenArray = this.children['_results'];
-    let childrenWidth = 0;
 
+    // Prevent scroll snap if disabled.
+    if (this.children.length === 0 || this.children.length !== 0 && !this.children['_results'][this.currIndex].enabled) {
+      return;
+    }
+
+    let childrenWidth = 0;
+    const childrenArray = this.children['_results'];
     const contentElement = this._contentRef.nativeElement;
 
     for (let i = 0; i < childrenArray.length; i++) {

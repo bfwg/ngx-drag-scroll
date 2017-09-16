@@ -8,7 +8,7 @@ function coerceBooleanProperty(value: any): boolean {
 
 @Directive({
   selector: '[drag-scroll-item], [dragScrollItem]',
-  exportAs: 'dragScrollSnap'
+  exportAs: 'dragScrollItem'
 })
 export class DragScrollItem {
 
