@@ -110,7 +110,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    */
   @ViewChild('contentRef') _contentRef: ElementRef;
 
-  @ContentChildren(DragScrollItem) snaps: QueryList<DragScrollItem>;
+  @ContentChildren(DragScrollItem) children: QueryList<DragScrollItem>;
 
 
   @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
@@ -248,11 +248,11 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
 
   ngAfterViewChecked() {
     // avoid extra checks
-    if (this.snaps.length !== this.prevChildrenLength) {
+    if (this.children.length !== this.prevChildrenLength) {
       if (this.wrapper) {
         this.checkScrollbar();
       }
-      this.prevChildrenLength = this.snaps.length;
+      this.prevChildrenLength = this.children.length;
       this.setNavStatus();
     }
   }
@@ -311,7 +311,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.setNavStatus();
     }
 
-    if (!this.isPressed && !this.isAnimating) {
+    if (!this.isPressed && !this.isAnimating && this.children['_results'][this.currIndex].enabled) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
       this.scrollTimer = window.setTimeout(() => {
@@ -325,7 +325,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
-      if (this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled) {
+      if (this.children.length !== 0 && this.children['_results'][this.currIndex].enabled) {
         this.snapToCurrentIndex();
       }
     }
@@ -393,8 +393,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     if (this._contentRef.nativeElement.scrollHeight <= this._contentRef.nativeElement.clientHeight) {
       this._renderer.setStyle(this._contentRef.nativeElement, 'width', '100%');
     } else {
-      if (this.snaps.length) {
-        // this._renderer.setStyle(this.snaps.last._elementRef.nativeElement, 'padding-right', this.scrollbarWidth);
+      if (this.children.length) {
+        // this._renderer.setStyle(this.children.last._elementRef.nativeElement, 'padding-right', this.scrollbarWidth);
       }
       this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
     }
@@ -462,19 +462,19 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    * Nav button
    */
   moveLeft() {
-    const childrenArray = this.snaps['_results'];
+    const childrenArray = this.children['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (this.currIndex !== 0 && this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled === true) {
+    if (this.currIndex !== 0 && this.children.length !== 0 && this.children['_results'][this.currIndex].enabled === true) {
       // reach left most
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
-    } else if (this.currIndex !== 0 && this.snaps.length !== 0 && this.snaps['_results'][this.currIndex].enabled === false) {
+    } else if (this.currIndex !== 0 && this.children.length !== 0 && this.children['_results'][this.currIndex].enabled === false) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
       console.log('snaps="false"');
-    } else if (this.snaps.length === 0) {
+    } else if (this.children.length === 0) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this._contentRef.nativeElement.scrollLeft - 200, 500);
@@ -482,19 +482,19 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   }
 
   moveRight() {
-    const childrenArray = this.snaps['_results'];
+    const childrenArray = this.children['_results'];
     const contentElement = this._contentRef.nativeElement;
-    if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]
-      && this.snaps['_results'][this.currIndex].enabled === true) {
+    if (!this.scrollReachesRightEnd && this.children.length !== 0 && childrenArray[this.currIndex + 1]
+      && this.children['_results'][this.currIndex].enabled === true) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
-    } else if (!this.scrollReachesRightEnd && this.snaps.length !== 0 && childrenArray[this.currIndex + 1]
-      && this.snaps['_results'][this.currIndex].enabled === false) {
+    } else if (!this.scrollReachesRightEnd && this.children.length !== 0 && childrenArray[this.currIndex + 1]
+      && this.children['_results'][this.currIndex].enabled === false) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
-    } else if (this.snaps.length === 0) {
+    } else if (this.children.length === 0) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this._contentRef.nativeElement.scrollLeft + 200, 500);
@@ -541,7 +541,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   }
 
   private snapToCurrentIndex() {
-    const childrenArray = this.snaps['_results'];
+    const childrenArray = this.children['_results'];
     let childrenWidth = 0;
 
     const contentElement = this._contentRef.nativeElement;
@@ -576,7 +576,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   }
 
   private toChildrenLocation(): number {
-    const childrenArray = this.snaps['_results'];
+    const childrenArray = this.children['_results'];
     let to = 0;
     for (let i = 0; i < this.currIndex; i++) {
       to += childrenArray[this.currIndex]._elementRef.nativeElement.clientWidth;
