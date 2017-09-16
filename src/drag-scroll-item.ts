@@ -7,14 +7,14 @@ function coerceBooleanProperty(value: any): boolean {
 
 
 @Directive({
-  selector: '[drag-scroll-snap], [dragScrollSnap]',
+  selector: '[drag-scroll-item], [dragScrollItem]',
   exportAs: 'dragScrollSnap'
 })
 export class DragScrollItem {
 
   _enabled = true;
 
-  @Input('drag-scroll-snap')
+  @Input('drag-scroll-item')
   get enabled(): boolean {
     return this._enabled;
   }
