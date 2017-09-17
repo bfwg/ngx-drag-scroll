@@ -376,6 +376,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     }
   }
 
+  moveTo(index:number) {
+    const ele = this.el.nativeElement;
+    if (index >= 0 && index != this.currIndex && this.childrenArr[index]) {
+      this.currIndex = index;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(ele, this.toChildrenLocation(), 500);
+    }
+  }
+
   /*
   * The below solution is heavily inspired from
   * https://gist.github.com/andjosh/6764939
