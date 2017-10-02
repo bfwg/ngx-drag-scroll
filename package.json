@@ -14,6 +14,7 @@
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
+    "lint": "ng lint",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
