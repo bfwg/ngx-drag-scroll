@@ -1,4 +1,5 @@
 import {
+  DoCheck,
   NgModule,
   Directive,
   ElementRef,
@@ -8,9 +9,7 @@ import {
   Output,
   OnInit,
   OnChanges,
-  AfterViewChecked,
   EventEmitter,
-  ChangeDetectorRef,
   HostListener
 } from '@angular/core';
 import { DragScrollOption } from './interface/drag-scroll-option';
@@ -18,7 +17,7 @@ import { DragScrollOption } from './interface/drag-scroll-option';
 @Directive({
   selector: '[drag-scroll]'
 })
-export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecked {
+export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   private _scrollbarHidden: boolean;
 
@@ -119,6 +118,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
   onResize() {
     this.markElDimension();
     this.resetScrollLocation();
+    this.checkNavStatus();
   }
 
   @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
@@ -131,8 +131,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   constructor(
     private el: ElementRef,
-    private renderer: Renderer,
-    private cdr:ChangeDetectorRef
+    private renderer: Renderer
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
@@ -181,7 +180,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
-  ngAfterViewChecked() {
+  ngDoCheck() {
     this.childrenArr = this.el.nativeElement.children || [];
     // avoid extra ckecks
     if (this.childrenArr.length !== this.prevChildrenLength) {
@@ -189,7 +188,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
         this.checkScrollbar();
       }
       this.prevChildrenLength = this.childrenArr.length;
-      this.setNavStatus();
+      this.checkNavStatus();
     }
   }
 
@@ -230,12 +229,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
 
   onScroll() {
     const ele = this.el.nativeElement;
-    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
+    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth && this.currIndex !== 0) {
       this.scrollReachesRightEnd = true;
     } else {
       this.scrollReachesRightEnd = false;
     }
-    this.setNavStatus();
+    this.checkNavStatus();
     if (!this.isPressed && !this.isAnimating) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
@@ -385,6 +384,32 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
     }
   }
 
+  checkNavStatus() {
+    const ele = this.el.nativeElement;
+    let childrenWidth = 0;
+    for (let i = 0; i < ele.children.length; i++) {
+      childrenWidth += ele.children[i].clientWidth;
+    };
+    if (this.childrenArr.length <= 1 || ele.scrollWidth <= ele.clientWidth) {
+      // only one element
+      this.reachesLeftBound.emit(true);
+      this.reachesRightBound.emit(true);
+    } else if (this.scrollReachesRightEnd) {
+      // reached right end
+      this.reachesLeftBound.emit(false);
+      this.reachesRightBound.emit(true);
+    } else if (ele.scrollLeft === 0 &&
+               ele.scrollWidth > ele.clientWidth) {
+      // reached left end
+      this.reachesLeftBound.emit(true);
+      this.reachesRightBound.emit(false);
+    } else {
+      // in the middle
+      this.reachesLeftBound.emit(false);
+      this.reachesRightBound.emit(false);
+    }
+  }
+
   /*
   * The below solution is heavily inspired from
   * https://gist.github.com/andjosh/6764939
@@ -462,29 +487,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewChecke
       to += this.childrenArr[this.currIndex].clientWidth;
     }
     return to;
-  }
-
-  private setNavStatus() {
-    const ele = this.el.nativeElement;
-    if (this.childrenArr.length <= 1 || this.el.nativeElement.scrollWidth <= this.el.nativeElement.clientWidth) {
-      // only one element
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(true);
-    } else if (this.scrollReachesRightEnd) {
-      // reached right end
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(true);
-    } else if (ele.scrollLeft === 0 &&
-               this.el.nativeElement.scrollWidth > this.el.nativeElement.clientWidth) {
-      // reached left end
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(false);
-    } else {
-      // in the middle
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(false);
-    }
-    this.cdr.detectChanges();
   }
 
   private resetScrollLocation() {
