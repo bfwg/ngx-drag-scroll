@@ -5,8 +5,8 @@
       drag-scroll
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
-      (leftBound)="leftBoundStat($event)"
-      (rightBound)="rightBoundStat($event)"
+      (reachesLeftBound)="leftBoundStat($event)"
+      (reachesRightBound)="rightBoundStat($event)"
       #nav
       >
       <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>

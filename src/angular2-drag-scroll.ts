@@ -19,6 +19,10 @@ import { DragScrollOption } from './interface/drag-scroll-option';
 })
 export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
+  @Output() reachesLeftBound = new EventEmitter<boolean>();
+
+  @Output() reachesRightBound = new EventEmitter<boolean>();
+
   private _scrollbarHidden: boolean;
 
   private _disabled: boolean;
@@ -84,8 +88,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   childrenArr: Array<Element> = [];
 
-
-
   /**
    * Whether the scrollbar is hidden
    */
@@ -120,9 +122,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.resetScrollLocation();
     this.checkNavStatus();
   }
-
-  @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
-  @Output('rightBound') reachesRightBound = new EventEmitter<boolean>();
 
   @Input('drag-disabled')
   get dragDisabled() { return this._dragDisabled; }
@@ -375,9 +374,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     }
   }
 
-  moveTo(index:number) {
+  moveTo(index: number) {
     const ele = this.el.nativeElement;
-    if (index >= 0 && index != this.currIndex && this.childrenArr[index]) {
+    if (index >= 0 && index !== this.currIndex && this.childrenArr[index]) {
       this.currIndex = index;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(ele, this.toChildrenLocation(), 500);
@@ -415,16 +414,16 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
   * https://gist.github.com/andjosh/6764939
   */
   private scrollTo(element: Element, to: number, duration: number) {
-    let self = this;
+    const self = this;
     self.isAnimating = true;
-    let start = element.scrollLeft,
+    const start = element.scrollLeft,
       change = to - start,
-      currentTime = 0,
       increment = 20;
+    let currentTime = 0;
 
-    let animateScroll = function() {
+    const animateScroll = function() {
       currentTime += increment;
-      let val = easeInOutQuad(currentTime, start, change, duration);
+      const val = easeInOutQuad(currentTime, start, change, duration);
       element.scrollLeft = val;
       if (currentTime < duration) {
           self.scrollToTimer = window.setTimeout(animateScroll, increment);
@@ -435,13 +434,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
         }, increment);
       }
     };
-    //t = current time
-    //b = start value
-    //c = change in value
-    //d = duration
-    let easeInOutQuad = function (t: number, b: number, c: number, d: number) {
+    // t = current time
+    // b = start value
+    // c = change in value
+    // d = duration
+    const easeInOutQuad = function (t: number, b: number, c: number, d: number) {
       t /= d / 2;
-      if (t < 1) return c / 2 * t * t + b;
+      if (t < 1) {
+        return c / 2 * t * t + b;
+      }
       t--;
       return -c / 2 * (t * (t - 2) - 1) + b;
     };
