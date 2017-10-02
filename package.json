@@ -1,6 +1,6 @@
 {
   "name": "angular2-drag-scroll",
-  "version": "1.4.0-rc.6",
+  "version": "1.4.0",
   "description": "Lightweight drag to scroll directive for Angular2",
   "contributors": [
     {
