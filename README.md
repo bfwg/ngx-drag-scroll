@@ -68,6 +68,7 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
 | drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
+| snap-disabled          | @Input  | Whether snapping is disabled.                                                 | false |
 | reachesLeftBound       | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
 | reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
 
