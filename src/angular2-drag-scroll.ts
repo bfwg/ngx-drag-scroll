@@ -32,6 +32,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
   private _yDisabled: boolean;
 
   private _dragDisabled: boolean;
+
+  private _snapDisabled: boolean;
   /**
    * Is the user currently pressing the element
    */
@@ -127,6 +129,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
   get dragDisabled() { return this._dragDisabled; }
   set dragDisabled(value: boolean) { this._dragDisabled = value; };
 
+  @Input('snap-disabled')
+  get snapDisabled() { return this._snapDisabled; }
+  set snapDisabled(value: boolean) { this._snapDisabled = value; };
 
   constructor(
     private el: ElementRef,
@@ -165,7 +170,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     } else {
       this.enableScroll('y');
     }
-
   }
 
   ngOnInit(): void {
@@ -234,7 +238,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.scrollReachesRightEnd = false;
     }
     this.checkNavStatus();
-    if (!this.isPressed && !this.isAnimating) {
+    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
       this.scrollTimer = window.setTimeout(() => {
@@ -248,7 +252,9 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
-      this.snapToCurrentIndex();
+      if (!this.snapDisabled) {
+        this.snapToCurrentIndex();
+      }
     }
     return false;
   }
