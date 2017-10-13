@@ -1,4 +1,4 @@
-# [Angular2 Drag to Scroll](https://bfwg.github.io/angular2-drag-scroll/)
+# [Angular 2+ Draggable Carousel](https://bfwg.github.io/angular2-drag-scroll/)
 
 Lightweight drag to scroll directive for Angular2
 
