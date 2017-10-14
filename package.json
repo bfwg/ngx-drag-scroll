@@ -10,7 +10,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run ngc",
+    "prepare": "npm run ngc",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
