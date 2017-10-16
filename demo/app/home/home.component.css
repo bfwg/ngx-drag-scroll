@@ -7,7 +7,8 @@
   background-color: #FFFFFF;
 }
 
-.demo-one img {
+.demo-one drag-scroll-item, .demo-one img {
+  display: inline-block;
   height: 260px;
   width: 260px;
 }

@@ -22,13 +22,16 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 
 import { DragScrollOption } from './interface/drag-scroll-option';
 import { DragScrollItem } from './drag-scroll-item';
-import { DeviceService } from './device-info/device.service';
+import { DeviceService } from './device-info';
 
 
 @Component({
-  selector: 'drag-scroll, [drag-scroll], [dragScroll]',
+  selector: 'drag-scroll, [dragScroll]',
   templateUrl: './drag-scroll.html',
   styles: [`
+    :host {
+      display: block;
+    }
     .drag-scroll-content {
       overflow: hidden;
       white-space: nowrap;
@@ -474,7 +477,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
-      console.log('snaps="false"');
+      console.log('dragScrollSnap="false"');
     } else if (this.children.length === 0) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
@@ -544,7 +547,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   private snapToCurrentIndex() {
 
     // Prevent scroll snap if disabled.
-    if (this.children.length === 0 || this.children.length !== 0 && !this.children['_results'][this.currIndex].enabled) {
+    if (this.children.length === 0 || this.currIndex > this.children.length ||
+      this.children.length !== 0 && !this.children['_results'][this.currIndex].enabled) {
       return;
     }
 

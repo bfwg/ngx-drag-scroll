@@ -1,20 +1,25 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Component, Directive, ElementRef, Input } from '@angular/core';
 
 /** Coerces a data-bound value (typically a string) to a boolean. */
 function coerceBooleanProperty(value: any): boolean {
   return value != null && `${value}` !== 'false';
 }
 
-
-@Directive({
-  selector: '[drag-scroll-item], [dragScrollItem]',
-  exportAs: 'dragScrollItem'
+@Component({
+  selector: 'drag-scroll-item, [dragScrollItem]',
+  template: '<ng-content></ng-content>',
+  styles: [`
+    :host {
+      display: block;
+    }
+  `]
 })
 export class DragScrollItem {
 
+  _elementRef: ElementRef;
   _enabled = true;
 
-  @Input('drag-scroll-item')
+  @Input('dragScrollSnap')
   get enabled(): boolean {
     return this._enabled;
   }
@@ -22,8 +27,7 @@ export class DragScrollItem {
     this._enabled = coerceBooleanProperty(value);
   }
 
-
-  constructor(public _elementRef: ElementRef) {
-
+  constructor(elementRef: ElementRef) {
+    this._elementRef = elementRef;
   }
 }

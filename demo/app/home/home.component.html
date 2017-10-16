@@ -1,15 +1,16 @@
 <div class="content">
   <p class="title">DRAG AND SCROLL!</p>
   <div class="demo-border">
-    <div class="demo-one"
-      drag-scroll
+    <drag-scroll class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
       (leftBound)="leftBoundStat($event)"
       (rightBound)="rightBoundStat($event)"
       #nav>
-      <img *ngFor="let image of imagelist" drag-scroll-item [src]="'assets/img/' + image" (click)="clickItem(image)"/>
-    </div>
+      <drag-scroll-item *ngFor="let image of imagelist">
+        <img [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+      </drag-scroll-item>
+    </drag-scroll>
   </div>
   <div class="demo-button-group">
     <button md-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
@@ -25,13 +26,15 @@
     <md-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</md-slide-toggle>
   </div>
   <div class="demo-border">
-    <div class="demo-two"
-        drag-scroll [scrollbar-hidden]="hideScrollbar"
-        [drag-scroll-disabled]="disabled"
-        [drag-scroll-x-disabled]="xDisabled"
-        [drag-scroll-y-disabled]="yDisabled">
-      <img src='assets/img/star-wars-big.jpg' />
-    </div>
+    <drag-scroll class="demo-two"
+                 [scrollbar-hidden]="hideScrollbar"
+                 [drag-scroll-disabled]="disabled"
+                 [drag-scroll-x-disabled]="xDisabled"
+                 [drag-scroll-y-disabled]="yDisabled">
+      <drag-scroll-item dragScrollSnap="false">
+        <img src='assets/img/star-wars-big.jpg' />
+      </drag-scroll-item>
+    </drag-scroll>
   </div>
   <div class="api-table-containter">
     <p class="title">API REFERENCE</p>
