@@ -2,9 +2,9 @@ import {
   Component,
   Output,
   Renderer,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
-import { DragScroll, DragScrollItem } from '../../src/index';
+import { DragScroll, DragScrollItem } from '../../src';
 
 import {
   By
@@ -51,7 +51,7 @@ function getScrollbarWidth(): number {
   /**
    * Scrollbar width will be 0 on Mac OS with the
    * default "Only show scrollbars when scrolling" setting (Yosemite and up).
-   * setting defult with to 20;
+   * setting default with to 20;
    */
   return widthNoScroll - widthWithScroll || 20;
 }
@@ -76,9 +76,9 @@ describe('Component: DragScroll', () => {
 
   it('should drag to scroll horizontally and vertically', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll>
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
 
     TestBed.compileComponents().then(() => {
@@ -105,9 +105,9 @@ describe('Component: DragScroll', () => {
 
   it('should disable drag and scroll horizontally and vertically', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-disabled="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-disabled="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
 
     TestBed.compileComponents().then(() => {
@@ -133,9 +133,9 @@ describe('Component: DragScroll', () => {
 
   it('should disable drag and scroll horizontally', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-x-disabled="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
 
     TestBed.compileComponents().then(() => {
@@ -161,9 +161,9 @@ describe('Component: DragScroll', () => {
 
   it('should disable drag and scroll horizontally', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-y-disabled="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-y-disabled="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
 
     TestBed.compileComponents().then(() => {
@@ -189,9 +189,9 @@ describe('Component: DragScroll', () => {
 
   it('should only hide horizontal scroll bar', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 350px;" drag-scroll scrollbar-hidden="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 350px;" scrollbar-hidden="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -204,9 +204,9 @@ describe('Component: DragScroll', () => {
 
   it('should only hide vertical scroll bar', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 350px; height: 50px;" drag-scroll scrollbar-hidden="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 350px; height: 50px;" scrollbar-hidden="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }})
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -219,9 +219,9 @@ describe('Component: DragScroll', () => {
 
   it('should hide all scroll bars', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll scrollbar-hidden="true">
-                  <div style="width: 300px; height: 300px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+                  <drag-scroll-item style="width: 300px; height: 300px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -235,9 +235,9 @@ describe('Component: DragScroll', () => {
 
   it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll>
-                  <div style="width: 49px; height: 49px;"></div>
-                </div>`
+      template: `<drag-scroll style="width: 50px; height: 50px;">
+                  <drag-scroll-item style="width: 49px; height: 49px;"></drag-scroll-item>
+                </drag-scroll>`
     }});
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
