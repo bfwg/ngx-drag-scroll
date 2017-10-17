@@ -544,9 +544,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     return -changeInValue / 2 * (currentTime * (currentTime - 2) - 1) + startValue;
   }
 
-  /**
-   * TODO(joe): bug when only one drag-scroll-item and it's not had snap disabled using dragScrollSnap="false"
-   */
   private snapToCurrentIndex() {
 
     // Prevent scroll snap if disabled.
