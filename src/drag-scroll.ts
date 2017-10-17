@@ -549,9 +549,10 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    */
   private snapToCurrentIndex() {
 
-    console.log(this.children);
     // Prevent scroll snap if disabled.
-    if (this.children.length === 0 || this.currIndex > this.children.length ||
+    if (this.children.length === 0 ||
+      this.currIndex > this.children.length ||
+      this.children.length === 1 && this.children['_results'][this.currIndex].enabled ||
       this.children.length !== 0 && !this.children['_results'][this.currIndex].enabled) {
       return;
     }
