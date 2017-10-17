@@ -544,8 +544,12 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     return -changeInValue / 2 * (currentTime * (currentTime - 2) - 1) + startValue;
   }
 
+  /**
+   * TODO(joe): bug when only one drag-scroll-item and it's not had snap disabled using dragScrollSnap="false"
+   */
   private snapToCurrentIndex() {
 
+    console.log(this.children);
     // Prevent scroll snap if disabled.
     if (this.children.length === 0 || this.currIndex > this.children.length ||
       this.children.length !== 0 && !this.children['_results'][this.currIndex].enabled) {
