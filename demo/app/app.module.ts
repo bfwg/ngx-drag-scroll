@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MdButtonModule, MdSlideToggleModule, MdToolbarModule } from '@angular/material';
+import { MatButtonModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
 
 // import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
 
@@ -34,9 +34,9 @@ import { GithubComponent } from './github/github.component';
     HttpModule,
     AppRoutingModule,
     DragScrollModule,
-    MdToolbarModule,
-    MdButtonModule,
-    MdSlideToggleModule
+    MatToolbarModule,
+    MatButtonModule,
+    MatSlideToggleModule
   ],
   providers: [
   ],

@@ -13,17 +13,17 @@
     </drag-scroll>
   </div>
   <div class="demo-button-group">
-    <button md-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
-    <button md-raised-button color="primary" [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
+    <button mat-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
+    <button mat-raised-button color="primary" [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
   </div>
   <p class="title">PLAY WITH IT!</p>
   <div class="toggle-box">
-    <md-slide-toggle (change)="toggleHideSB()">Hide scrollbar</md-slide-toggle>
-    <md-slide-toggle (change)="toggleDisable()">Disable drag/scroll</md-slide-toggle>
+    <mat-slide-toggle (change)="toggleHideSB()">Hide scrollbar</mat-slide-toggle>
+    <mat-slide-toggle (change)="toggleDisable()">Disable drag/scroll</mat-slide-toggle>
   </div>
   <div class="toggle-box">
-    <md-slide-toggle (change)="toggleXDisable()">Disable horizontal drag/scroll</md-slide-toggle>
-    <md-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</md-slide-toggle>
+    <mat-slide-toggle (change)="toggleXDisable()">Disable horizontal drag/scroll</mat-slide-toggle>
+    <mat-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</mat-slide-toggle>
   </div>
   <div class="demo-border">
     <drag-scroll class="demo-two"
