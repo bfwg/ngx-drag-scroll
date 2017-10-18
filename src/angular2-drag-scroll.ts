@@ -394,7 +394,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     let childrenWidth = 0;
     for (let i = 0; i < ele.children.length; i++) {
       childrenWidth += ele.children[i].clientWidth;
-    };
+    }
     if (this.childrenArr.length <= 1 || ele.scrollWidth <= ele.clientWidth) {
       // only one element
       this.reachesLeftBound.emit(true);
