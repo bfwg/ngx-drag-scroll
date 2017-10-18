@@ -3,7 +3,7 @@ import {
   NgModule,
   Directive,
   ElementRef,
-  Renderer,
+  Renderer2,
   OnDestroy,
   Input,
   Output,
@@ -135,16 +135,16 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   constructor(
     private el: ElementRef,
-    private renderer: Renderer
+    private renderer: Renderer2
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
     el.nativeElement.style.whiteSpace = 'noWrap';
 
-    this.mouseDownListener = renderer.listenGlobal(el.nativeElement, 'mousedown', this.onMouseDownHandler);
-    this.scrollListener = renderer.listenGlobal(el.nativeElement, 'scroll', this.onScrollHandler);
-    this.mouseMoveListener = renderer.listenGlobal('document', 'mousemove', this.onMouseMoveHandler);
-    this.mouseUpListener = renderer.listenGlobal('document', 'mouseup', this.onMouseUpHandler);
+    this.mouseDownListener = renderer.listen(el.nativeElement, 'mousedown', this.onMouseDownHandler);
+    this.scrollListener = renderer.listen(el.nativeElement, 'scroll', this.onScrollHandler);
+    this.mouseMoveListener = renderer.listen('document', 'mousemove', this.onMouseMoveHandler);
+    this.mouseUpListener = renderer.listen('document', 'mouseup', this.onMouseUpHandler);
   }
 
   public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
@@ -180,7 +180,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     // store ele width height for later user
     this.markElDimension();
 
-    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'true');
+    this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'true');
   }
 
   ngDoCheck() {
@@ -197,7 +197,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
 
   ngOnDestroy() {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'drag-scroll', 'false');
+    this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'false');
     this.mouseMoveListener();
     this.mouseUpListener();
   }
