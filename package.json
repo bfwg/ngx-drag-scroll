@@ -14,7 +14,7 @@
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
-    "clean:build": "npm run rimraf -- src/**/*.js src/**/*.d.ts src/**/*.map src/**/*.metadata.json index.js index.d.ts index.js.map index.metadata.json",
+    "clean:build": "npm run rimraf -- ./src/**/*.js src/**/*.d.ts src/**/*.map src/**/*.metadata.json index.js index.d.ts index.js.map index.metadata.json",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
     "ngc": "ngc -p src/tsconfig.json",

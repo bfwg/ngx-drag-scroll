@@ -35,7 +35,7 @@
   display: inline-block;
 }
 
-.toggle-box md-slide-toggle {
+.toggle-box .mat-slide-toggle {
   width: 100%;
   margin-bottom: 15px;
 }
