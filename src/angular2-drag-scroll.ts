@@ -427,6 +427,19 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
       increment = 20;
     let currentTime = 0;
 
+    // t = current time
+    // b = start value
+    // c = change in value
+    // d = duration
+    const easeInOutQuad = function (t: number, b: number, c: number, d: number) {
+      t /= d / 2;
+      if (t < 1) {
+        return c / 2 * t * t + b;
+      }
+      t--;
+      return -c / 2 * (t * (t - 2) - 1) + b;
+    };
+
     const animateScroll = function() {
       currentTime += increment;
       const val = easeInOutQuad(currentTime, start, change, duration);
@@ -439,18 +452,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
           self.isAnimating = false;
         }, increment);
       }
-    };
-    // t = current time
-    // b = start value
-    // c = change in value
-    // d = duration
-    const easeInOutQuad = function (t: number, b: number, c: number, d: number) {
-      t /= d / 2;
-      if (t < 1) {
-        return c / 2 * t * t + b;
-      }
-      t--;
-      return -c / 2 * (t * (t - 2) - 1) + b;
     };
     animateScroll();
   }
