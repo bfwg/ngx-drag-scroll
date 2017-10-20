@@ -165,7 +165,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     @Inject(PLATFORM_ID) private _platformId: Object) {
 
     this._deviceInfo = _deviceService.getDeviceInfo();
-    console.log(this._deviceInfo);
     const scrollbarWidth = {
       mac: {
         'chrome': '15px',
@@ -183,9 +182,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
         'firefox': '15px',
       }
     };
-    console.log( 'scrollbarWidth', scrollbarWidth[this._deviceInfo.os][this._deviceInfo.browser] );
     this.scrollbarWidth = scrollbarWidth[this._deviceInfo.os][this._deviceInfo.browser] || `${this.getScrollbarWidth()}px`;
-    console.log('this.scrollbarWidth', this.scrollbarWidth);
   }
 
   public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
@@ -477,7 +474,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(contentElement, this.toChildrenLocation(), 500);
-      console.log('dragScrollSnap="false"');
     } else if (this.children.length === 0) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
