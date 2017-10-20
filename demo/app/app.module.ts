@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MatCommonModule, MatIconModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
+import { MatCommonModule, MatIconModule, MatSlideToggleModule, MatToolbarModule,
+  MatButtonModule, MatButtonToggleModule } from '@angular/material';
 
 import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
 
@@ -35,7 +36,9 @@ import { GithubComponent } from './github/github.component';
     MatCommonModule,
     MatIconModule,
     MatSlideToggleModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   providers: [
   ],
