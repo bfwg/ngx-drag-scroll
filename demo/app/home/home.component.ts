@@ -1,13 +1,13 @@
 import { Component, OnInit, ElementRef, Renderer, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material';
 import { DragScroll } from '../../../src/angular2-drag-scroll';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  viewProviders: [MdIconRegistry]
+  viewProviders: [MatIconRegistry]
 })
 export class HomeComponent implements OnInit {
   title = 'app works!';
@@ -38,12 +38,12 @@ export class HomeComponent implements OnInit {
   @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
 
   constructor(
-    mdIconRegistry: MdIconRegistry,
+    matIconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     private element: ElementRef,
     private renderer: Renderer
   ) {
-    mdIconRegistry
+    matIconRegistry
         .addSvgIcon('github',
             sanitizer.bypassSecurityTrustResourceUrl('/assets/img/github.svg'))
         .registerFontClassAlias('fontawesome', 'fa');
