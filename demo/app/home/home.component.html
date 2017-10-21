@@ -12,7 +12,7 @@
       <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
     </div>
   </div>
-  <div class="demo-button-group">
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
     <button mat-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
     <button mat-raised-button color="primary" [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
   </div>
