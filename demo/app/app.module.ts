@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MatCommonModule, MatIconModule, MatSlideToggleModule, MatToolbarModule,
-  MatButtonModule, MatButtonToggleModule } from '@angular/material';
+  MatButtonModule } from '@angular/material';
 
 import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
 
@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -38,7 +39,7 @@ import { GithubComponent } from './github/github.component';
     MatSlideToggleModule,
     MatToolbarModule,
     MatButtonModule,
-    MatButtonToggleModule
+    FlexLayoutModule
   ],
   providers: [
   ],
