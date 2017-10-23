@@ -1,7 +1,7 @@
 import {
   Component,
   Output,
-  Renderer,
+  Renderer2,
   ElementRef
 } from '@angular/core';
 import { DragScroll } from '../../src/angular2-drag-scroll';
