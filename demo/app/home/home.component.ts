@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { DragScroll } from '../../../src';
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     matIconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     private element: ElementRef,
-    private renderer: Renderer
+    private renderer: Renderer2
   ) {
     matIconRegistry
         .addSvgIcon('github',

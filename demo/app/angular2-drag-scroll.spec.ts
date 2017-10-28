@@ -1,8 +1,8 @@
 import {
   Component,
   Output,
-  Renderer,
-  ElementRef,
+  Renderer2,
+  ElementRef
 } from '@angular/core';
 import { DragScroll, DragScrollItem } from '../../src';
 

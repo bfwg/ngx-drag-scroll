@@ -1,7 +1,6 @@
 import {
   AfterViewChecked,
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
@@ -160,7 +159,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
-    private _changeDetectorRef: ChangeDetectorRef,
     private _deviceService: DeviceService,
     @Inject(PLATFORM_ID) private _platformId: Object) {
 
@@ -505,6 +503,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     }
   }
 
+  moveTo(index: number) {
+    const childrenArray = this.children['_results'];
+    const contentElement = this._contentRef.nativeElement;
+    if (index >= 0 && index !== this.currIndex && childrenArray[index]) {
+      this.currIndex = index;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(contentElement, this.toChildrenLocation(), 500);
+    }
+  }
   /*
   * The below solution is heavily inspired from
   * https://gist.github.com/andjosh/6764939
@@ -602,8 +609,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
    */
   private setNavStatus() {
     const contentElement = this._contentRef.nativeElement;
-    if (contentElement.scrollLeft === 0 &&
-      contentElement.scrollWidth < contentElement.clientWidth) {
+    const childrenArray = this.children['_results'];
+    if (childrenArray.length <= 1 || contentElement.scrollWidth <= contentElement.clientWidth) {
       // only one element
       this.reachesLeftBound.emit(true);
       this.reachesRightBound.emit(true);
@@ -620,7 +627,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
       this.reachesLeftBound.emit(false);
       this.reachesRightBound.emit(false);
     }
-    this._changeDetectorRef.detectChanges();
   }
 
   private resetScrollLocation() {

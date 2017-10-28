@@ -1,6 +1,6 @@
-# [Angular2 Drag to Scroll](https://bfwg.github.io/angular2-drag-scroll/)
+# [Angular2+ Draggable Carousel](https://bfwg.github.io/angular2-drag-scroll/)
 
-Lightweight drag to scroll directive for Angular2
+Lightweight drag to scroll carousel for Angular2+
 
 [![npm version](https://img.shields.io/npm/v/angular2-drag-scroll.svg)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Build Status](https://travis-ci.org/bfwg/angular2-drag-scroll.svg?branch=master)](https://travis-ci.org/bfwg/angular2-drag-scroll)
@@ -8,7 +8,7 @@ Lightweight drag to scroll directive for Angular2
 
 *Scroll on drag!*
 
-![Scroll](https://raw.githubusercontent.com/bfwg/angular2-drag-scroll/master/demo/assets/img/Wp03zyitgY.gif)
+![Scroll](https://user-images.githubusercontent.com/12819525/31459582-73565738-ae78-11e7-8b45-83f686123b63.gif)
 
 Try out the [demo](https://bfwg.github.io/angular2-drag-scroll/)!
 
@@ -49,9 +49,11 @@ Add the `drag-scroll` attribute to a scrollable element:
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll>
-    Big text goes here...
-  </div>
+  <drag-scroll>
+    <drag-scroll-item *ngFor="let image of imagelist">
+      <img [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    </drag-scroll-item>
+  </drag-scroll>
   `
 })
 class Sample {}
@@ -61,13 +63,23 @@ That's it! Now you can scroll it by dragging.
 
 ## API REFERENCE
 
+`## drag-scroll`
+
 | Name                   | Type    | Description                                                                   |Default|
 |------------------------|---------|-------------------------------------------------------------------------------|-------|
 | scrollbar-hidden       | @Input  | Whether the scroll bar for this element is hidden.                            | false |
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
-| drag-disabled          | @Input  | Whether dragging is disabled.                                                 | false |
+| leftBound              | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
+| rightBound             | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
+
+
+`## drag-scroll-item`
+
+| Name                   | Type    | Description                                                                   |Default|
+|------------------------|---------|-------------------------------------------------------------------------------|-------|
+| dragScrollSnap         | @Input  | Whether the item is snappable.                                                |  true |
 
 ___
 
@@ -77,22 +89,28 @@ ___
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll #nav>
-    Big text goes here...
-  </div>
+  <drag-scroll #nav>
+    <drag-scroll-item *ngFor="let image of imagelist">
+      <img [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    </drag-scroll-item>
+  </drag-scroll #nav>
   <button (click)="moveLeft()">Left</button>
   <button (click)="moveRight()">Right</button>
   `
 })
 class Sample {
   @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
-  
+
   moveLeft() {
     this.ds.moveLeft();
   }
 
   moveRight() {
     this.ds.moveRight();
+  }
+
+  moveTo(itemIndex) {
+    this.ds.moveTo(itemIndex);
   }
 }
 ```
