@@ -10,7 +10,7 @@ function coerceBooleanProperty(value: any): boolean {
   template: '<ng-content></ng-content>',
   styles: [`
     :host {
-      display: block;
+      display: inline-block;
     }
   `]
 })
