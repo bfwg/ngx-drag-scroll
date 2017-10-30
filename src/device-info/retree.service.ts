@@ -5,7 +5,7 @@ export class ReTree {
   }
 
   public test(string: string , regex: any): any {
-    let self = this;
+    const self = this;
     if (typeof regex === 'string') {
       regex = new RegExp(regex);
     }
@@ -28,7 +28,7 @@ export class ReTree {
   }
 
   public exec(string: string, regex: any): any {
-    let self = this;
+    const self = this;
     if (typeof regex === 'string') {
       regex = new RegExp(regex);
     }

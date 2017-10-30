@@ -115,8 +115,8 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
   @ContentChildren(DragScrollItem) children: QueryList<DragScrollItem>;
 
 
-  @Output('leftBound') reachesLeftBound = new EventEmitter<boolean>();
-  @Output('rightBound') reachesRightBound = new EventEmitter<boolean>();
+  @Output() leftBound = new EventEmitter<boolean>();
+  @Output() rightBound = new EventEmitter<boolean>();
 
   /**
    * Whether the scrollbar is hidden
@@ -612,20 +612,20 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, AfterViewInit, 
     const childrenArray = this.children['_results'];
     if (childrenArray.length <= 1 || contentElement.scrollWidth <= contentElement.clientWidth) {
       // only one element
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(true);
+      this.leftBound.emit(true);
+      this.rightBound.emit(true);
     } else if (this.scrollReachesRightEnd) {
       // reached right end
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(true);
+      this.leftBound.emit(false);
+      this.rightBound.emit(true);
     } else if (this.scrollReachesLeftEnd) {
       // reached left end
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(false);
+      this.leftBound.emit(true);
+      this.rightBound.emit(false);
     } else {
       // in the middle
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(false);
+      this.leftBound.emit(false);
+      this.rightBound.emit(false);
     }
   }
 

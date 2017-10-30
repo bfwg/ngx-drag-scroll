@@ -17,17 +17,17 @@ export class DeviceService {
     if (isPlatformBrowser(_platformId)) {
       this.ua = window.navigator.userAgent;
     } else {
-      let req: any = this.injector.get(REQUEST);
+      const req: any = this.injector.get(REQUEST);
       this.ua = req.get('User-Agent');
     }
     this._setDeviceInfo();
   }
 
   private _setDeviceInfo() {
-    let reTree = new ReTree();
-    let ua = this.ua;
+    const reTree = new ReTree();
+    const ua = this.ua;
     this.userAgent = ua;
-    let mappings = [
+    const mappings = [
       { const : 'OS' , prop: 'os'},
       { const : 'BROWSERS' , prop: 'browser'},
       { const : 'DEVICES' , prop: 'device'},
@@ -53,8 +53,8 @@ export class DeviceService {
 
     this.browser_version = '0';
     if (this.browser !== Constants.BROWSERS.UNKNOWN) {
-      let re = Constants.BROWSER_VERSIONS_RE[this.browser];
-      let res = reTree.exec(ua, re);
+      const re = Constants.BROWSER_VERSIONS_RE[this.browser];
+      const res = reTree.exec(ua, re);
       if (!!res) {
         this.browser_version = res[1];
       }
