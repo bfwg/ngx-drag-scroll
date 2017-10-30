@@ -6,6 +6,7 @@
 
 # dependencies
 /node_modules
+angular2-drag-scroll-2.0.0-alpha.0.tgz
 
 # IDEs and editors
 /.idea
@@ -39,8 +40,12 @@ testem.log
 .DS_Store
 Thumbs.db
 
-*.map
-*.metadata.json
-*.d.ts
+index.metadata.json
+index.d.ts
 index.js
-angular2-drag-scroll.js
+index.js.map
+
+/src/**/*.d.ts
+/src/**/*.js
+/src/**/*.js.map
+/src/**/*.metadata.json

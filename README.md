@@ -49,9 +49,11 @@ Add the `drag-scroll` attribute to a scrollable element:
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll>
-    Big text goes here...
-  </div>
+  <drag-scroll>
+    <drag-scroll-item *ngFor="let image of imagelist">
+      <img [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    </drag-scroll-item>
+  </drag-scroll>
   `
 })
 class Sample {}
@@ -61,16 +63,23 @@ That's it! Now you can scroll it by dragging.
 
 ## API REFERENCE
 
+`## drag-scroll`
+
 | Name                   | Type    | Description                                                                   |Default|
 |------------------------|---------|-------------------------------------------------------------------------------|-------|
 | scrollbar-hidden       | @Input  | Whether the scroll bar for this element is hidden.                            | false |
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
-| drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
-| snap-disabled          | @Input  | Whether snapping is disabled.                                                 | false |
-| reachesLeftBound       | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
-| reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
+| leftBound              | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
+| rightBound             | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
+
+
+`## drag-scroll-item`
+
+| Name                   | Type    | Description                                                                   |Default|
+|------------------------|---------|-------------------------------------------------------------------------------|-------|
+| dragScrollSnap         | @Input  | Whether the item is snappable.                                                |  true |
 
 ___
 
@@ -80,22 +89,28 @@ ___
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll #nav>
-    Big text goes here...
-  </div>
+  <drag-scroll #nav>
+    <drag-scroll-item *ngFor="let image of imagelist">
+      <img [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    </drag-scroll-item>
+  </drag-scroll #nav>
   <button (click)="moveLeft()">Left</button>
   <button (click)="moveRight()">Right</button>
   `
 })
 class Sample {
   @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
-  
+
   moveLeft() {
     this.ds.moveLeft();
   }
 
   moveRight() {
     this.ds.moveRight();
+  }
+
+  moveTo(itemIndex) {
+    this.ds.moveTo(itemIndex);
   }
 }
 ```

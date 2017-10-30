@@ -1,0 +1,58 @@
+{
+  "name": "Angular Drag Scroll",
+  "short_name": "NG Drag Scroll",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2196F3",
+  "theme_color": "#2196F3",
+  "icons": [
+    {
+      "src": "/assets/img/angular.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/assets/img/angular.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/assets/img/angular.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/img/angular.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/angular.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/angular.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?utm_source=web_app_manifest",
+  "external": {
+    "urls": [
+      {"url": "https://fonts.googleapis.com/icon?family=Material+Icons"}
+    ]
+  },
+  "static.ignore": [
+    "\\.js\\.map$"
+  ],
+  "static.versioned": [
+    "\\.[0-9a-z]{20}\\."
+  ],
+  "routing": {
+    "index": "/index.html",
+    "routes": {
+      "/": { "prefix": false }
+    }
+  }
+}

@@ -18,8 +18,10 @@
     "node_modules"
   ],
   "files": [
-    "./angular2-drag-scroll.ts",
-    "../index.ts"
+    "../index.ts",
+    "./index.ts",
+    "./drag-scroll.ts",
+    "./drag-scroll-item.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

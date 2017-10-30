@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DragScroll } from '../../../src/angular2-drag-scroll';
+import { DragScroll } from '../../../src';
 
 @Component({
   selector: 'app-home',
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   }
 
   clickItem(item) {
-    console.log('itmen clicked');
+    console.log('item clicked');
   }
 
   remove() {

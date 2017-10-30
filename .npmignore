@@ -1,11 +1,13 @@
 # Node generated files
 node_modules
 npm-debug.log
+angular2-drag-scroll-2.0.0-alpha.0.tgz
 
 # OS generated files
 Thumbs.db
 .DS_Store
 
+/.idea
 protractor.conf.js
 gulpfile
 karma.conf.js
@@ -20,3 +22,4 @@ dist
 config
 angular-cli.json
 LICENSE
+NOTES.md
