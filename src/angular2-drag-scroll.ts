@@ -118,13 +118,6 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
   get yDisabled() { return this._yDisabled; }
   set yDisabled(value: boolean) { this._yDisabled = value; };
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.markElDimension();
-    this.resetScrollLocation();
-    this.checkNavStatus();
-  }
-
   @Input('drag-disabled')
   get dragDisabled() { return this._dragDisabled; }
   set dragDisabled(value: boolean) { this._dragDisabled = value; };
@@ -145,6 +138,13 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.scrollListener = renderer.listen(el.nativeElement, 'scroll', this.onScrollHandler);
     this.mouseMoveListener = renderer.listen('document', 'mousemove', this.onMouseMoveHandler);
     this.mouseUpListener = renderer.listen('document', 'mouseup', this.onMouseUpHandler);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.markElDimension();
+    this.resetScrollLocation();
+    this.checkNavStatus();
   }
 
   public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
