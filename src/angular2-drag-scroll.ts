@@ -442,8 +442,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 
     const animateScroll = function() {
       currentTime += increment;
-      const val = easeInOutQuad(currentTime, start, change, duration);
-      element.scrollLeft = val;
+      element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
       if (currentTime < duration) {
           self.scrollToTimer = window.setTimeout(animateScroll, increment);
       } else {
