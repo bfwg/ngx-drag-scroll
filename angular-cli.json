@@ -33,6 +33,10 @@
   "lint": [
     {
       "files": "src/**/*.ts",
+      "exclude": [
+        "src/interface/drag-scroll-option.d.ts",
+        "src/angular2-drag-scroll.d.ts"
+      ],
       "project": "demo/tsconfig.json"
     }
   ],
