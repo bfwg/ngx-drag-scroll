@@ -3,8 +3,10 @@
 Lightweight drag to scroll carousel for Angular2+
 
 [![npm version](https://img.shields.io/npm/v/angular2-drag-scroll.svg)](https://www.npmjs.com/package/angular2-drag-scroll)
+[![Monthly Download](https://img.shields.io/npm/dm/angular2-drag-scroll.svg?style=flat-square)](https://www.npmjs.com/package/angular2-drag-scroll)
 [![Build Status](https://travis-ci.org/bfwg/angular2-drag-scroll.svg?branch=master)](https://travis-ci.org/bfwg/angular2-drag-scroll)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
+
 
 *Scroll on drag!*
 
