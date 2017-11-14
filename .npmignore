@@ -20,3 +20,7 @@ dist
 config
 angular-cli.json
 LICENSE
+
+# Ignored files
+*.ts
+!*.d.ts
