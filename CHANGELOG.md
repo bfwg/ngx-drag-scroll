@@ -1,4 +1,4 @@
-### 1.5.0 (under development)
+### 1.5.0
 
 Issue #75  - Fix npm distribution issue. See #69 and #72 for more details.
 
