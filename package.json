@@ -11,14 +11,15 @@
   "main": "index.js",
   "typings": "./index.d.ts",
   "scripts": {
-    "prepublish": "ngc && copyfiles -f src/*.js src/*.js.map src/*.d.ts src/*.metadata.json .",
+    "prepublish": "npm run ngc && copyfiles -f src/*.js src/*.js.map src/*.d.ts src/*.metadata.json .",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
     "lint": "ng lint",
     "clean:build": "npm run rimraf -- **/*.js **/*.metadata.json **/*.d.ts **/*.map index.js index.d.ts index.js.map index.metadata.json",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
-    "rimraf": "rimraf"
+    "rimraf": "rimraf",
+    "ngc": "ngc"
   },
   "repository": {
     "type": "git",
