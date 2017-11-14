@@ -11,6 +11,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "npm run ngc",
+    "prepublish": "npm run ngc",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
