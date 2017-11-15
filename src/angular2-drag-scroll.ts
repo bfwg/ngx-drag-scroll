@@ -58,15 +58,15 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
    */
   downY = 0;
 
-  displayType = 'block';
+  displayType:string | null = 'block';
 
-  elWidth: string;
+  elWidth: string | null;
 
-  elHeight: string;
+  elHeight: string | null;
 
   parentNode: HTMLElement;
 
-  wrapper: HTMLDivElement;
+  wrapper: HTMLDivElement | null;
 
   scrollbarWidth: string;
 
@@ -274,17 +274,21 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
       // clone
       this.wrapper = this.el.nativeElement.cloneNode(true);
       // remove all children
-      while (this.wrapper.hasChildNodes()) {
-          this.wrapper.removeChild(this.wrapper.lastChild);
-      }
-      this.wrapper.style.overflow = 'hidden';
+      if (this.wrapper !== null) {
+        while (this.wrapper.hasChildNodes()) {
+          if (this.wrapper.lastChild !== null) {
+            this.wrapper.removeChild(this.wrapper.lastChild);
+          }
+        }
+        this.wrapper.style.overflow = 'hidden';
 
-      this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
-      this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
-      // set the wrapper as child (instead of the element)
-      this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
-      // set element as child of wrapper
-      this.wrapper.appendChild(this.el.nativeElement);
+        this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
+        this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
+        // set the wrapper as child (instead of the element)
+        this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+        // set element as child of wrapper
+        this.wrapper.appendChild(this.el.nativeElement);
+      }
     }
   }
 
@@ -329,26 +333,32 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
      * Windows 10 (IE11, Chrome, Firefox) - 17px
      * Windows 10 (Edge 12/13) - 12px
      */
-    const outer = document.createElement('div');
-    outer.style.visibility = 'hidden';
-    outer.style.width = '100px';
-    outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
+    let widthNoScroll = 0;
+    let widthWithScroll = 0;
+    const outer: HTMLDivElement | null = document.createElement('div');
+    if (outer !== null) {
+      outer.style.visibility = 'hidden';
+      outer.style.width = '100px';
+      outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
 
-    document.body.appendChild(outer);
+      document.body.appendChild(outer);
 
-    const widthNoScroll = outer.offsetWidth;
-    // force scrollbars
-    outer.style.overflow = 'scroll';
+      widthNoScroll = outer.offsetWidth;
+      // force scrollbars
+      outer.style.overflow = 'scroll';
 
-    // add innerdiv
-    const inner = document.createElement('div');
-    inner.style.width = '100%';
-    outer.appendChild(inner);
+      // add innerdiv
+      const inner = document.createElement('div');
+      inner.style.width = '100%';
+      outer.appendChild(inner);
 
-    const widthWithScroll = inner.offsetWidth;
+      widthWithScroll = inner.offsetWidth;
 
-    // remove divs
-    outer.parentNode.removeChild(outer);
+      // remove divs
+      if (outer.parentNode !== null) {
+        outer.parentNode.removeChild(outer);
+      }
+    }
     /**
      * Scrollbar width will be 0 on Mac OS with the
      * default "Only show scrollbars when scrolling" setting (Yosemite and up).
