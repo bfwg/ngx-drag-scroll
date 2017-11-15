@@ -58,7 +58,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
    */
   downY = 0;
 
-  displayType:string | null = 'block';
+  displayType: string | null = 'block';
 
   elWidth: string | null;
 
