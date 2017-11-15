@@ -44,3 +44,5 @@ Thumbs.db
 *.d.ts
 index.js
 angular2-drag-scroll.js
+*.ngfactory.js
+*.ngsummary.json

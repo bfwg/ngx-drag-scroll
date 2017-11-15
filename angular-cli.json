@@ -34,8 +34,8 @@
     {
       "files": "src/**/*.ts",
       "exclude": [
-        "src/interface/drag-scroll-option.d.ts",
-        "src/angular2-drag-scroll.d.ts"
+        "**/*.d.ts",
+        "src/index.ts"
       ],
       "project": "demo/tsconfig.json"
     }

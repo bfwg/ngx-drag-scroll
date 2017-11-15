@@ -9,17 +9,16 @@
     }
   ],
   "main": "index.js",
+  "typings": "./index.d.ts",
   "scripts": {
-    "prepare": "npm run ngc",
+    "prepublish": "npm run ngc && copyfiles -f src/*.js src/*.js.map src/*.d.ts src/*.metadata.json .",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
     "lint": "ng lint",
-    "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
-    "clean": "npm run rimraf -- node_modules && npm cache clean",
+    "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
-    "ngc": "ngc -p src/tsconfig.json",
-    "tsc": "tsc -p src"
+    "ngc": "ngc"
   },
   "repository": {
     "type": "git",
@@ -62,6 +61,7 @@
     "@types/node": "6.0.88",
     "codelyzer": "4.0.1",
     "core-js": "2.5.1",
+    "copyfiles": "1.0.0",
     "jasmine-core": "2.8.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "1.7.1",
