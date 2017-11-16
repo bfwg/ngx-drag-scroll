@@ -9,8 +9,9 @@
     }
   ],
   "main": "index.js",
+  "typings": "index",
   "scripts": {
-    "prepare": "npm run ngc",
+    "postinstall": "echo postinstall; pwd;  npm run ngc",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run",
@@ -18,7 +19,7 @@
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
     "clean": "npm run rimraf -- node_modules && npm cache clean",
     "rimraf": "rimraf",
-    "ngc": "ngc -p src/tsconfig.json",
+    "ngc": "pwd;  ngc -p src/tsconfig.json",
     "tsc": "tsc -p src"
   },
   "repository": {
@@ -36,25 +37,25 @@
     "url": "https://github.com/bfwg/angular2-drag-scroll.git"
   },
   "homepage": "https://github.com/bfwg/angular2-drag-scroll#readme",
-  "peerDependencies": {
-    "@angular/common": "^5.0.0",
-    "@angular/compiler": "^5.0.0",
-    "@angular/core": "^5.0.0"
+  "dependencies": {
+    "@angular/common": "~4.4.4",
+    "@angular/compiler": "~4.4.4",
+    "@angular/core": "~4.4.4"
   },
   "devDependencies": {
-    "@angular/animations": "^5.0.0",
+    "@angular/animations": "~4.4.4",
     "@angular/cli": "1.5.0",
-    "@angular/common": "^5.0.0",
-    "@angular/compiler": "^5.0.0",
-    "@angular/compiler-cli": "^5.0.0",
-    "@angular/core": "^5.0.0",
-    "@angular/forms": "^5.0.0",
-    "@angular/http": "^5.0.0",
-    "@angular/material": "5.0.0-rc0",
-    "@angular/cdk": "5.0.0-rc0",
-    "@angular/platform-browser": "^5.0.0",
-    "@angular/platform-browser-dynamic": "^5.0.0",
-    "@angular/router": "^5.0.0",
+    "@angular/common": "~4.4.4",
+    "@angular/compiler": "~4.4.4",
+    "@angular/compiler-cli": "~4.4.4",
+    "@angular/core": "~4.4.4",
+    "@angular/forms": "~4.4.4",
+    "@angular/http": "~4.4.4",
+    "@angular/material": "2.0.0-beta.12",
+    "@angular/cdk": "2.0.0-beta.12",
+    "@angular/platform-browser": "~4.4.4",
+    "@angular/platform-browser-dynamic": "~4.4.4",
+    "@angular/router": "~4.4.4",
     "@angular/flex-layout": "2.0.0-beta.10-4905443",
     "@types/hammerjs": "^2.0.34",
     "hammerjs": "^2.0.8",
