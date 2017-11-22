@@ -1,3 +1,9 @@
+### 1.5.1
+
+Issue #40 - Rename library name to ngx-drag-scroll.
+
+Issue #79 - Fix build issue.
+
 ### 1.5.0
 
 Issue #75  - Fix npm distribution issue. See #69 and #72 for more details.

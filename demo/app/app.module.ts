@@ -9,7 +9,7 @@ import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { DragScrollModule } from '../../src/angular2-drag-scroll';
+import { DragScrollModule } from '../../src/ngx-drag-scroll';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
