@@ -34,6 +34,7 @@
     {
       "files": "src/**/*.ts",
       "exclude": [
+        "demo/app/ngx-drag-scroll.spec.ts",
         "src/interface/drag-scroll-option.d.ts",
         "src/ngx-drag-scroll.d.ts"
       ],

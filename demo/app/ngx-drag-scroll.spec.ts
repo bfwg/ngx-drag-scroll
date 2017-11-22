@@ -20,7 +20,7 @@ import {
   selector: 'app-test-component',
   template: ''
 })
-export class TestComponent {
+class TestComponent {
 }
 
 describe('Directive: DragScroll', () => {
