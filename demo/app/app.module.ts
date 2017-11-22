@@ -2,10 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatCommonModule, MatIconModule, MatSlideToggleModule, MatToolbarModule,
-  MatButtonModule } from '@angular/material';
-
-import 'style-loader!@angular/material/prebuilt-themes/indigo-pink.css';
+import {
+  MatCommonModule,
+  MatIconModule,
+  MatSlideToggleModule,
+  MatToolbarModule,
+  MatButtonModule
+} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
