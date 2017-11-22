@@ -1,25 +1,25 @@
-# [Angular2+ Draggable Carousel](https://bfwg.github.io/angular2-drag-scroll/)
+# [Angular2+ Draggable Carousel](https://bfwg.github.io/ngx-drag-scroll/)
 
 Lightweight drag to scroll carousel for Angular2+
 
-[![npm version](https://img.shields.io/npm/v/angular2-drag-scroll.svg)](https://www.npmjs.com/package/angular2-drag-scroll)
-[![Monthly Download](https://img.shields.io/npm/dm/angular2-drag-scroll.svg?style=flat-square)](https://www.npmjs.com/package/angular2-drag-scroll)
-[![Build Status](https://travis-ci.org/bfwg/angular2-drag-scroll.svg?branch=master)](https://travis-ci.org/bfwg/angular2-drag-scroll)
-[![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/angular2-drag-scroll/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/ngx-drag-scroll.svg)](https://www.npmjs.com/package/ngx-drag-scroll)
+[![Monthly Download](https://img.shields.io/npm/dm/ngx-drag-scroll.svg?style=flat-square)](https://www.npmjs.com/package/ngx-drag-scroll)
+[![Build Status](https://travis-ci.org/bfwg/ngx-drag-scroll.svg?branch=master)](https://travis-ci.org/bfwg/ngx-drag-scroll)
+[![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bfwg/ngx-drag-scroll/blob/master/LICENSE)
 
 
 *Scroll on drag!*
 
 ![Scroll](https://user-images.githubusercontent.com/12819525/31459582-73565738-ae78-11e7-8b45-83f686123b63.gif)
 
-Try out the [demo](https://bfwg.github.io/angular2-drag-scroll/)!
+Try out the [demo](https://bfwg.github.io/ngx-drag-scroll/)!
 
 # Install
 
 You can get it on npm.
 
 ```shell
-npm install angular2-drag-scroll --save
+npm install ngx-drag-scroll --save
 ```
 
 # Setup
@@ -27,7 +27,7 @@ npm install angular2-drag-scroll --save
 You'll need to add `DragScrollModule` to your application module.
 
 ```typescript
-import { DragScrollModule } from 'angular2-drag-scroll';
+import { DragScrollModule } from 'ngx-drag-scroll';
 ...
 
 @NgModule({

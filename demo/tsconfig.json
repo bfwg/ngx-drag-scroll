@@ -14,5 +14,9 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
-  }
+  },
+  "include": [
+    "./*",
+    "../src/ngx-drag-scroll.spec.ts"
+  ]
 }

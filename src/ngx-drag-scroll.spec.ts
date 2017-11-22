@@ -4,7 +4,7 @@ import {
   Renderer2,
   ElementRef
 } from '@angular/core';
-import { DragScroll } from '../../src/angular2-drag-scroll';
+import { DragScroll } from './ngx-drag-scroll';
 
 import {
   By
@@ -20,7 +20,7 @@ import {
   selector: 'app-test-component',
   template: ''
 })
-export class TestComponent {
+class TestComponent {
 }
 
 describe('Directive: DragScroll', () => {
