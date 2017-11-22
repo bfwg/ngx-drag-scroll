@@ -4,7 +4,7 @@ import {
   Renderer2,
   ElementRef
 } from '@angular/core';
-import { DragScroll } from '../../src/ngx-drag-scroll';
+import { DragScroll } from './ngx-drag-scroll';
 
 import {
   By
