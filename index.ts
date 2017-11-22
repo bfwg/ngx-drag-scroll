@@ -1,1 +1,1 @@
-export * from './src/angular2-drag-scroll';
+export * from './src/ngx-drag-scroll';
