@@ -16,7 +16,6 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { TestComponent } from './ngx-drag-scroll.spec';
 
 
 
@@ -27,7 +26,6 @@ import { TestComponent } from './ngx-drag-scroll.spec';
     NotFoundComponent,
     FooterComponent,
     GithubComponent,
-    TestComponent,
     HomeComponent
   ],
   imports: [
