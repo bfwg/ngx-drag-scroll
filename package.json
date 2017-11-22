@@ -1,6 +1,6 @@
 {
   "name": "angular2-drag-scroll",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Lightweight drag to scroll directive for Angular2",
   "contributors": [
     {
@@ -76,5 +76,8 @@
     "tslint": "5.8.0",
     "typescript": "2.4.2",
     "zone.js": "0.8.18"
+  },
+  "dependencies": {
+    "package.json": "^2.0.1"
   }
 }
