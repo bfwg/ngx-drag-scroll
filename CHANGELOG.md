@@ -1,3 +1,7 @@
+### 1.5.2
+
+Issue #55  - Use strict mode in tsconfig.
+
 ### 1.5.1
 
 Issue #40 - Rename library name to ngx-drag-scroll.

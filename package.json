@@ -17,7 +17,7 @@
     "lint": "ng lint",
     "build": "ng build --aot",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
-    "clean": "npm run rimraf -- node_modules && npm cache clean",
+    "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
     "ngc": "ngc -p src/tsconfig.json",
     "tsc": "tsc -p src"
