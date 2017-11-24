@@ -1,7 +1,7 @@
 {
-  "name": "angular2-drag-scroll",
+  "name": "ngx-drag-scroll",
   "version": "1.5.2",
-  "description": "Lightweight drag to scroll directive for Angular2",
+  "description": "Lightweight drag to scroll directive for Angular2+",
   "contributors": [
     {
       "name": "Fan Jin",
@@ -15,15 +15,16 @@
     "start": "ng serve",
     "test": "ng test --single-run",
     "lint": "ng lint",
+    "build": "ng build --aot",
     "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
-    "clean": "npm run rimraf -- node_modules && npm cache clean",
+    "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
     "ngc": "ngc -p src/tsconfig.json",
     "tsc": "tsc -p src"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bfwg/angular2-drag-scroll.git"
+    "url": "git+https://github.com/bfwg/ngx-drag-scroll.git"
   },
   "keywords": [
     "Angular 2",
@@ -33,9 +34,9 @@
   "author": "Fan Jin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bfwg/angular2-drag-scroll.git"
+    "url": "https://github.com/bfwg/ngx-drag-scroll.git"
   },
-  "homepage": "https://github.com/bfwg/angular2-drag-scroll#readme",
+  "homepage": "https://github.com/bfwg/ngx-drag-scroll#readme",
   "peerDependencies": {
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
@@ -76,5 +77,8 @@
     "tslint": "5.8.0",
     "typescript": "2.4.2",
     "zone.js": "0.8.18"
+  },
+  "dependencies": {
+    "package.json": "^2.0.1"
   }
 }
