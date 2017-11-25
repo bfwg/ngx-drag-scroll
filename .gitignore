@@ -43,4 +43,4 @@ Thumbs.db
 *.metadata.json
 *.d.ts
 index.js
-angular2-drag-scroll.js
+ngx-drag-scroll.js
