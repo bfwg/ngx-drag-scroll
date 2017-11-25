@@ -44,3 +44,4 @@ Thumbs.db
 *.d.ts
 index.js
 ngx-drag-scroll.js
+drag-scroll-option.js
