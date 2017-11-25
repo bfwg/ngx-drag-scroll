@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "lib": ["es2015", "es6", "dom"],
+    "lib": ["es2015", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,

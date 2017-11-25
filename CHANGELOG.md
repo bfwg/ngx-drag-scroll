@@ -1,3 +1,7 @@
+### 1.5.3
+
+Change compile target to es5 which will make the library work on IE 11.
+
 ### 1.5.2
 
 Issue #55  - Use strict mode in tsconfig.
