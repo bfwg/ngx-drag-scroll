@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Lightweight drag to scroll directive for Angular2+",
   "contributors": [
     {
@@ -16,7 +16,6 @@
     "test": "ng test --single-run",
     "lint": "ng lint",
     "build": "ng build --aot",
-    "clean:build": "npm run rimraf -- **/*.js **/*.d.ts **/*.map index.js index.d.ts index.js.map",
     "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
     "ngc": "ngc -p src/tsconfig.json",
