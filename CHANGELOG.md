@@ -1,6 +1,6 @@
 ### 1.5.5
 
-Issue #91 - Artifact of Issue #89 - regenerate package-lock.json.
+Issue #91 - Regenerate package-lock.json (as part of changes in Issue #89)
 
 ### 1.5.4
 
