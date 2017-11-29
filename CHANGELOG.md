@@ -1,3 +1,7 @@
+### 1.5.5
+
+Issue #90 - Artifact of Issue #89 - regenerate package-lock.json.
+
 ### 1.5.4
 
 Issue #89 - Remove unused dependency.
