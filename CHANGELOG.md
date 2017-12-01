@@ -1,3 +1,7 @@
+### 1.5.5
+
+Issue #91 - Regenerate package-lock.json (as part of changes in Issue #89)
+
 ### 1.5.4
 
 Issue #89 - Remove unused dependency.
