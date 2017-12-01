@@ -2,6 +2,8 @@
 
 Issue #91 - Regenerate package-lock.json (as part of changes in Issue #89)
 
+Issue #92 - Update README and remove misleading Angular2+ keyword.
+
 ### 1.5.4
 
 Issue #89 - Remove unused dependency.

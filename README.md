@@ -1,6 +1,6 @@
-# [Angular2+ Draggable Carousel](https://bfwg.github.io/ngx-drag-scroll/)
+# [Angular Draggable Carousel](https://bfwg.github.io/ngx-drag-scroll/)
 
-Lightweight drag to scroll carousel for Angular2+
+Lightweight drag to scroll carousel for Angular
 
 [![npm version](https://img.shields.io/npm/v/ngx-drag-scroll.svg)](https://www.npmjs.com/package/ngx-drag-scroll)
 [![Monthly Download](https://img.shields.io/npm/dm/ngx-drag-scroll.svg?style=flat-square)](https://www.npmjs.com/package/ngx-drag-scroll)

@@ -1,7 +1,7 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "1.5.4",
-  "description": "Lightweight drag to scroll directive for Angular2+",
+  "version": "1.5.5",
+  "description": "Lightweight drag to scroll directive for Angular",
   "contributors": [
     {
       "name": "Fan Jin",
@@ -26,7 +26,8 @@
     "url": "git+https://github.com/bfwg/ngx-drag-scroll.git"
   },
   "keywords": [
-    "Angular 2",
+    "Angular",
+    "carousel",
     "drag",
     "scroll"
   ],
