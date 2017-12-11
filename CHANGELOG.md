@@ -1,3 +1,7 @@
+### 1.6.0
+
+Issue #94 - Upgrade to Material 5 / Angular 5.1.0 
+
 ### 1.5.5
 
 Issue #91 - Regenerate package-lock.json (as part of changes in Issue #89)
