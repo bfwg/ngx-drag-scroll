@@ -1,3 +1,8 @@
+#### 1.6.1
+
+Issue #95 #96 - Introduce commitlint
+Issue #97  - Upgrade angular cli to 1.6.1 / flex-layout to 2.0.0-beta.12 and downgrade typescript to 2.4.2  
+
 ### 1.6.0
 
 Issue #94 - Upgrade to Material 5 / Angular 5.1.0 
