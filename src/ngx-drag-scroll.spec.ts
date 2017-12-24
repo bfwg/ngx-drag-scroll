@@ -162,7 +162,7 @@ describe('Directive: DragScroll', () => {
       template: `<div style="width: 350px; height: 50px;" drag-scroll scrollbar-hidden="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
-    }})
+    }});
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
