@@ -90,7 +90,7 @@ ___
   `
 })
 class Sample {
-  @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
+  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
   
   moveLeft() {
     this.ds.moveLeft();
@@ -114,14 +114,14 @@ constructor(
 ) {}
 dragScrollDom: any;
 dragScrollRef: ElementRef;
-dragScroll: DragScroll;
+dragScroll: DragScrollDirective;
 
 ngAfterViewInit() {
   // attach to .nav-tabs element
   this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
   this.dragScrollRef = new ElementRef(this.dragScrollDom );
 
-  this.dragScroll = new DragScroll(this.dragScrollRef, this.renderer, this.cdr);
+  this.dragScroll = new DragScrollDirective(this.dragScrollRef, this.renderer, this.cdr);
   this.dragScroll.attach({
     disabled: false,
     scrollbarHidden: true,
