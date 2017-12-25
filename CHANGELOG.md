@@ -1,3 +1,8 @@
+#### 1.6.3
+
+Issue #99 - fix stepped scrolling issue
+
+
 #### 1.6.2
 
 Issue #101 - tslint updated to the defaults as of angular cli 1.6.2
