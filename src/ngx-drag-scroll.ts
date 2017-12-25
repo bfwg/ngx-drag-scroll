@@ -501,7 +501,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
   private toChildrenLocation(): number {
     let to = 0;
     for (let i = 0; i < this.currIndex; i++) {
-      to += this.childrenArr[this.currIndex].clientWidth;
+      to += this.childrenArr[i].clientWidth;
     }
     return to;
   }
