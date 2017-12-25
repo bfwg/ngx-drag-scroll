@@ -1,3 +1,7 @@
+### 1.7.0
+
+Issue #103 - style: The name of the class DragScroll should end with the suffix Directive 
+
 #### 1.6.3
 
 Issue #99 - fix stepped scrolling issue
