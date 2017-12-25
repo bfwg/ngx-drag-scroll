@@ -95,36 +95,36 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
    */
   @Input('scrollbar-hidden')
   get scrollbarHidden() { return this._scrollbarHidden; }
-  set scrollbarHidden(value: boolean) { this._scrollbarHidden = value; };
+  set scrollbarHidden(value: boolean) { this._scrollbarHidden = value; }
 
   /**
    * Whether horizontally and vertically draging and scrolling is be disabled
    */
   @Input('drag-scroll-disabled')
   get disabled() { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = value; };
+  set disabled(value: boolean) { this._disabled = value; }
 
   /**
    * Whether horizontally dragging and scrolling is be disabled
    */
   @Input('drag-scroll-x-disabled')
   get xDisabled() { return this._xDisabled; }
-  set xDisabled(value: boolean) { this._xDisabled = value; };
+  set xDisabled(value: boolean) { this._xDisabled = value; }
 
   /**
    * Whether vertically dragging and scrolling events is disabled
    */
   @Input('drag-scroll-y-disabled')
   get yDisabled() { return this._yDisabled; }
-  set yDisabled(value: boolean) { this._yDisabled = value; };
+  set yDisabled(value: boolean) { this._yDisabled = value; }
 
   @Input('drag-disabled')
   get dragDisabled() { return this._dragDisabled; }
-  set dragDisabled(value: boolean) { this._dragDisabled = value; };
+  set dragDisabled(value: boolean) { this._dragDisabled = value; }
 
   @Input('snap-disabled')
   get snapDisabled() { return this._snapDisabled; }
-  set snapDisabled(value: boolean) { this._snapDisabled = value; };
+  set snapDisabled(value: boolean) { this._snapDisabled = value; }
 
   constructor(
     private el: ElementRef,
