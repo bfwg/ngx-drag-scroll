@@ -2,7 +2,7 @@
   <p class="title">DRAG AND SCROLL!</p>
   <div class="demo-border">
     <div class="demo-one"
-      drag-scroll
+      dragScroll
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
       (reachesLeftBound)="leftBoundStat($event)"
@@ -27,7 +27,7 @@
   </div>
   <div class="demo-border">
     <div class="demo-two"
-        drag-scroll [scrollbar-hidden]="hideScrollbar"
+        dragScroll [scrollbar-hidden]="hideScrollbar"
         [drag-scroll-disabled]="disabled"
         [drag-scroll-x-disabled]="xDisabled"
         [drag-scroll-y-disabled]="yDisabled"

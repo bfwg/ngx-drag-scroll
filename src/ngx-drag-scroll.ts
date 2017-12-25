@@ -15,7 +15,7 @@ import {
 import { DragScrollOption } from './interface/drag-scroll-option';
 
 @Directive({
-  selector: '[drag-scroll]'
+  selector: '[dragScroll]'
 })
 export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoCheck {
 
