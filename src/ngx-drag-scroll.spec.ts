@@ -33,7 +33,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should drag to scroll horizontally and vertically', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll>
+      template: `<div style="width: 50px; height: 50px;" dragScroll>
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -60,7 +60,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should disable drag and scroll horizontally and vertically', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-disabled="true">
+      template: `<div style="width: 50px; height: 50px;" dragScroll drag-scroll-disabled="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -88,7 +88,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should disable drag and scroll horizontally', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-x-disabled="true">
+      template: `<div style="width: 50px; height: 50px;" dragScroll drag-scroll-x-disabled="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -116,7 +116,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should disable drag and scroll horizontally', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll drag-scroll-y-disabled="true">
+      template: `<div style="width: 50px; height: 50px;" dragScroll drag-scroll-y-disabled="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -144,7 +144,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should only hide horizontal scroll bar', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 350px;" drag-scroll scrollbar-hidden="true">
+      template: `<div style="width: 50px; height: 350px;" dragScroll scrollbar-hidden="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -159,7 +159,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should only hide vertical scroll bar', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 350px; height: 50px;" drag-scroll scrollbar-hidden="true">
+      template: `<div style="width: 350px; height: 50px;" dragScroll scrollbar-hidden="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -174,7 +174,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should hide all scroll bars', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll scrollbar-hidden="true">
+      template: `<div style="width: 50px; height: 50px;" dragScroll scrollbar-hidden="true">
                   <div style="width: 300px; height: 300px;"></div>
                 </div>`
     }});
@@ -190,7 +190,7 @@ describe('Directive: DragScrollDirective', () => {
 
   it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<div style="width: 50px; height: 50px;" drag-scroll>
+      template: `<div style="width: 50px; height: 50px;" dragScroll>
                   <div style="width: 49px; height: 49px;"></div>
                 </div>`
     }});
