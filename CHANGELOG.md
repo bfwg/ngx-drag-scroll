@@ -1,6 +1,8 @@
 ### 1.7.0
 
-Issue #103 - style: The name of the class DragScroll should end with the suffix Directive 
+Issue #103 - style: The name of the class DragScroll should end with the suffix Directive
+
+ ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Important: The directive attribute changes from drag-scroll to dragScroll`
 
 #### 1.6.3
 

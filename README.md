@@ -51,7 +51,7 @@ Add the `drag-scroll` attribute to a scrollable element:
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll>
+  <div dragScroll>
     Big text goes here...
   </div>
   `
@@ -82,7 +82,7 @@ ___
 @Component({
   selector: 'sample',
   template:`
-  <div drag-scroll #nav>
+  <div dragScroll #nav>
     Big text goes here...
   </div>
   <button (click)="moveLeft()">Left</button>
