@@ -17,7 +17,7 @@ import { DragScrollOption } from './interface/drag-scroll-option';
 @Directive({
   selector: '[drag-scroll]'
 })
-export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
+export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   @Output() reachesLeftBound = new EventEmitter<boolean>();
 
@@ -524,7 +524,7 @@ export class DragScroll implements OnDestroy, OnInit, OnChanges, DoCheck {
 }
 
 @NgModule({
-  exports: [DragScroll],
-  declarations: [DragScroll]
+  exports: [DragScrollDirective],
+  declarations: [DragScrollDirective]
 })
 export class DragScrollModule { }
