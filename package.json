@@ -16,6 +16,7 @@
     "start": "ng serve",
     "test": "ng test --single-run",
     "lint": "ng lint",
+    "tslint": "./node_modules/.bin/tslint --project tslint.json src/ngx-drag-scroll.ts",
     "build": "ng build --aot",
     "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
