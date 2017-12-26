@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DragScroll } from '../../../src/ngx-drag-scroll';
+import { DragScrollDirective } from '../../../src/ngx-drag-scroll';
 
 @Component({
   selector: 'app-home',
@@ -33,9 +33,9 @@ export class HomeComponent implements OnInit {
 
   dragScrollDom: any;
   dragScrollRef: ElementRef;
-  dragScroll: DragScroll;
+  dragScroll: DragScrollDirective;
 
-  @ViewChild('nav', {read: DragScroll}) ds: DragScroll;
+  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
 
   constructor(
     matIconRegistry: MatIconRegistry,

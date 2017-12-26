@@ -1,3 +1,10 @@
+### 1.7.0
+
+Issue #103 - style: The name of the class DragScroll should end with the suffix Directive
+
+ 1. ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Important: The directive attribute changes from drag-scroll to dragScroll`
+ 1. ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Important: DragScroll  renamed to DragScrollDirective`
+
 #### 1.6.3
 
 Issue #99 - fix stepped scrolling issue
