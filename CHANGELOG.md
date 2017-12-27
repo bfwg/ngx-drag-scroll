@@ -1,3 +1,7 @@
+#### 1.7.1
+
+Issue #104 - fix tslint config and refactor accordingly.
+
 ### 1.7.0
 
 Issue #103 - style: The name of the class DragScroll should end with the suffix Directive
