@@ -1,3 +1,7 @@
+#### 1.7.2
+
+Issue #106 - fix mouseMoveListener affecting entire document
+
 #### 1.7.1
 
 Issue #104 - fix tslint config and refactor accordingly.
