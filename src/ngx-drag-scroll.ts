@@ -425,7 +425,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
         this.downY = e.clientY;
       }
     }
-    return false;
+    return !this.isPressed;
   }
 
 
