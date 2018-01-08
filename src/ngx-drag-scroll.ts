@@ -239,35 +239,54 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     animateScroll();
   }
 
-  private snapToCurrentIndex() {
-    let childrenWidth = 0;
+  private locateCurrentIndex(snap?: boolean) {
     const ele = this.el.nativeElement;
-    for (let i = 0; i < this.childrenArr.length; i++) {
-      if (i === this.childrenArr.length - 1) {
-        this.currIndex = this.childrenArr.length;
-        break;
-      }
-
-      const nextChildrenWidth = childrenWidth + this.childrenArr[i + 1].clientWidth;
-
-      const currentClildWidth = this.childrenArr[i].clientWidth;
-      const nextClildWidth = this.childrenArr[i + 1].clientWidth;
-
+    this.getChildrenWidth((currentClildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
       if (ele.scrollLeft >= childrenWidth &&
           ele.scrollLeft <= nextChildrenWidth) {
 
         if (nextChildrenWidth - ele.scrollLeft > currentClildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
-          this.currIndex = i;
-          this.scrollTo(ele, childrenWidth, 500);
+          this.currIndex = idx;
+          if (snap) {
+            this.scrollTo(ele, childrenWidth, 500);
+          }
         } else {
           // forward scrolling
-          this.currIndex = i + 1;
-          this.scrollTo(ele, childrenWidth + currentClildWidth, 500);
+          this.currIndex = idx + 1;
+          if (snap) {
+            this.scrollTo(ele, childrenWidth + currentClildWidth, 500);
+          }
         }
-        break;
-
+        stop();
       }
+    });
+  }
+
+  private getChildrenWidth(cb: (
+    currentClildWidth: number,
+    nextChildrenWidth: number,
+    childrenWidth: number,
+    index: number,
+    breakFunc: () => void) => void) {
+    let childrenWidth = 0;
+    let shouldBreak = false;
+    let breakFunc = function() {
+      shouldBreak = true;
+    };
+    for (let i = 0; i < this.childrenArr.length; i++) {
+      if (i === this.childrenArr.length - 1) {
+        this.currIndex = this.childrenArr.length;
+        break;
+      }
+      if (shouldBreak) {
+        break;
+      }
+
+      const nextChildrenWidth = childrenWidth + this.childrenArr[i + 1].clientWidth;
+      const currentClildWidth = this.childrenArr[i].clientWidth;
+      cb(currentClildWidth, nextChildrenWidth, childrenWidth, i, breakFunc);
+
       childrenWidth += this.childrenArr[i].clientWidth;
     }
   }
@@ -449,8 +468,10 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
       clearTimeout(this.scrollTimer);
       this.scrollTimer = window.setTimeout(() => {
         this.isScrolling = false;
-        this.snapToCurrentIndex();
+        this.locateCurrentIndex(true);
       }, 500);
+    } else {
+      this.locateCurrentIndex();
     }
   }
 
@@ -459,7 +480,9 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     if (this.isPressed) {
       this.isPressed = false;
       if (!this.snapDisabled) {
-        this.snapToCurrentIndex();
+        this.locateCurrentIndex(true);
+      } else {
+        this.locateCurrentIndex();
       }
     }
     return false;
@@ -470,8 +493,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
    */
   moveLeft() {
     const ele = this.el.nativeElement;
-    if (this.currIndex !== 0) {
-      // reach left most
+    if (this.currIndex !== 0 || this.snapDisabled) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(ele, this.toChildrenLocation(), 500);
