@@ -271,7 +271,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     breakFunc: () => void) => void) {
     let childrenWidth = 0;
     let shouldBreak = false;
-    let breakFunc = function() {
+    const breakFunc = function() {
       shouldBreak = true;
     };
     for (let i = 0; i < this.childrenArr.length; i++) {
