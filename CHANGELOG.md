@@ -1,3 +1,7 @@
+#### 1.7.3
+
+Issue #112 - Commitlint 6 and commitlint/travis and commitlint/angular added.
+
 #### 1.7.2
 
 Issue #106 - fix mouseMoveListener affecting entire document
