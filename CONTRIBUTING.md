@@ -10,4 +10,8 @@ http://marionebl.github.io/commitlint .
 
 Commit types should be one of the following: 
 
-[build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test] 
+[build, ci, docs, feat, fix, perf, refactor, revert, style, test] 
+
+## Rules
+
+The rules are listed here at - http://marionebl.github.io/commitlint/#/reference-rules . 
