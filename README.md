@@ -134,7 +134,9 @@ ngAfterViewInit() {
 ### Contributing
 Clone the repository, and run `npm install`, `npm start`. The demo app will starts on port :4200. I usually do my development on the demo app.
 
-I'll accept pretty much everything so feel free to open a Pull-Request
+I'll accept pretty much everything so feel free to open a Pull-Request. 
+
+We use commitlint for managing our commits. Check out [Contributing](CONTRIBUTING.md) for more details.
 
 # License
  [MIT](/LICENSE)
