@@ -8,7 +8,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 script:
-   - /bin/bash lint-commits.sh
+   - commitlint-travis
    - npm run lint
    - npm run test
    - npm run build
