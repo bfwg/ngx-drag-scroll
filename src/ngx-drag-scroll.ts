@@ -241,7 +241,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   private locateCurrentIndex(snap?: boolean) {
     const ele = this.el.nativeElement;
-    this.getChildrenWidth((currentClildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
+    this.currentChildWidth((currentClildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
       if (ele.scrollLeft >= childrenWidth &&
           ele.scrollLeft <= nextChildrenWidth) {
 
@@ -263,7 +263,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     });
   }
 
-  private getChildrenWidth(cb: (
+  private currentChildWidth(cb: (
     currentClildWidth: number,
     nextChildrenWidth: number,
     childrenWidth: number,
