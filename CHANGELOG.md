@@ -1,5 +1,6 @@
 #### 1.7.3
 
+Issue #109 - fix Positioning after moveLeft()/moveRight()
 Issue #112 - Commitlint 6 and commitlint/travis and commitlint/angular added.
 
 #### 1.7.2
