@@ -22,6 +22,10 @@ You can get it on npm.
 npm install ngx-drag-scroll --save
 ```
 
+## Requirements
+
+This project needs `Angular 5+` as dependencies though.
+
 # Setup
 
 You'll need to add `DragScrollModule` to your application module.
