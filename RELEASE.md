@@ -10,5 +10,6 @@ Recommended workflow
 
 The reason why you should commit and tag after conventionalChangelog is that the CHANGELOG should be included in the new release, hence gitRawCommitsOpts.from defaults to the latest semver tag.
 
+Important: The npm run changelog command needs to be executed only from master branch.
 
 More details at: https://www.npmjs.com/package/conventional-changelog-cli . 
