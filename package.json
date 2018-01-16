@@ -17,7 +17,7 @@
     "test": "ng test --single-run",
     "lint": "ng lint",
     "tslint": "./node_modules/.bin/tslint --project tslint.json src/ngx-drag-scroll.ts",
-    "version": "conventional-changelog -p angular -i NEWCHANGELOG.md -s -r 0 && git add NEWCHANGELOG.md",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "build": "ng build --aot",
     "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf",
