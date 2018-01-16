@@ -1,104 +1,78 @@
-<a name="1.7.4"></a>
-## [1.7.4](https://github.com/bfwg/ngx-drag-scroll/compare/1.5.3...1.7.4) (2018-01-16)
 
 
-### Bug Fixes
+#### 1.7.3
 
-* fix global select text issue ([#107](https://github.com/bfwg/ngx-drag-scroll/issues/107)) ([04ef6a2](https://github.com/bfwg/ngx-drag-scroll/commit/04ef6a2))
-* fix stepped scrolling issue ([#102](https://github.com/bfwg/ngx-drag-scroll/issues/102)) ([783d852](https://github.com/bfwg/ngx-drag-scroll/commit/783d852))
-* use commitlint for better commit quality ([#96](https://github.com/bfwg/ngx-drag-scroll/issues/96)) ([1c0af42](https://github.com/bfwg/ngx-drag-scroll/commit/1c0af42))
+Issue #109 - fix Positioning after moveLeft()/moveRight()
+Issue #112 - Commitlint 6 and commitlint/travis and commitlint/angular added.
 
+#### 1.7.2
 
-### Features
+Issue #106 - fix mouseMoveListener affecting entire document
 
-* commitlint 6 ([#112](https://github.com/bfwg/ngx-drag-scroll/issues/112)) ([64adb39](https://github.com/bfwg/ngx-drag-scroll/commit/64adb39))
+#### 1.7.1
 
+Issue #104 - fix tslint config and refactor accordingly.
 
+### 1.7.0
 
-<a name="1.5.3"></a>
-## [1.5.3](https://github.com/bfwg/ngx-drag-scroll/compare/1.5.2...1.5.3) (2017-11-25)
+Issue #103 - style: The name of the class DragScroll should end with the suffix Directive
 
+ 1. ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Important: The directive attribute changes from drag-scroll to dragScroll`
+ 1. ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `Important: DragScroll  renamed to DragScrollDirective`
 
+#### 1.6.3
 
-<a name="1.5.2"></a>
-## [1.5.2](https://github.com/bfwg/ngx-drag-scroll/compare/1.4.0-rc.6...1.5.2) (2017-11-24)
-
-
-### Bug Fixes
-
-* remove files on npm that should have been ignore by gitignore ([418b0fc](https://github.com/bfwg/ngx-drag-scroll/commit/418b0fc))
+Issue #99 - fix stepped scrolling issue
 
 
+#### 1.6.2
 
-<a name="1.4.0-rc.6"></a>
-# [1.4.0-rc.6](https://github.com/bfwg/ngx-drag-scroll/compare/1.4.0-rc.5...1.4.0-rc.6) (2017-09-11)
+Issue #101 - tslint updated to the defaults as of angular cli 1.6.2
 
 
 
-<a name="1.4.0-rc.5"></a>
-# [1.4.0-rc.5](https://github.com/bfwg/ngx-drag-scroll/compare/1.4.0-rc.4...1.4.0-rc.5) (2017-09-11)
+#### 1.6.1
 
+Issue #95 #96 - Introduce commitlint
 
+Issue #97  - Upgrade angular cli to 1.6.1 / flex-layout to 2.0.0-beta.12 and downgrade typescript to 2.4.2
 
-<a name="1.4.0-rc.4"></a>
-# [1.4.0-rc.4](https://github.com/bfwg/ngx-drag-scroll/compare/1.4.0-rc.3...1.4.0-rc.4) (2017-09-11)
+### 1.6.0
 
+Issue #94 - Upgrade to Material 5 / Angular 5.1.0 
 
+#### 1.5.5
 
-<a name="1.4.0-rc.3"></a>
-# [1.4.0-rc.3](https://github.com/bfwg/ngx-drag-scroll/compare/1.4.0-rc.2...1.4.0-rc.3) (2017-09-11)
+Issue #91 - Regenerate package-lock.json (as part of changes in Issue #89)
 
+Issue #92 - Update README and remove misleading Angular2+ keyword.
 
+#### 1.5.4
 
-<a name="1.4.0-rc.2"></a>
-# [1.4.0-rc.2](https://github.com/bfwg/ngx-drag-scroll/compare/v1.2.5...1.4.0-rc.2) (2017-09-08)
+Issue #89 - Remove unused dependency.
 
+#### 1.5.3
 
-### Bug Fixes
+Change compile target to es5 which will make the library work on IE 11.
 
-* missing metadata for aot compilation ([#24](https://github.com/bfwg/ngx-drag-scroll/issues/24)) ([2435c82](https://github.com/bfwg/ngx-drag-scroll/commit/2435c82)), closes [#23](https://github.com/bfwg/ngx-drag-scroll/issues/23)
-* **device:** fix drag scroll not working in mobile view ([#27](https://github.com/bfwg/ngx-drag-scroll/issues/27)) ([d85b1d8](https://github.com/bfwg/ngx-drag-scroll/commit/d85b1d8))
-* **unit-test:** update unit test ([7f4e9f6](https://github.com/bfwg/ngx-drag-scroll/commit/7f4e9f6))
+#### 1.5.2
 
+Issue #55  - Use strict mode in tsconfig.
 
-### Features
+#### 1.5.1
 
-* improve nav buttons ([#34](https://github.com/bfwg/ngx-drag-scroll/issues/34)) ([c72bce8](https://github.com/bfwg/ngx-drag-scroll/commit/c72bce8))
+Issue #40 - Rename library name to ngx-drag-scroll.
 
+Issue #79 - Fix build issue.
 
+### 1.5.0
 
-<a name="1.2.5"></a>
-## [1.2.5](https://github.com/bfwg/ngx-drag-scroll/compare/v1.2.4...v1.2.5) (2017-02-13)
+Issue #75  - Fix npm distribution issue. See #69 and #72 for more details.
 
+#### 1.4.5
 
+Issue #71 - angular5 dependency
 
-<a name="1.2.4"></a>
-## [1.2.4](https://github.com/bfwg/ngx-drag-scroll/compare/v1.2.3...v1.2.4) (2017-02-12)
+### 1.4.0
 
-
-
-<a name="1.2.3"></a>
-## [1.2.3](https://github.com/bfwg/ngx-drag-scroll/compare/v1.2.2...v1.2.3) (2017-02-12)
-
-
-
-<a name="1.2.2"></a>
-## [1.2.2](https://github.com/bfwg/ngx-drag-scroll/compare/1.2.2...v1.2.2) (2017-02-10)
-
-
-
-<a name="1.2.0"></a>
-# [1.2.0](https://github.com/bfwg/ngx-drag-scroll/compare/v1.1.1...v1.2.0) (2017-02-07)
-
-
-
-<a name="1.1.1"></a>
-## [1.1.1](https://github.com/bfwg/ngx-drag-scroll/compare/v1.1.0...v1.1.1) (2017-02-06)
-
-
-
-<a name="1.1.0"></a>
-# 1.1.0 (2017-02-06)
-
-
-
+## 1.0.0
