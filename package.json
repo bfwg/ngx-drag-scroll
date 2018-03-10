@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "Lightweight drag to scroll directive for Angular",
   "contributors": [
     {
@@ -46,6 +46,7 @@
     "@angular/core": "~5.1.1"
   },
   "devDependencies": {
+    "@angular-devkit/core": "^0.4.5",
     "@angular/animations": "~5.1.1",
     "@angular/bazel": "~5.1.1",
     "@angular/cdk": "~5.0.4",
@@ -64,9 +65,9 @@
     "@angular/upgrade": "~5.1.1",
     "@bazel/ibazel": "^0.1.1",
     "@commitlint/cli": "~6.0.2",
-    "@commitlint/travis-cli": "~6.0.2",
     "@commitlint/config-angular": "~6.0.2",
     "@commitlint/config-conventional": "~6.0.2",
+    "@commitlint/travis-cli": "~6.0.2",
     "@types/hammerjs": "^2.0.35",
     "@types/jasmine": "~2.8.4",
     "@types/jasminewd2": "~2.0.2",
