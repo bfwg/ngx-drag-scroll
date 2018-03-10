@@ -457,7 +457,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   onScroll() {
     const ele = this.el.nativeElement;
-    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth && this.currIndex !== 0) {
+    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
       this.scrollReachesRightEnd = true;
     } else {
       this.scrollReachesRightEnd = false;
