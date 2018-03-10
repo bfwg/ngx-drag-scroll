@@ -1,4 +1,6 @@
+#### 1.7.5
 
+Issue #122 - rightNavDisabled false after reaching end of carousel
 
 #### 1.7.3
 
