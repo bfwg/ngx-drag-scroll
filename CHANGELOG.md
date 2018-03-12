@@ -1,3 +1,7 @@
+#### 1.7.6
+
+Issue #124 - fix npm install module not found issue
+
 #### 1.7.5
 
 Issue #122 - rightNavDisabled false after reaching end of carousel
