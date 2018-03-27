@@ -406,6 +406,11 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     this.markElDimension();
 
     this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'true');
+
+    // prevent Firefox from dragging images
+    document.addEventListener('dragstart', function (e) {
+      e.preventDefault();
+    });
   }
 
   ngDoCheck() {
