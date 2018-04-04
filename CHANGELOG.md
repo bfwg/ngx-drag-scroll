@@ -1,3 +1,8 @@
+#### 1.7.7
+
+Issue #129 - onMouseUp stops all propagation when selecting text
+Add Github templates
+
 #### 1.7.6
 
 Issue #124 - fix npm install module not found issue
