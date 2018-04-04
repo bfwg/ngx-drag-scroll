@@ -481,7 +481,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   }
 
   onMouseUp(e: MouseEvent) {
-    e.preventDefault();
     if (this.isPressed) {
       this.isPressed = false;
       if (!this.snapDisabled) {
@@ -490,7 +489,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
         this.locateCurrentIndex();
       }
     }
-    return false;
   }
 
   /*
