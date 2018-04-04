@@ -1,6 +1,7 @@
 #### 1.7.7
 
-Issue #129 - onMouseUp stops all propagation when selecting text
+Issue #129 - fix onMouseUp stops all propagation when selecting text
+Issue #125 - fix Drag-scroll not working on Firefox Quantum
 Add Github templates
 
 #### 1.7.6
