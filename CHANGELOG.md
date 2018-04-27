@@ -1,3 +1,7 @@
+#### 1.7.8
+
+Issue #133 - Do not reset scroll location on disabling/enabling the drag.
+
 #### 1.7.7
 
 Issue #129 - fix onMouseUp stops all propagation when selecting text
