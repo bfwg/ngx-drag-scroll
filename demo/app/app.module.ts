@@ -20,8 +20,6 @@ import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

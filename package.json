@@ -46,9 +46,10 @@
     "@angular/core": "5.2.7"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
     "@angular/animations": "5.2.7",
     "@angular/bazel": "5.2.7",
+    "@angular/cdk": "^5.2.5",
+    "@angular/cli": "1.7.2",
     "@angular/common": "5.2.7",
     "@angular/compiler": "5.2.7",
     "@angular/compiler-cli": "5.2.7",
@@ -70,6 +71,7 @@
     "@types/node": "6.0.101",
     "codelyzer": "4.2.1",
     "core-js": "2.5.3",
+    "hammerjs": "^2.0.8",
     "jasmine-core": "2.8.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "2.0.0",
