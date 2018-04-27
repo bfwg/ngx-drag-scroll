@@ -382,7 +382,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   ngOnChanges() {
     this.setScrollBar();
-    this.resetScrollLocation();
 
     if (this.xDisabled || this.disabled) {
       this.disableScroll('x');
