@@ -75,6 +75,7 @@ That's it! Now you can scroll it by dragging.
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
 | drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
 | snap-disabled          | @Input  | Whether snapping is disabled.                                                 | false |
+| snap-offset            | @Input  | Pixels of previous element to show on snap or moving left and right.          |   0   |
 | reachesLeftBound       | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
 | reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
 

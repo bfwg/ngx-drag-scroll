@@ -30,6 +30,8 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   private _dragDisabled: boolean;
 
   private _snapDisabled: boolean;
+
+  private _snapOffset = 0;
   /**
    * Is the user currently pressing the element
    */
@@ -207,7 +209,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     const self = this;
     self.isAnimating = true;
     const start = element.scrollLeft,
-      change = to - start,
+      change = to - start - this.snapOffset,
       increment = 20;
     let currentTime = 0;
 
@@ -350,6 +352,10 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   @Input('snap-disabled')
   get snapDisabled() { return this._snapDisabled; }
   set snapDisabled(value: boolean) { this._snapDisabled = value; }
+
+  @Input('snap-offset')
+  get snapOffset() { return this._snapOffset; }
+  set snapOffset(value: number) { this._snapOffset = value; }
 
   constructor(
     private el: ElementRef,
