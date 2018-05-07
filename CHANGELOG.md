@@ -1,3 +1,7 @@
+#### 1.7.9
+
+Issue #137 - feat: snap-offset to optionally show portion of previous elements
+
 #### 1.7.8
 
 Issue #133 - Do not reset scroll location on disabling/enabling the drag.

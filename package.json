@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "Lightweight drag to scroll directive for Angular",
   "contributors": [
     {
