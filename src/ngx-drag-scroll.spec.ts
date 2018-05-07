@@ -2,7 +2,8 @@ import {
   Component,
   Output,
   Renderer2,
-  ElementRef
+  ElementRef,
+  ViewChild
 } from '@angular/core';
 import { DragScrollDirective } from './ngx-drag-scroll';
 
@@ -13,7 +14,9 @@ import {
 import {
   inject,
   async,
-  TestBed
+  TestBed,
+  fakeAsync,
+  flush
 } from '@angular/core/testing';
 
 @Component({
@@ -21,6 +24,7 @@ import {
   template: ''
 })
 class TestComponent {
+  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
 }
 
 describe('Directive: DragScrollDirective', () => {
@@ -204,5 +208,100 @@ describe('Directive: DragScrollDirective', () => {
     });
   }));
 
+  it('should not show part of previous element on snap when snap-offset is not set', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 100px; height: 100px;" dragScroll>
+                  <img style="width: 50px; height: 100px;"/>
+                  <img style="width: 50px; height: 100px;"/>
+                  <img style="width: 50px; height: 100px;"/>
+                </div>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.directive(DragScrollDirective));
+
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+
+      fixture.whenRenderingDone().then(() => expect(compiled.nativeElement.scrollLeft).toBe(50));
+    });
+  }));
+
+  it('should show part of previous element on snap when snap-offset is set', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 100px; height: 100px;" dragScroll snap-offset="10">
+                  <img style="width: 50px; height: 100px;"/>
+                  <img style="width: 50px; height: 100px;"/>
+                  <img style="width: 50px; height: 100px;"/>
+                </div>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.directive(DragScrollDirective));
+
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+
+      fixture.whenRenderingDone().then(() => expect(compiled.nativeElement.scrollLeft).toBe(40));
+    });
+  }));
+
+  it('should not show part of previous element on moveRight/moveLeft when snap-offset is not set', fakeAsync(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 100px; height: 100px; font-size: 0;" dragScroll #nav>
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+    </div>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.directive(DragScrollDirective));
+
+      fixture.componentInstance.ds.moveRight();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(50);
+
+      fixture.componentInstance.ds.moveLeft();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(0);
+    });
+  }));
+
+  it('should show part of previous element on moveRight/moveLeft when snap-offset is set', fakeAsync(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 100px; height: 100px; font-size: 0;" dragScroll #nav snap-offset="10">
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+      <div style="width: 50px; height: 100px; display: inline-block;"></div>
+    </div>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.directive(DragScrollDirective));
+
+      fixture.componentInstance.ds.moveRight();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(40);
+
+      fixture.componentInstance.ds.moveRight();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(50);
+
+      fixture.componentInstance.ds.moveLeft();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(40);
+
+      fixture.componentInstance.ds.moveLeft();
+      flush(500);
+      expect(compiled.nativeElement.scrollLeft).toBe(0);
+    });
+  }));
 });
 
