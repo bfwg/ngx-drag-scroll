@@ -19,17 +19,17 @@ import { DragScrollOption } from './interface/drag-scroll-option';
 })
 export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoCheck {
 
-  private _scrollbarHidden: boolean;
+  private _scrollbarHidden = false;
 
-  private _disabled: boolean;
+  private _disabled = false;
 
-  private _xDisabled: boolean;
+  private _xDisabled = false;
 
-  private _yDisabled: boolean;
+  private _yDisabled = false;
 
-  private _dragDisabled: boolean;
+  private _dragDisabled = false;
 
-  private _snapDisabled: boolean;
+  private _snapDisabled = false;
 
   private _snapOffset = 0;
   /**
@@ -42,9 +42,9 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
    */
   isScrolling = false;
 
-  scrollTimer: number;
+  scrollTimer = -1;
 
-  scrollToTimer: number;
+  scrollToTimer = -1;
 
   /**
    * The x coordinates on the element
@@ -58,15 +58,15 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   displayType: string | null = 'block';
 
-  elWidth: string | null;
+  elWidth: string | null = null;
 
-  elHeight: string | null;
+  elHeight: string | null = null;
 
-  parentNode: HTMLElement;
+  parentNode: HTMLElement | null = null;
 
-  wrapper: HTMLDivElement | null;
+  wrapper: HTMLDivElement | null = null;
 
-  scrollbarWidth: string;
+  scrollbarWidth: string | null = null;
 
   onMouseMoveHandler = this.onMouseMove.bind(this);
   onMouseDownHandler = this.onMouseDown.bind(this);
@@ -119,7 +119,9 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
         this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
         this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
         // set the wrapper as child (instead of the element)
-        this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+        if (this.parentNode !== null) {
+          this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+        }
         // set element as child of wrapper
         this.wrapper.appendChild(this.el.nativeElement);
       }
@@ -130,8 +132,10 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     if (this.wrapper) {
       this.el.nativeElement.style.width = this.elWidth;
       this.el.nativeElement.style.height = this.elHeight;
-      this.parentNode.removeChild(this.wrapper);
-      this.parentNode.appendChild(this.el.nativeElement);
+      if (this.parentNode !== null) {
+        this.parentNode.removeChild(this.wrapper);
+        this.parentNode.appendChild(this.el.nativeElement);
+      }
       this.wrapper = null;
     }
   }
