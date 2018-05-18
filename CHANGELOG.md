@@ -1,3 +1,6 @@
+#### 1.8.0
+
+Issue #138 - feat: angular6 support
 #### 1.7.9
 
 Issue #137 - feat: snap-offset to optionally show portion of previous elements
