@@ -305,12 +305,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     return to;
   }
 
-  private resetScrollLocation() {
-    const ele = this.el.nativeElement;
-    this.scrollTo(ele, 0, 0);
-    this.currIndex = 0;
-  }
-
   private markElDimension() {
     if (this.wrapper) {
       this.elWidth = this.wrapper.style.width;
@@ -378,7 +372,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.markElDimension();
-    this.resetScrollLocation();
     this.checkNavStatus();
   }
 
