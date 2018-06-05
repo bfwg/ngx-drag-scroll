@@ -1,3 +1,6 @@
+#### 1.8.1
+
+Issue #140 - fix: auto reset scroll position on iOS and Android
 #### 1.8.0
 
 Issue #138 - feat: angular6 support
