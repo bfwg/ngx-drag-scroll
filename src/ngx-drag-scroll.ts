@@ -68,10 +68,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   scrollbarWidth: string | null = null;
 
-  onMouseUpHandler = this.onMouseUp.bind(this);
-
-  mouseDownListener: Function;
-  scrollListener: Function;
   mouseUpListener: Function;
 
   currIndex = 0;
@@ -357,8 +353,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
     el.nativeElement.style.overflow = 'auto';
     el.nativeElement.style.whiteSpace = 'noWrap';
-
-    this.mouseUpListener = renderer.listen('document', 'mouseup', this.onMouseUpHandler);
   }
 
   @HostListener('window:resize', ['$event'])
