@@ -68,8 +68,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   scrollbarWidth: string | null = null;
 
-  mouseUpListener: Function;
-
   currIndex = 0;
 
   isAnimating = false;
@@ -401,7 +399,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   }
 
   @HostListener('scroll', ['$event'])
-  onScroll(event) {
+  onScroll(event: Event) {
     const ele = this.el.nativeElement;
     if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
       this.scrollReachesRightEnd = true;
@@ -475,7 +473,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   ngOnDestroy() {
     this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    this.mouseUpListener();
   }
 
   /*
