@@ -460,6 +460,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     this.downX = e.clientX;
     this.downY = e.clientY;
     clearTimeout(this.scrollToTimer);
+    e.stopPropagation();
   }
 
   onScroll() {
@@ -491,6 +492,8 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
         this.locateCurrentIndex();
       }
     }
+    e.stopPropagation();
+    console.log('ddd');
   }
 
   /*

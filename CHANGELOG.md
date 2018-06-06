@@ -1,3 +1,5 @@
+#### 1.8.2
+
 #### 1.8.1
 
 Issue #140 - fix: auto reset scroll position on iOS and Android
