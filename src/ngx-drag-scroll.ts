@@ -419,8 +419,9 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     }
   }
 
-  public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
+  public attach({disabled, snapDisabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
     this.disabled = disabled;
+    this.snapDisabled = snapDisabled;
     this.scrollbarHidden = scrollbarHidden;
     this.yDisabled = yDisabled;
     this.xDisabled = xDisabled;

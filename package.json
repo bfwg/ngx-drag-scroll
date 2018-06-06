@@ -14,7 +14,7 @@
     "ng": "ng",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "start": "ng serve",
-    "test": "ng test --single-run",
+    "test": "ng test",
     "lint": "ng lint",
     "tslint": "./node_modules/.bin/tslint --project tslint.json src/ngx-drag-scroll.ts",
     "changelog": "test \"`git rev-parse --abbrev-ref HEAD`\" = \"master\" && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",

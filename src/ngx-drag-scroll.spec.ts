@@ -25,6 +25,12 @@ import {
 })
 class TestComponent {
   @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
+  elementClicked = false;
+
+  elementOnClicked(event) {
+    console.log('clicked');
+    this.elementClicked = true;
+  }
 }
 
 describe('Directive: DragScrollDirective', () => {
@@ -303,5 +309,29 @@ describe('Directive: DragScrollDirective', () => {
       expect(compiled.nativeElement.scrollLeft).toBe(0);
     });
   }));
+
+  it('should not trigger onclick event on elements when drag', () => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<div style="width: 50px; height: 50px;" dragScroll>
+                  <div class="item" (click)="elementOnClicked()" style="width: 300px; height: 300px;"></div>
+                </div>`
+    }});
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.directive(DragScrollDirective));
+
+      fixture.nativeElement.querySelector('.item').click();
+      expect(fixture.componentInstance.elementClicked).toBeTruthy();
+      // reset
+      fixture.componentInstance.elementClicked = false;
+
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+      expect(fixture.componentInstance.elementClicked).toBeFalsy();
+    });
+  });
 });
 
