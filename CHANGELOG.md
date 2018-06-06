@@ -1,4 +1,5 @@
 #### 1.8.2
+Issue #54 - fix: prevent click propagation immediately after drag and drop
 
 #### 1.8.1
 
