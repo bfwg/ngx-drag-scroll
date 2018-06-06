@@ -68,12 +68,8 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   scrollbarWidth: string | null = null;
 
-  onMouseMoveHandler = this.onMouseMove.bind(this);
-  onMouseDownHandler = this.onMouseDown.bind(this);
-  onScrollHandler = this.onScroll.bind(this);
   onMouseUpHandler = this.onMouseUp.bind(this);
 
-  mouseMoveListener: Function;
   mouseDownListener: Function;
   scrollListener: Function;
   mouseUpListener: Function;
@@ -91,7 +87,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   @Output() reachesLeftBound = new EventEmitter<boolean>();
 
   @Output() reachesRightBound = new EventEmitter<boolean>();
-
 
   private disableScroll(axis: string): void {
     this.el.nativeElement.style[`overflow-${axis}`] = 'hidden';
@@ -363,9 +358,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     el.nativeElement.style.overflow = 'auto';
     el.nativeElement.style.whiteSpace = 'noWrap';
 
-    this.mouseDownListener = renderer.listen(el.nativeElement, 'mousedown', this.onMouseDownHandler);
-    this.scrollListener = renderer.listen(el.nativeElement, 'scroll', this.onScrollHandler);
-    this.mouseMoveListener = renderer.listen('document', 'mousemove', this.onMouseMoveHandler);
     this.mouseUpListener = renderer.listen('document', 'mouseup', this.onMouseUpHandler);
   }
 
@@ -373,6 +365,66 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   onResize() {
     this.markElDimension();
     this.checkNavStatus();
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (this.isPressed && !this.disabled) {
+      // // Drag X
+      if (!this.xDisabled && !this.dragDisabled) {
+        this.el.nativeElement.scrollLeft =
+          this.el.nativeElement.scrollLeft - event.clientX + this.downX;
+        this.downX = event.clientX;
+      }
+
+      // Drag Y
+      if (!this.yDisabled && !this.dragDisabled) {
+        this.el.nativeElement.scrollTop =
+          this.el.nativeElement.scrollTop - event.clientY + this.downY;
+        this.downY = event.clientY;
+      }
+    }
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(event: MouseEvent) {
+    if (this.isPressed) {
+      this.isPressed = false;
+      if (!this.snapDisabled) {
+        this.locateCurrentIndex(true);
+      } else {
+        this.locateCurrentIndex();
+      }
+    }
+  }
+
+  @HostListener('mousedown', ['$event'])
+  onMouseDown(event: MouseEvent) {
+    this.isPressed = true;
+    this.downX = event.clientX;
+    this.downY = event.clientY;
+    clearTimeout(this.scrollToTimer);
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScroll(event) {
+    const ele = this.el.nativeElement;
+    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
+      this.scrollReachesRightEnd = true;
+    } else {
+      this.scrollReachesRightEnd = false;
+    }
+    this.checkNavStatus();
+    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
+      this.isScrolling = true;
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = window.setTimeout(() => {
+        this.isScrolling = false;
+        this.locateCurrentIndex(true);
+      }, 500);
+    } else {
+      this.locateCurrentIndex();
+    }
   }
 
   public attach({disabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
@@ -408,7 +460,6 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     this.markElDimension();
 
     this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'true');
-
     // prevent Firefox from dragging images
     document.addEventListener('dragstart', function (e) {
       e.preventDefault();
@@ -430,70 +481,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   ngOnDestroy() {
     this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'false');
-    this.mouseMoveListener();
     this.mouseUpListener();
-  }
-
-  onMouseMove(e: MouseEvent) {
-    if (this.isPressed && !this.disabled) {
-      e.preventDefault();
-      // Drag X
-      if (!this.xDisabled && !this.dragDisabled) {
-        this.el.nativeElement.scrollLeft =
-          this.el.nativeElement.scrollLeft - e.clientX + this.downX;
-        this.downX = e.clientX;
-      }
-
-      // Drag Y
-      if (!this.yDisabled && !this.dragDisabled) {
-        this.el.nativeElement.scrollTop =
-          this.el.nativeElement.scrollTop - e.clientY + this.downY;
-        this.downY = e.clientY;
-      }
-    }
-    return !this.isPressed;
-  }
-
-
-  onMouseDown(e: MouseEvent) {
-    this.isPressed = true;
-    this.downX = e.clientX;
-    this.downY = e.clientY;
-    clearTimeout(this.scrollToTimer);
-    e.stopPropagation();
-  }
-
-  onScroll() {
-    const ele = this.el.nativeElement;
-    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
-      this.scrollReachesRightEnd = true;
-    } else {
-      this.scrollReachesRightEnd = false;
-    }
-    this.checkNavStatus();
-    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
-      this.isScrolling = true;
-      clearTimeout(this.scrollTimer);
-      this.scrollTimer = window.setTimeout(() => {
-        this.isScrolling = false;
-        this.locateCurrentIndex(true);
-      }, 500);
-    } else {
-      this.locateCurrentIndex();
-    }
-  }
-
-  onMouseUp(e: MouseEvent) {
-    if (this.isPressed) {
-      this.isPressed = false;
-      if (!this.snapDisabled) {
-        this.locateCurrentIndex(true);
-      } else {
-        this.locateCurrentIndex();
-      }
-    }
-    e.stopPropagation();
-    console.log('ddd');
   }
 
   /*
