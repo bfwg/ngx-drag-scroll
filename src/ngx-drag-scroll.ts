@@ -1,23 +1,39 @@
 import {
-  DoCheck,
   NgModule,
   Directive,
   ElementRef,
+  Component,
   Renderer2,
   OnDestroy,
   Input,
   Output,
-  OnInit,
+  AfterViewInit,
   OnChanges,
   EventEmitter,
-  HostListener
+  HostListener,
+  ViewChild,
+  ContentChildren,
+  QueryList
 } from '@angular/core';
-import { DragScrollOption } from './interface/drag-scroll-option';
 
-@Directive({
-  selector: '[dragScroll]'
+import { DragScrollElement, DragScrollOption } from './interface';
+import { DragScrollItemDirective } from './ngx-drag-scroll-item';
+
+@Component({
+  selector: 'drag-scroll',
+  templateUrl: './ngx-drag-scroll.html',
+  styles: [`
+    :host {
+      display: block;
+      overflow: hidden;
+    }
+    .drag-scroll-content {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    `]
 })
-export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoCheck {
+export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   private _scrollbarHidden = false;
 
@@ -62,7 +78,18 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   elHeight: string | null = null;
 
+  /**
+   * The parentNode of carousel Element
+   */
   parentNode: HTMLElement | null = null;
+
+  /**
+   * The carousel Element
+   */
+
+  @ViewChild('contentRef') _contentRef: ElementRef;
+
+  @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
 
   wrapper: HTMLDivElement | null = null;
 
@@ -76,26 +103,185 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
 
   prevChildrenLength = 0;
 
-  childrenArr: Array<Element> = [];
+  mouseMoveListener: Function;
+  mouseDownListener: Function;
+  scrollListener: Function;
+  mouseUpListener: Function;
 
   @Output() reachesLeftBound = new EventEmitter<boolean>();
 
   @Output() reachesRightBound = new EventEmitter<boolean>();
 
+  /**
+   * Whether the scrollbar is hidden
+   */
+  @Input('scrollbar-hidden')
+  get scrollbarHidden() { return this._scrollbarHidden; }
+  set scrollbarHidden(value: boolean) { this._scrollbarHidden = value; }
+
+  /**
+   * Whether horizontally and vertically draging and scrolling is be disabled
+   */
+  @Input('drag-scroll-disabled')
+  get disabled() { return this._disabled; }
+  set disabled(value: boolean) { this._disabled = value; }
+
+  /**
+   * Whether horizontally dragging and scrolling is be disabled
+   */
+  @Input('drag-scroll-x-disabled')
+  get xDisabled() { return this._xDisabled; }
+  set xDisabled(value: boolean) { this._xDisabled = value; }
+
+  /**
+   * Whether vertically dragging and scrolling events is disabled
+   */
+  @Input('drag-scroll-y-disabled')
+  get yDisabled() { return this._yDisabled; }
+  set yDisabled(value: boolean) { this._yDisabled = value; }
+
+  @Input('drag-disabled')
+  get dragDisabled() { return this._dragDisabled; }
+  set dragDisabled(value: boolean) { this._dragDisabled = value; }
+
+  @Input('snap-disabled')
+  get snapDisabled() { return this._snapDisabled; }
+  set snapDisabled(value: boolean) { this._snapDisabled = value; }
+
+  @Input('snap-offset')
+  get snapOffset() { return this._snapOffset; }
+  set snapOffset(value: number) { this._snapOffset = value; }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.markElDimension();
+    this.checkNavStatus();
+  }
+
+  constructor(
+    private _elementRef: ElementRef,
+    private _renderer: Renderer2,
+  ) {
+    this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
+  }
+
+  ngOnChanges() {
+    this.setScrollBar();
+
+    if (this.xDisabled || this.disabled) {
+      this.disableScroll('x');
+    } else {
+      this.enableScroll('x');
+    }
+
+    if (this.yDisabled || this.disabled) {
+      this.disableScroll('y');
+    } else {
+      this.enableScroll('y');
+    }
+  }
+
+  ngAfterViewInit() {
+    // auto assign computed css
+    this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
+    this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
+    this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
+
+    // store ele width height for later user
+    this.markElDimension();
+
+    // set content element the same height as the component
+    this._renderer.setStyle(this._contentRef.nativeElement, 'height', this.elHeight);
+
+    if (this.wrapper) {
+      this.checkScrollbar();
+    }
+
+    this.mouseDownListener = this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
+    this.scrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
+    this.mouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+    this.mouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+
+    // prevent Firefox from dragging images
+    this._renderer.listen('document', 'dragstart', (e) => {
+      e.preventDefault();
+    });
+    this.checkNavStatus();
+  }
+
+  ngOnDestroy() {
+    this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'false');
+  }
+
+  onMouseMoveHandler(event: MouseEvent) {
+    if (this.isPressed && !this.disabled) {
+      // // Drag X
+      if (!this.xDisabled && !this.dragDisabled) {
+        this._contentRef.nativeElement.scrollLeft =
+          this._contentRef.nativeElement.scrollLeft - event.clientX + this.downX;
+        this.downX = event.clientX;
+      }
+
+      // Drag Y
+      if (!this.yDisabled && !this.dragDisabled) {
+        this._contentRef.nativeElement.scrollTop =
+          this._contentRef.nativeElement.scrollTop - event.clientY + this.downY;
+        this.downY = event.clientY;
+      }
+    }
+  };
+
+  onMouseDownHandler(event: MouseEvent) {
+    this.isPressed = true;
+    this.downX = event.clientX;
+    this.downY = event.clientY;
+    clearTimeout(this.scrollToTimer);
+  };
+
+  onScrollHandler(event: Event) {
+    if ((this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth) >= this._contentRef.nativeElement.scrollWidth) {
+      this.scrollReachesRightEnd = true;
+    } else {
+      this.scrollReachesRightEnd = false;
+    }
+    this.checkNavStatus();
+    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
+      this.isScrolling = true;
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = window.setTimeout(() => {
+        this.isScrolling = false;
+        this.locateCurrentIndex(true);
+      }, 500);
+    } else {
+      this.locateCurrentIndex();
+    }
+  };
+
+  onMouseUpHandler(event: MouseEvent) {
+    if (this.isPressed) {
+      this.isPressed = false;
+      if (!this.snapDisabled) {
+        this.locateCurrentIndex(true);
+      } else {
+        this.locateCurrentIndex();
+      }
+    }
+  };
+
   private disableScroll(axis: string): void {
-    this.el.nativeElement.style[`overflow-${axis}`] = 'hidden';
+    this._renderer.setStyle(this._contentRef.nativeElement, `overflow-${axis}`, 'hidden');
   }
 
   private enableScroll(axis: string): void {
-    this.el.nativeElement.style[`overflow-${axis}`] = 'auto';
+    this._renderer.setStyle(this._contentRef.nativeElement, `overflow-${axis}`, 'auto');
   }
 
   private hideScrollbar(): void {
-    if (this.el.nativeElement.style.display !== 'none' && !this.wrapper) {
-      this.parentNode = this.el.nativeElement.parentNode;
+    if (this._contentRef.nativeElement.style.display !== 'none' && !this.wrapper) {
+      this.parentNode = this._contentRef.nativeElement.parentNode;
 
       // clone
-      this.wrapper = this.el.nativeElement.cloneNode(true);
+      this.wrapper = this._contentRef.nativeElement.cloneNode(true);
       // remove all children
       if (this.wrapper !== null) {
         while (this.wrapper.hasChildNodes()) {
@@ -103,42 +289,42 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
             this.wrapper.removeChild(this.wrapper.lastChild);
           }
         }
-        this.wrapper.style.overflow = 'hidden';
+        this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
-        this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
-        this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
+        this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
+        this._renderer.setStyle(this._contentRef.nativeElement, 'height', `calc(100% + ${this.scrollbarWidth})`);
         // set the wrapper as child (instead of the element)
         if (this.parentNode !== null) {
-          this.parentNode.replaceChild(this.wrapper, this.el.nativeElement);
+          this.parentNode.replaceChild(this.wrapper, this._contentRef.nativeElement);
         }
         // set element as child of wrapper
-        this.wrapper.appendChild(this.el.nativeElement);
+        this.wrapper.appendChild(this._contentRef.nativeElement);
       }
     }
   }
 
   private showScrollbar(): void {
     if (this.wrapper) {
-      this.el.nativeElement.style.width = this.elWidth;
-      this.el.nativeElement.style.height = this.elHeight;
+      this._renderer.setStyle(this._contentRef.nativeElement, 'width', '100%');
+      this._renderer.setStyle(this._contentRef.nativeElement, 'height', this.wrapper.style.height);
       if (this.parentNode !== null) {
         this.parentNode.removeChild(this.wrapper);
-        this.parentNode.appendChild(this.el.nativeElement);
+        this.parentNode.appendChild(this._contentRef.nativeElement);
       }
       this.wrapper = null;
     }
   }
 
   private checkScrollbar() {
-    if (this.el.nativeElement.scrollWidth <= this.el.nativeElement.clientWidth) {
-      this.el.nativeElement.style.height = '100%';
+    if (this._contentRef.nativeElement.scrollWidth <= this._contentRef.nativeElement.clientWidth) {
+      this._renderer.setStyle(this._contentRef.nativeElement, 'height', '100%');
     } else {
-      this.el.nativeElement.style.height = `calc(100% + ${this.scrollbarWidth})`;
+      this._renderer.setStyle(this._contentRef.nativeElement, 'height', `calc(100% + ${this.scrollbarWidth})`);
     }
-    if (this.el.nativeElement.scrollHeight <= this.el.nativeElement.clientHeight) {
-      this.el.nativeElement.style.width = '100%';
+    if (this._contentRef.nativeElement.scrollHeight <= this._contentRef.nativeElement.clientHeight) {
+      this._renderer.setStyle(this._contentRef.nativeElement, 'width', '100%');
     } else {
-      this.el.nativeElement.style.width = `calc(100% + ${this.scrollbarWidth})`;
+      this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
     }
   }
 
@@ -160,36 +346,31 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
      * Windows 10 (IE11, Chrome, Firefox) - 17px
      * Windows 10 (Edge 12/13) - 12px
      */
-    let widthNoScroll = 0;
-    let widthWithScroll = 0;
-    const outer: HTMLDivElement | null = document.createElement('div');
-    if (outer !== null) {
-      outer.style.visibility = 'hidden';
-      outer.style.width = '100px';
-      outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
+    const outer = this._renderer.createElement('div');
+    this._renderer.setStyle(outer, 'visibility', 'hidden');
+    this._renderer.setStyle(outer, 'width', '100px');
+    this._renderer.setStyle(outer, 'msOverflowStyle', 'scrollbar');  // needed for WinJS apps
+    // document.body.appendChild(outer);
+    this._renderer.appendChild(document.body, outer);
+    // this._renderer.appendChild(this._renderer.selectRootElement('body'), outer);
+    const widthNoScroll = outer.offsetWidth;
+    // force scrollbars
+    this._renderer.setStyle(outer, 'overflow', 'scroll');
 
-      document.body.appendChild(outer);
+    // add innerdiv
+    const inner = this._renderer.createElement('div');
+    this._renderer.setStyle(inner, 'width', '100%');
+    this._renderer.appendChild(outer, inner);
 
-      widthNoScroll = outer.offsetWidth;
-      // force scrollbars
-      outer.style.overflow = 'scroll';
+    const widthWithScroll = inner.offsetWidth;
 
-      // add innerdiv
-      const inner = document.createElement('div');
-      inner.style.width = '100%';
-      outer.appendChild(inner);
+    // remove divs
+    this._renderer.removeChild(document.body, outer);
 
-      widthWithScroll = inner.offsetWidth;
-
-      // remove divs
-      if (outer.parentNode !== null) {
-        outer.parentNode.removeChild(outer);
-      }
-    }
     /**
      * Scrollbar width will be 0 on Mac OS with the
      * default "Only show scrollbars when scrolling" setting (Yosemite and up).
-     * setting defult with to 20;
+     * setting default width to 20;
      */
     return widthNoScroll - widthWithScroll || 20;
   }
@@ -235,22 +416,21 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
   }
 
   private locateCurrentIndex(snap?: boolean) {
-    const ele = this.el.nativeElement;
     this.currentChildWidth((currentClildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
-      if (ele.scrollLeft >= childrenWidth &&
-          ele.scrollLeft <= nextChildrenWidth) {
+      if (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
+          this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth) {
 
-        if (nextChildrenWidth - ele.scrollLeft > currentClildWidth / 2 && !this.scrollReachesRightEnd) {
+        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentClildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
           this.currIndex = idx;
           if (snap) {
-            this.scrollTo(ele, childrenWidth, 500);
+            this.scrollTo(this._contentRef.nativeElement, childrenWidth, 500);
           }
         } else {
           // forward scrolling
           this.currIndex = idx + 1;
           if (snap) {
-            this.scrollTo(ele, childrenWidth + currentClildWidth, 500);
+            this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentClildWidth, 500);
           }
         }
         stop();
@@ -269,27 +449,27 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     const breakFunc = function() {
       shouldBreak = true;
     };
-    for (let i = 0; i < this.childrenArr.length; i++) {
-      if (i === this.childrenArr.length - 1) {
-        this.currIndex = this.childrenArr.length;
+    for (let i = 0; i < this._children['_results'].length; i++) {
+      if (i === this._children['_results'].length - 1) {
+        this.currIndex = this._children['_results'].length;
         break;
       }
       if (shouldBreak) {
         break;
       }
 
-      const nextChildrenWidth = childrenWidth + this.childrenArr[i + 1].clientWidth;
-      const currentClildWidth = this.childrenArr[i].clientWidth;
+      const nextChildrenWidth = childrenWidth + this._children['_results'][i + 1]._elementRef.nativeElement.clientWidth;
+      const currentClildWidth = this._children['_results'][i]._elementRef.nativeElement.clientWidth;
       cb(currentClildWidth, nextChildrenWidth, childrenWidth, i, breakFunc);
 
-      childrenWidth += this.childrenArr[i].clientWidth;
+      childrenWidth += currentClildWidth;
     }
   }
 
   private toChildrenLocation(): number {
     let to = 0;
     for (let i = 0; i < this.currIndex; i++) {
-      to += this.childrenArr[i].clientWidth;
+      to += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
     }
     return to;
   }
@@ -299,244 +479,62 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
       this.elWidth = this.wrapper.style.width;
       this.elHeight = this.wrapper.style.height;
     } else {
-      this.elWidth = this.el.nativeElement.style.width;
-      this.elHeight = this.el.nativeElement.style.height;
+      this.elWidth = this._elementRef.nativeElement.style.width || this._elementRef.nativeElement.offsetWidth + 'px';
+      this.elHeight = this._elementRef.nativeElement.style.height || this._elementRef.nativeElement.offsetHeight + 'px';
     }
-  }
-
-  /**
-   * Whether the scrollbar is hidden
-   */
-  @Input('scrollbar-hidden')
-  get scrollbarHidden() { return this._scrollbarHidden; }
-  set scrollbarHidden(value: boolean) { this._scrollbarHidden = value; }
-
-  /**
-   * Whether horizontally and vertically draging and scrolling is be disabled
-   */
-  @Input('drag-scroll-disabled')
-  get disabled() { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = value; }
-
-  /**
-   * Whether horizontally dragging and scrolling is be disabled
-   */
-  @Input('drag-scroll-x-disabled')
-  get xDisabled() { return this._xDisabled; }
-  set xDisabled(value: boolean) { this._xDisabled = value; }
-
-  /**
-   * Whether vertically dragging and scrolling events is disabled
-   */
-  @Input('drag-scroll-y-disabled')
-  get yDisabled() { return this._yDisabled; }
-  set yDisabled(value: boolean) { this._yDisabled = value; }
-
-  @Input('drag-disabled')
-  get dragDisabled() { return this._dragDisabled; }
-  set dragDisabled(value: boolean) { this._dragDisabled = value; }
-
-  @Input('snap-disabled')
-  get snapDisabled() { return this._snapDisabled; }
-  set snapDisabled(value: boolean) { this._snapDisabled = value; }
-
-  @Input('snap-offset')
-  get snapOffset() { return this._snapOffset; }
-  set snapOffset(value: number) { this._snapOffset = value; }
-
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) {
-    this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
-    el.nativeElement.style.overflow = 'auto';
-    el.nativeElement.style.whiteSpace = 'noWrap';
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.markElDimension();
-    this.checkNavStatus();
-  }
-
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    if (this.isPressed && !this.disabled) {
-      // // Drag X
-      if (!this.xDisabled && !this.dragDisabled) {
-        this.el.nativeElement.scrollLeft =
-          this.el.nativeElement.scrollLeft - event.clientX + this.downX;
-        this.downX = event.clientX;
-      }
-
-      // Drag Y
-      if (!this.yDisabled && !this.dragDisabled) {
-        this.el.nativeElement.scrollTop =
-          this.el.nativeElement.scrollTop - event.clientY + this.downY;
-        this.downY = event.clientY;
-      }
-    }
-  }
-
-  @HostListener('document:mouseup', ['$event'])
-  onMouseUp(event: MouseEvent) {
-    if (this.isPressed) {
-      this.isPressed = false;
-      if (!this.snapDisabled) {
-        this.locateCurrentIndex(true);
-      } else {
-        this.locateCurrentIndex();
-      }
-    }
-  }
-
-  @HostListener('mousedown', ['$event'])
-  onMouseDown(event: MouseEvent) {
-    this.isPressed = true;
-    this.downX = event.clientX;
-    this.downY = event.clientY;
-    clearTimeout(this.scrollToTimer);
-  }
-
-  @HostListener('scroll', ['$event'])
-  onScroll(event: Event) {
-    const ele = this.el.nativeElement;
-    if ((ele.scrollLeft + ele.offsetWidth) >= ele.scrollWidth) {
-      this.scrollReachesRightEnd = true;
-    } else {
-      this.scrollReachesRightEnd = false;
-    }
-    this.checkNavStatus();
-    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
-      this.isScrolling = true;
-      clearTimeout(this.scrollTimer);
-      this.scrollTimer = window.setTimeout(() => {
-        this.isScrolling = false;
-        this.locateCurrentIndex(true);
-      }, 500);
-    } else {
-      this.locateCurrentIndex();
-    }
-  }
-
-  public attach({disabled, snapDisabled, scrollbarHidden, yDisabled, xDisabled}: DragScrollOption): void {
-    this.disabled = disabled;
-    this.snapDisabled = snapDisabled;
-    this.scrollbarHidden = scrollbarHidden;
-    this.yDisabled = yDisabled;
-    this.xDisabled = xDisabled;
-    this.ngOnChanges();
-  }
-
-  ngOnChanges() {
-    this.setScrollBar();
-
-    if (this.xDisabled || this.disabled) {
-      this.disableScroll('x');
-    } else {
-      this.enableScroll('x');
-    }
-
-    if (this.yDisabled || this.disabled) {
-      this.disableScroll('y');
-    } else {
-      this.enableScroll('y');
-    }
-  }
-
-  ngOnInit(): void {
-    // auto assign computed css
-    this.displayType = window.getComputedStyle(this.el.nativeElement).display;
-    this.el.nativeElement.style.display = this.displayType;
-
-    // store ele width height for later user
-    this.markElDimension();
-
-    this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'true');
-    // prevent Firefox from dragging images
-    document.addEventListener('dragstart', function (e) {
-      e.preventDefault();
-    });
-  }
-
-  ngDoCheck() {
-    this.childrenArr = this.el.nativeElement.children || [];
-    // avoid extra ckecks
-    if (this.childrenArr.length !== this.prevChildrenLength) {
-      if (this.wrapper) {
-        this.checkScrollbar();
-      }
-      this.prevChildrenLength = this.childrenArr.length;
-      this.checkNavStatus();
-    }
-  }
-
-
-  ngOnDestroy() {
-    this.renderer.setAttribute(this.el.nativeElement, 'drag-scroll', 'false');
   }
 
   /*
    * Nav button
    */
   moveLeft() {
-    const ele = this.el.nativeElement;
     if (this.currIndex !== 0 || this.snapDisabled) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(ele, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
     }
   }
 
   moveRight() {
-    const ele = this.el.nativeElement;
-    if (!this.scrollReachesRightEnd && this.childrenArr[this.currIndex + 1]) {
+    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1]) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(ele, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
     }
   }
 
   moveTo(index: number) {
-    const ele = this.el.nativeElement;
-    if (index >= 0 && index !== this.currIndex && this.childrenArr[index]) {
+    if (index >= 0 && index !== this.currIndex && this._children['_results'][index]) {
       this.currIndex = index;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(ele, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
     }
   }
 
   checkNavStatus() {
-    const ele = this.el.nativeElement;
     let childrenWidth = 0;
-    for (let i = 0; i < ele.children.length; i++) {
-      childrenWidth += ele.children[i].clientWidth;
+    for (let i = 0; i < this._children['_results'].length; i++) {
+      childrenWidth += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
     }
-    if (this.childrenArr.length <= 1 || ele.scrollWidth <= ele.clientWidth) {
-      // only one element
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(true);
-    } else if (this.scrollReachesRightEnd) {
-      // reached right end
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(true);
-    } else if (ele.scrollLeft === 0 &&
-               ele.scrollWidth > ele.clientWidth) {
-      // reached left end
-      this.reachesLeftBound.emit(true);
-      this.reachesRightBound.emit(false);
-    } else {
-      // in the middle
-      this.reachesLeftBound.emit(false);
-      this.reachesRightBound.emit(false);
-    }
+    setTimeout(() => {
+      if (this._children['_results'].length <= 1 || this._contentRef.nativeElement.scrollWidth <= this._contentRef.nativeElement.clientWidth) {
+        // only one element
+        this.reachesLeftBound.emit(true);
+        this.reachesRightBound.emit(true);
+      } else if (this.scrollReachesRightEnd) {
+        // reached right end
+        this.reachesLeftBound.emit(false);
+        this.reachesRightBound.emit(true);
+      } else if (this._contentRef.nativeElement.scrollLeft === 0 &&
+                this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
+        // reached left end
+        this.reachesLeftBound.emit(true);
+        this.reachesRightBound.emit(false);
+      } else {
+        // in the middle
+        this.reachesLeftBound.emit(false);
+        this.reachesRightBound.emit(false);
+      }
+    }, 0)
   }
-
-
 }
-
-@NgModule({
-  exports: [DragScrollDirective],
-  declarations: [DragScrollDirective]
-})
-export class DragScrollModule { }

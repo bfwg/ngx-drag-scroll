@@ -45,9 +45,9 @@
           "private-static-method",
           "protected-static-method",
           "public-static-method",
-          "private-instance-method",
-          "protected-instance-method",
           "public-instance-method"
+          "protected-instance-method",
+          "private-instance-method",
         ]
       }
     ],
