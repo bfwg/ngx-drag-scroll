@@ -22,7 +22,11 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
 @Component({
   selector: 'drag-scroll',
-  templateUrl: './ngx-drag-scroll.html',
+  template: `
+    <div class="drag-scroll-content" #contentRef>
+      <ng-content></ng-content>
+    </div>
+  `,
   styles: [`
     :host {
       display: block;
