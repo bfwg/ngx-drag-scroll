@@ -1,6 +1,6 @@
 import { Directive, ElementRef } from '@angular/core';
 @Directive({
-  selector: '[dragScrollItem]'
+  selector: '[drag-scroll-item]'
 })
 export class DragScrollItemDirective {
   _elementRef: ElementRef;

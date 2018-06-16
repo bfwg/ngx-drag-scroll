@@ -13,6 +13,7 @@ import {
   HostListener,
   ViewChild,
   ContentChildren,
+  AfterViewChecked,
   QueryList
 } from '@angular/core';
 
@@ -25,15 +26,15 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
   styles: [`
     :host {
       display: block;
-      overflow: hidden;
     }
     .drag-scroll-content {
-      overflow: hidden;
+      height: 100%;
+      overflow: auto;
       white-space: nowrap;
     }
     `]
 })
-export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges {
+export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked {
 
   private _scrollbarHidden = false;
 
@@ -183,14 +184,17 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
 
   ngAfterViewInit() {
     // auto assign computed css
-    this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
-    this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
+
+    this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
+
+    this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
+    this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
 
     // store ele width height for later user
     this.markElDimension();
 
-    // set content element the same height as the component
+    this._renderer.setStyle(this._contentRef.nativeElement, 'width', this.elWidth);
     this._renderer.setStyle(this._contentRef.nativeElement, 'height', this.elHeight);
 
     if (this.wrapper) {
@@ -207,6 +211,18 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
       e.preventDefault();
     });
     this.checkNavStatus();
+  }
+
+  ngAfterViewChecked() {
+    // avoid extra checks
+    if (this._children['_results'].length !== this.prevChildrenLength) {
+      if (this.wrapper) {
+        this.checkScrollbar();
+      }
+      this.prevChildrenLength = this._children['_results'].length;
+
+      this.checkNavStatus();
+    }
   }
 
   ngOnDestroy() {
@@ -229,17 +245,18 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
         this.downY = event.clientY;
       }
     }
-  };
+  }
 
   onMouseDownHandler(event: MouseEvent) {
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
     clearTimeout(this.scrollToTimer);
-  };
+  }
 
   onScrollHandler(event: Event) {
-    if ((this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth) >= this._contentRef.nativeElement.scrollWidth) {
+    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
+    if (scrollLeftPos >= this._contentRef.nativeElement.scrollWidth) {
       this.scrollReachesRightEnd = true;
     } else {
       this.scrollReachesRightEnd = false;
@@ -255,7 +272,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
     } else {
       this.locateCurrentIndex();
     }
-  };
+  }
 
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
@@ -266,7 +283,64 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
         this.locateCurrentIndex();
       }
     }
-  };
+  }
+
+  /*
+   * Nav button
+   */
+  moveLeft() {
+    if (this.currIndex !== 0 || this.snapDisabled) {
+      this.currIndex--;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+    }
+  }
+
+  moveRight() {
+    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1]) {
+      this.currIndex++;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+    }
+  }
+
+  moveTo(index: number) {
+    if (index >= 0 && index !== this.currIndex && this._children['_results'][index]) {
+      this.currIndex = index;
+      clearTimeout(this.scrollToTimer);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+    }
+  }
+
+  checkNavStatus() {
+    let childrenWidth = 0;
+    for (let i = 0; i < this._children['_results'].length; i++) {
+      childrenWidth += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
+    }
+    setTimeout(() => {
+      const onlyOneItem = Boolean(this._children['_results'].length <= 1);
+      const containerIsLargerThanContent = Boolean(this._contentRef.nativeElement.scrollWidth <=
+                                                   this._contentRef.nativeElement.clientWidth);
+      if (onlyOneItem || containerIsLargerThanContent) {
+        // only one element
+        this.reachesLeftBound.emit(true);
+        this.reachesRightBound.emit(true);
+      } else if (this.scrollReachesRightEnd) {
+        // reached right end
+        this.reachesLeftBound.emit(false);
+        this.reachesRightBound.emit(true);
+      } else if (this._contentRef.nativeElement.scrollLeft === 0 &&
+                this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
+        // reached left end
+        this.reachesLeftBound.emit(true);
+        this.reachesRightBound.emit(false);
+      } else {
+        // in the middle
+        this.reachesLeftBound.emit(false);
+        this.reachesRightBound.emit(false);
+      }
+    }, 0);
+  }
 
   private disableScroll(axis: string): void {
     this._renderer.setStyle(this._contentRef.nativeElement, `overflow-${axis}`, 'hidden');
@@ -280,26 +354,25 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
     if (this._contentRef.nativeElement.style.display !== 'none' && !this.wrapper) {
       this.parentNode = this._contentRef.nativeElement.parentNode;
 
-      // clone
-      this.wrapper = this._contentRef.nativeElement.cloneNode(true);
-      // remove all children
-      if (this.wrapper !== null) {
-        while (this.wrapper.hasChildNodes()) {
-          if (this.wrapper.lastChild !== null) {
-            this.wrapper.removeChild(this.wrapper.lastChild);
-          }
-        }
-        this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
+      // create container element
+      this.wrapper = this._renderer.createElement('div');
+      this._renderer.setAttribute(this.wrapper, 'class', 'drag-scroll-wrapper');
+      this._renderer.addClass(this.wrapper, 'drag-scroll-container');
 
-        this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
-        this._renderer.setStyle(this._contentRef.nativeElement, 'height', `calc(100% + ${this.scrollbarWidth})`);
-        // set the wrapper as child (instead of the element)
-        if (this.parentNode !== null) {
-          this.parentNode.replaceChild(this.wrapper, this._contentRef.nativeElement);
-        }
-        // set element as child of wrapper
-        this.wrapper.appendChild(this._contentRef.nativeElement);
-      }
+      this._renderer.setStyle(this.wrapper, 'width', '100%');
+      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
+          || this._elementRef.nativeElement.offsetHeight + 'px');
+
+      this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
+
+      this._renderer.setStyle(this._contentRef.nativeElement, 'width', `calc(100% + ${this.scrollbarWidth})`);
+      this._renderer.setStyle(this._contentRef.nativeElement, 'height', `calc(100% + ${this.scrollbarWidth})`);
+
+      // Append container element to component element.
+      this._renderer.appendChild(this._elementRef.nativeElement, this.wrapper);
+
+      // Append content element to container element.
+      this._renderer.appendChild(this.wrapper, this._contentRef.nativeElement);
     }
   }
 
@@ -479,62 +552,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges 
       this.elWidth = this.wrapper.style.width;
       this.elHeight = this.wrapper.style.height;
     } else {
-      this.elWidth = this._elementRef.nativeElement.style.width || this._elementRef.nativeElement.offsetWidth + 'px';
-      this.elHeight = this._elementRef.nativeElement.style.height || this._elementRef.nativeElement.offsetHeight + 'px';
+      this.elWidth = this._elementRef.nativeElement.style.width || (this._elementRef.nativeElement.offsetWidth + 'px');
+      this.elHeight = this._elementRef.nativeElement.style.height || (this._elementRef.nativeElement.offsetHeight + 'px');
     }
-  }
-
-  /*
-   * Nav button
-   */
-  moveLeft() {
-    if (this.currIndex !== 0 || this.snapDisabled) {
-      this.currIndex--;
-      clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
-    }
-  }
-
-  moveRight() {
-    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1]) {
-      this.currIndex++;
-      clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
-    }
-  }
-
-  moveTo(index: number) {
-    if (index >= 0 && index !== this.currIndex && this._children['_results'][index]) {
-      this.currIndex = index;
-      clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
-    }
-  }
-
-  checkNavStatus() {
-    let childrenWidth = 0;
-    for (let i = 0; i < this._children['_results'].length; i++) {
-      childrenWidth += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
-    }
-    setTimeout(() => {
-      if (this._children['_results'].length <= 1 || this._contentRef.nativeElement.scrollWidth <= this._contentRef.nativeElement.clientWidth) {
-        // only one element
-        this.reachesLeftBound.emit(true);
-        this.reachesRightBound.emit(true);
-      } else if (this.scrollReachesRightEnd) {
-        // reached right end
-        this.reachesLeftBound.emit(false);
-        this.reachesRightBound.emit(true);
-      } else if (this._contentRef.nativeElement.scrollLeft === 0 &&
-                this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
-        // reached left end
-        this.reachesLeftBound.emit(true);
-        this.reachesRightBound.emit(false);
-      } else {
-        // in the middle
-        this.reachesLeftBound.emit(false);
-        this.reachesRightBound.emit(false);
-      }
-    }, 0)
   }
 }
