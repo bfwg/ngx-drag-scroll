@@ -119,14 +119,16 @@ ___
   selector: 'sample',
   template:`
   <drag-scroll #nav>
-    Big text goes here...
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
   </drag-scroll>
   <button (click)="moveLeft()">Left</button>
   <button (click)="moveRight()">Right</button>
   `
 })
 class Sample {
-  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
+  @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
   
   moveLeft() {
     this.ds.moveLeft();
