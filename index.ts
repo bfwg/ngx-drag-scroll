@@ -1,1 +1,1 @@
-export { DragScrollModule, DragScroll, DragScrollItem } from './src/index';
+export { DragScrollModule, DragScrollComponent, DragScrollItemDirective } from './src/index';

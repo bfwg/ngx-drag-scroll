@@ -13,7 +13,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "noEmitHelpers": false,
-    "outDir": "../"
+    "outDir": "../",
+    "strictPropertyInitialization": false
   },
   "exclude": [
     "node_modules"
