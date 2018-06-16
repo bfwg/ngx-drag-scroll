@@ -5,11 +5,12 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-import { DragScrollComponent } from './ngx-drag-scroll';
-
 import {
   By
 } from '@angular/platform-browser';
+
+import { DragScrollComponent } from './ngx-drag-scroll';
+import { DragScrollModule } from './ngx-drag-scroll.module';
 
 import {
   inject,
@@ -37,7 +38,8 @@ describe('DragScrollComponent', () => {
   const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, DragScrollComponent]
+      imports: [DragScrollModule],
+      declarations: [TestComponent]
     });
   });
 
@@ -214,12 +216,12 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  fit('should not show part of previous element on snap when snap-offset is not set', async(() => {
+  it('should not show part of previous element on snap when snap-offset is not set', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
       template: `<drag-scroll style="width: 100px; height: 100px;" scrollbar-hidden="true">
-                   <img drag-scroll-item style="width: 70px; height: 100px;"/>
-                   <img drag-scroll-item style="width: 70px; height: 100px;"/>
-                   <img drag-scroll-item style="width: 70px; height: 100px;"/>
+                   <img drag-scroll-item style="width: 50px; height: 100px;"/>
+                   <img drag-scroll-item style="width: 50px; height: 100px;"/>
+                   <img drag-scroll-item style="width: 50px; height: 100px;"/>
                  </drag-scroll>`
     }});
     TestBed.compileComponents().then(() => {

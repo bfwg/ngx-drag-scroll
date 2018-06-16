@@ -1,1 +1,1 @@
-export * from './src/ngx-drag-scroll';
+export { DragScrollModule, DragScroll, DragScrollItem } from './src/index';
