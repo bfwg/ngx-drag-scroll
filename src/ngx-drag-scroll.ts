@@ -307,6 +307,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   moveTo(index: number) {
     if (index >= 0 &&
         index !== this.currIndex &&
+        this._children &&
         this._children['_results'] &&
         this._children['_results'][index]) {
       this.currIndex = index;

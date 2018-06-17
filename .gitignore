@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/lib
 
 # dependencies
 /node_modules
@@ -43,6 +44,3 @@ Thumbs.db
 *.metadata.json
 *.d.ts
 index.js
-ngx-drag-scroll.js
-ngx-drag-scroll-item.js
-drag-scroll-option.js

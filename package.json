@@ -8,7 +8,7 @@
       "email": "fanjin1989@gmail.com"
     }
   ],
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "prepare": "npm run ngc",
     "ng": "ng",
