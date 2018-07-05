@@ -246,6 +246,8 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
           if (snap) {
             this.scrollTo(ele, childrenWidth, 500);
           }
+        } else if (this.scrollReachesRightEnd) {
+          this.currIndex = idx;
         } else {
           // forward scrolling
           this.currIndex = idx + 1;
@@ -271,7 +273,7 @@ export class DragScrollDirective implements OnDestroy, OnInit, OnChanges, DoChec
     };
     for (let i = 0; i < this.childrenArr.length; i++) {
       if (i === this.childrenArr.length - 1) {
-        this.currIndex = this.childrenArr.length;
+        this.currIndex = this.childrenArr.length - 1;
         break;
       }
       if (shouldBreak) {
