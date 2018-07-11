@@ -201,7 +201,7 @@ describe('DragScrollComponent', () => {
 
   it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;">
+      template: `<drag-scroll scrollbar-hidden="true" style="width: 50px; height: 50px;">
                    <div drag-scroll-item style="width: 49px; height: 49px;"></div>
                  </drag-scroll>`
     }});
@@ -210,9 +210,9 @@ describe('DragScrollComponent', () => {
       fixture.detectChanges();
 
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
-      console.log(compiled.nativeElement.style);
-      expect(compiled.nativeElement.style.width).toBe('50px');
-      expect(compiled.nativeElement.style.height).toBe('50px');
+
+      expect(window.getComputedStyle(compiled.nativeElement).height).toBe('50px');
+      expect(window.getComputedStyle(compiled.nativeElement).width).toBe('50px');
     });
   }));
 

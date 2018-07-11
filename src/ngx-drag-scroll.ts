@@ -153,12 +153,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   get snapOffset() { return this._snapOffset; }
   set snapOffset(value: number) { this._snapOffset = value; }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.markElDimension();
-    this.checkNavStatus();
-  }
-
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
@@ -216,10 +210,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   ngAfterViewChecked() {
     // avoid extra checks
     if (this._children['_results'].length !== this.prevChildrenLength) {
+
+      this.markElDimension();
       this.checkScrollbar();
-
       this.prevChildrenLength = this._children['_results'].length;
-
       this.checkNavStatus();
     }
   }
