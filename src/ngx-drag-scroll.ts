@@ -216,9 +216,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   ngAfterViewChecked() {
     // avoid extra checks
     if (this._children['_results'].length !== this.prevChildrenLength) {
-      if (this.wrapper) {
-        this.checkScrollbar();
-      }
+      this.checkScrollbar();
+
       this.prevChildrenLength = this._children['_results'].length;
 
       this.checkNavStatus();
