@@ -186,7 +186,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     // auto assign computed css
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
 
-    this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
+    this.displayType = window.getComputedStyle(this._elementRef.nativeElement).display;
 
     this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
     this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
