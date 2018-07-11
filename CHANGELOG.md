@@ -1,3 +1,8 @@
+#### 2.0.0-bate.1
+- Refactor host directive to a componet.
+- Add drag scroll item directive to mark children elements.
+- Refactor code to Angular Style.
+
 #### 1.8.2
 Issue #54 - fix: prevent click propagation immediately after drag and drop
 

@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/lib
 
 # dependencies
 /node_modules
@@ -38,10 +39,3 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
-
-*.map
-*.metadata.json
-*.d.ts
-index.js
-ngx-drag-scroll.js
-drag-scroll-option.js

@@ -1,16 +1,15 @@
 <div class="content">
   <p class="title">DRAG AND SCROLL!</p>
   <div class="demo-border">
-    <div class="demo-one"
-      dragScroll
+    <drag-scroll class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
       (reachesLeftBound)="leftBoundStat($event)"
       (reachesRightBound)="rightBoundStat($event)"
       #nav
       >
-      <img *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
-    </div>
+      <img drag-scroll-item *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    </drag-scroll>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
     <button mat-raised-button color="primary" [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
@@ -26,14 +25,14 @@
     <mat-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</mat-slide-toggle>
   </div>
   <div class="demo-border">
-    <div class="demo-two"
-        dragScroll [scrollbar-hidden]="hideScrollbar"
+    <drag-scroll class="demo-two"
+        [scrollbar-hidden]="hideScrollbar"
         [drag-scroll-disabled]="disabled"
         [drag-scroll-x-disabled]="xDisabled"
         [drag-scroll-y-disabled]="yDisabled"
       >
-      <img src='assets/img/star-wars-big.jpg' />
-    </div>
+      <img drag-scroll-item src='assets/img/star-wars-big.jpg' />
+    </drag-scroll>
   </div>
   <div class="api-table-containter">
     <p class="title">API REFERENCE</p>

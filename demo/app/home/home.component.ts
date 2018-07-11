@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DragScrollDirective } from '../../../src/ngx-drag-scroll';
+import { DragScrollComponent } from '../../../src/ngx-drag-scroll';
 
 @Component({
   selector: 'app-home',
@@ -31,11 +31,7 @@ export class HomeComponent implements OnInit {
   leftNavDisabled = false;
   rightNavDisabled = false;
 
-  dragScrollDom: any;
-  dragScrollRef: ElementRef;
-  dragScroll: DragScrollDirective;
-
-  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
+  @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
 
   constructor(
     matIconRegistry: MatIconRegistry,
@@ -54,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   clickItem(item) {
-    console.log('itmen clicked');
+    console.log('itme clicked');
   }
 
   remove() {

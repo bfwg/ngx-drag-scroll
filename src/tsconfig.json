@@ -13,14 +13,14 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "noEmitHelpers": false,
-    "outDir": "../"
+    "outDir": "../lib",
+    "strictPropertyInitialization": false
   },
   "exclude": [
     "node_modules"
   ],
   "files": [
-    "./ngx-drag-scroll.ts",
-    "../index.ts"
+    "./index.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

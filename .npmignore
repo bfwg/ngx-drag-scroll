@@ -17,6 +17,11 @@ tslint.json
 
 demo
 dist
+src
+commitlint.config.js
+CONTRIBUTING.md
+RELEASE.md
+angular.json
 config
 angular-cli.json
 LICENSE

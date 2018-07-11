@@ -55,14 +55,45 @@ Add the `drag-scroll` attribute to a scrollable element:
 @Component({
   selector: 'sample',
   template:`
-  <div dragScroll>
+  <drag-scroll style="width: 100px; height: 10px">
     Big text goes here...
-  </div>
-  `
+  </drag-scroll>
+  `,
+  styles: [`
+    drag-scroll {
+      height: 50px
+      width: 100px
+    }
+    `]
 })
-class Sample {}
+class SampleBigText {}
 ```
 That's it! Now you can scroll it by dragging.
+
+If you want to group items into a carousel, you will need to add `drag-scroll-item` to the carsousel items.
+```typescript
+@Component({
+  selector: 'sample',
+  template:`
+  <drag-scroll>
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
+  </drag-scroll>
+  `,
+  styles: [`
+    drag-scroll {
+      height: 50px
+      width: 100px
+    }
+    img {
+      height: 50px
+      width: 50px
+    }
+    `]
+})
+class SampleCarousel {}
+```
 
 
 ## API REFERENCE
@@ -87,15 +118,17 @@ ___
 @Component({
   selector: 'sample',
   template:`
-  <div dragScroll #nav>
-    Big text goes here...
-  </div>
+  <drag-scroll #nav>
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
+    <img drag-scroll-item src="some-url" />
+  </drag-scroll>
   <button (click)="moveLeft()">Left</button>
   <button (click)="moveRight()">Right</button>
   `
 })
 class Sample {
-  @ViewChild('nav', {read: DragScrollDirective}) ds: DragScrollDirective;
+  @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
   
   moveLeft() {
     this.ds.moveLeft();
@@ -107,34 +140,6 @@ class Sample {
 }
 ```
 
-## Dynamically apply the plugin to a DOM element
-
-This was brought by @tommykamkcm. The below code block demonstrates how to attach the directive dynamically on a DOM i.e. deep rendered element.
-```javascript
-
-constructor(
-  private cdr: ChangeDetectorRef,
-  private element: ElementRef,
-  private renderer: Renderer
-) {}
-dragScrollDom: any;
-dragScrollRef: ElementRef;
-dragScroll: DragScrollDirective;
-
-ngAfterViewInit() {
-  // attach to .nav-tabs element
-  this.dragScrollDom = this.element.nativeElement.querySelector('.nav-tabs');
-  this.dragScrollRef = new ElementRef(this.dragScrollDom );
-
-  this.dragScroll = new DragScrollDirective(this.dragScrollRef, this.renderer, this.cdr);
-  this.dragScroll.attach({
-    disabled: false,
-    scrollbarHidden: true,
-    yDisabled: true,
-    xDisabled: false,
-  });
-}
-```
 
 ### Contributing
 Clone the repository, and run `npm install`, `npm start`. The demo app will starts on port :4200. I usually do my development on the demo app.
