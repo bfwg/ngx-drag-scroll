@@ -528,7 +528,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     };
     for (let i = 0; i < this._children['_results'].length; i++) {
       if (i === this._children['_results'].length - 1) {
-        this.currIndex = this._children['_results'].length;
+        this.currIndex = i;
         break;
       }
       if (shouldBreak) {

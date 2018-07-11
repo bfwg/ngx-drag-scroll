@@ -1,4 +1,4 @@
-#### 2.0.0
+#### 2.0.0-bate.1
 - Refactor host directive to a componet.
 - Add drag scroll item directive to mark children elements.
 - Refactor code to Angular Style.
