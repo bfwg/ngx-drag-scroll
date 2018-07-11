@@ -1,3 +1,7 @@
+#### 2.0.0-bate.2
+- Window on resizing affect scrollbar hide/show.
+- Scroll content wrapper inherits the display style from the component element.
+
 #### 2.0.0-bate.1
 - Refactor host directive to a componet.
 - Add drag scroll item directive to mark children elements.

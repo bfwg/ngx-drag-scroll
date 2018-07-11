@@ -153,12 +153,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   get snapOffset() { return this._snapOffset; }
   set snapOffset(value: number) { this._snapOffset = value; }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.markElDimension();
-    this.checkNavStatus();
-  }
-
   constructor(
     private _elementRef: ElementRef,
     private _renderer: Renderer2,
@@ -186,7 +180,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     // auto assign computed css
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
 
-    this.displayType = window.getComputedStyle(this._contentRef.nativeElement).display;
+    this.displayType = window.getComputedStyle(this._elementRef.nativeElement).display;
 
     this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
     this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
@@ -216,11 +210,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   ngAfterViewChecked() {
     // avoid extra checks
     if (this._children['_results'].length !== this.prevChildrenLength) {
-      if (this.wrapper) {
-        this.checkScrollbar();
-      }
-      this.prevChildrenLength = this._children['_results'].length;
 
+      this.markElDimension();
+      this.checkScrollbar();
+      this.prevChildrenLength = this._children['_results'].length;
       this.checkNavStatus();
     }
   }
