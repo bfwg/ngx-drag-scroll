@@ -1,3 +1,6 @@
+#### 2.0.0-bate.3
+- Fix build aot ngModule not found issue.
+
 #### 2.0.0-bate.2
 - Window on resizing affect scrollbar hide/show.
 - Scroll content wrapper inherits the display style from the component element.
