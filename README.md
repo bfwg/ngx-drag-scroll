@@ -107,8 +107,10 @@ class SampleCarousel {}
 | drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
 | snap-disabled          | @Input  | Whether snapping is disabled.                                                 | false |
 | snap-offset            | @Input  | Pixels of previous element to show on snap or moving left and right.          |   0   |
+| snap-duration          | @Input  | Duration of snap animation in milliseconds.                                   |  500  |
 | reachesLeftBound       | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
 | reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
+| snapAnimationFinished  | @Output | The snap animation for the new selection has finished.                        |  n/a  |
 
 ___
 
