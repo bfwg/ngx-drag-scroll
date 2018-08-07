@@ -40,7 +40,6 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
     `]
 })
 export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked {
-
   private _scrollbarHidden = false;
 
   private _disabled = false;
@@ -54,6 +53,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private _snapDisabled = false;
 
   private _snapOffset = 0;
+
+  private _snapDuration = 500;
+
   /**
    * Is the user currently pressing the element
    */
@@ -113,6 +115,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   @Output() reachesRightBound = new EventEmitter<boolean>();
 
+  @Output() snapAnimationFinished = new EventEmitter<number>();
+
   /**
    * Whether the scrollbar is hidden
    */
@@ -152,6 +156,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @Input('snap-offset')
   get snapOffset() { return this._snapOffset; }
   set snapOffset(value: number) { this._snapOffset = value; }
+
+  @Input('snap-duration')
+  get snapDuration() { return this._snapDuration; }
+  set snapDuration(value: number) { this._snapDuration = value; }
 
   constructor(
     private _elementRef: ElementRef,
@@ -285,7 +293,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (this.currIndex !== 0 || this.snapDisabled) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
 
@@ -293,7 +301,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1]) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
 
@@ -305,7 +313,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this._children['_results'][index]) {
       this.currIndex = index;
       clearTimeout(this.scrollToTimer);
-      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), 500);
+      this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
 
@@ -479,6 +487,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         // run one more frame to make sure the animation is fully finished
         setTimeout(() => {
           self.isAnimating = false;
+          self.snapAnimationFinished.emit(self.currIndex);
         }, increment);
       }
     };
@@ -494,13 +503,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
           // roll back scrolling
           this.currIndex = idx;
           if (snap) {
-            this.scrollTo(this._contentRef.nativeElement, childrenWidth, 500);
+            this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
         } else {
           // forward scrolling
           this.currIndex = idx + 1;
           if (snap) {
-            this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentClildWidth, 500);
+            this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentClildWidth, this.snapDuration);
           }
         }
         stop();
