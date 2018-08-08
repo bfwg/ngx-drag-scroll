@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSnapAnimationFinished() {
-    console.log("snap animation finished");
+    console.log('snap animation finished');
   }
 
 }

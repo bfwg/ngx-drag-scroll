@@ -345,7 +345,7 @@ describe('DragScrollComponent', () => {
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
-                 </drag-scroll>`                 
+                 </drag-scroll>`
       }
     });
     TestBed.compileComponents().then(() => {
@@ -355,7 +355,7 @@ describe('DragScrollComponent', () => {
       spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
-      document.dispatchEvent(new MouseEvent('mouseup'));      
+      document.dispatchEvent(new MouseEvent('mouseup'));
       fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledWith(2));
     });
   }));
@@ -368,7 +368,7 @@ describe('DragScrollComponent', () => {
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                    <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
-                 </drag-scroll>`                 
+                 </drag-scroll>`
       }
     });
     TestBed.compileComponents().then(() => {
@@ -378,7 +378,7 @@ describe('DragScrollComponent', () => {
       spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
-      document.dispatchEvent(new MouseEvent('mouseup'));      
+      document.dispatchEvent(new MouseEvent('mouseup'));
       fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledTimes(0));
     });
   }));
