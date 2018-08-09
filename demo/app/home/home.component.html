@@ -6,6 +6,7 @@
       scrollbar-hidden="true"
       (reachesLeftBound)="leftBoundStat($event)"
       (reachesRightBound)="rightBoundStat($event)"
+      (snapAnimationFinished)="onSnapAnimationFinished()"
       #nav
       >
       <img drag-scroll-item *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>

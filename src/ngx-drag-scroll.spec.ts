@@ -336,5 +336,51 @@ describe('DragScrollComponent', () => {
       expect(fixture.componentInstance.elementClicked).toBeFalsy();
     });
   });
+
+  it('should trigger snapAnimationFinished event with currentIndex when snap is enabled', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledWith(2));
+    });
+  }));
+
+  it('should not trigger snapAnimationFinished event when snap is disabled', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll snap-disabled="true" style="width: 100px; height: 50px;" #nav>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledTimes(0));
+    });
+  }));
 });
 

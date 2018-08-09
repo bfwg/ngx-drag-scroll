@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   clickItem(item) {
-    console.log('itme clicked');
+    console.log('item clicked');
   }
 
   remove() {
@@ -85,6 +85,10 @@ export class HomeComponent implements OnInit {
 
   rightBoundStat(reachesRightBound: boolean) {
     this.rightNavDisabled = reachesRightBound;
+  }
+
+  onSnapAnimationFinished() {
+    console.log('snap animation finished');
   }
 
 }
