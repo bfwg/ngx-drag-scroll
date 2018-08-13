@@ -1,3 +1,6 @@
+#### 2.0.0-bate.4
+- Notify consumers when snap animation has finished (#162).
+
 #### 2.0.0-bate.3
 - Fix build aot ngModule not found issue.
 
