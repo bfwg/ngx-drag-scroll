@@ -1,3 +1,6 @@
+#### 2.0.0-bate.5
+- Change build target to es5 (#165).
+
 #### 2.0.0-bate.4
 - Notify consumers when snap animation has finished (#162).
 
