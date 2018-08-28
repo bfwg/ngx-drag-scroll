@@ -40,6 +40,8 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
     `]
 })
 export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked {
+  private _index = 0;
+
   private _scrollbarHidden = false;
 
   private _disabled = false;
@@ -103,13 +105,21 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   scrollbarWidth: string | null = null;
 
-  currIndex = 0;
+  get currIndex() {return this._index; }
+  set currIndex(value) {
+    if (value !== this._index) {
+      this._index = value;
+      this.indexChanged.emit(value);
+    }
+  }
 
   isAnimating = false;
 
   scrollReachesRightEnd = false;
 
   prevChildrenLength = 0;
+
+  @Output() indexChanged = new EventEmitter<number>();
 
   @Output() reachesLeftBound = new EventEmitter<boolean>();
 
