@@ -111,6 +111,7 @@ class SampleCarousel {}
 | reachesLeftBound       | @Output | Whether reaching the left carousel bound.                                     |  n/a  |
 | reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
 | snapAnimationFinished  | @Output | The snap animation for the new selection has finished.                        |  n/a  |
+| indexChanged           | @Output | Executes when the current index of the carousel changes.                      |  n/a  |
 
 ___
 
