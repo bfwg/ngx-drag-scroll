@@ -1,3 +1,6 @@
+#### 2.0.0-bate.6
+- Added EventEmitter for the indexChanged event (#168).
+
 #### 2.0.0-bate.5
 - Change build target to es5 (#165).
 
