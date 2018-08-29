@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   ];
   leftNavDisabled = false;
   rightNavDisabled = false;
+  index = 0;
 
   @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
 

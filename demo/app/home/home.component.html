@@ -1,9 +1,10 @@
 <div class="content">
   <p class="title">DRAG AND SCROLL!</p>
-  <div class="demo-border">
+  <div class="demo-border" [matBadge]="index">
     <drag-scroll class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
+      (indexChanged)="index = $event"
       (reachesLeftBound)="leftBoundStat($event)"
       (reachesRightBound)="rightBoundStat($event)"
       (snapAnimationFinished)="onSnapAnimationFinished()"
@@ -123,6 +124,15 @@
             <code class="docs-api-property-type"></code>
           </td>
           <td class="docs-api-property-description"> Whether reaching the right carousel bound. </td>
+          <td class="docs-api-property-description">n/a</td>
+        </tr>
+        <tr class="docs-api-properties-row">
+          <td class="docs-api-properties-name-cell">
+            <div class="docs-api-input-marker"> @Output()</div>
+            <p class="docs-api-property-name"> indexChanged </p>
+            <code class="docs-api-property-type"></code>
+          </td>
+          <td class="docs-api-property-description"> Executes when the current index of the carousel changes. </td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
       </tbody>

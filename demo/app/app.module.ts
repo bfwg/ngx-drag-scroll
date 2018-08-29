@@ -7,7 +7,8 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatToolbarModule,
-  MatButtonModule
+  MatButtonModule,
+  MatBadgeModule,
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -40,6 +41,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSlideToggleModule,
     MatToolbarModule,
     MatButtonModule,
+    MatBadgeModule,
     FlexLayoutModule
   ],
   providers: [
