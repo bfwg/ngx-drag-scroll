@@ -1,6 +1,4 @@
 import {
-  NgModule,
-  Directive,
   ElementRef,
   Component,
   Renderer2,
@@ -10,14 +8,12 @@ import {
   AfterViewInit,
   OnChanges,
   EventEmitter,
-  HostListener,
   ViewChild,
   ContentChildren,
   AfterViewChecked,
   QueryList
 } from '@angular/core';
 
-import { DragScrollElement, DragScrollOption } from './interface';
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
 @Component({
@@ -300,7 +296,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * Nav button
    */
   moveLeft() {
-    if (this.currIndex !== 0 || this.snapDisabled) {
+    if ((this.currIndex !== 0 || this.snapDisabled) && !this.isAnimating) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -308,7 +304,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   moveRight() {
-    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1]) {
+    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1] && !this.isAnimating) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -328,10 +324,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   checkNavStatus() {
-    let childrenWidth = 0;
-    for (let i = 0; i < this._children['_results'].length; i++) {
-      childrenWidth += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
-    }
     setTimeout(() => {
       const onlyOneItem = Boolean(this._children['_results'].length <= 1);
       const containerIsLargerThanContent = Boolean(this._contentRef.nativeElement.scrollWidth <=
@@ -505,21 +497,25 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private locateCurrentIndex(snap?: boolean) {
-    this.currentChildWidth((currentClildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
+    this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
       if (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
           this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth) {
 
-        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentClildWidth / 2 && !this.scrollReachesRightEnd) {
+        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
-          this.currIndex = idx;
+          if (!this.isAnimating) {
+            this.currIndex = idx;
+          }
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
         } else {
           // forward scrolling
-          this.currIndex = idx + 1;
+          if (!this.isAnimating) {
+            this.currIndex = idx + 1;
+          }
           if (snap) {
-            this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentClildWidth, this.snapDuration);
+            this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentChildWidth, this.snapDuration);
           }
         }
         stop();

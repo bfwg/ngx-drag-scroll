@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.7",
   "description": "Lightweight drag to scroll directive for Angular",
   "contributors": [
     {
@@ -46,7 +46,7 @@
     "@angular/core": "6.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.6.3",
+    "@angular-devkit/build-angular": "^0.8.3",
     "@angular/animations": "6.0.0",
     "@angular/cdk": "6.0.0",
     "@angular/cli": "6.0.0",

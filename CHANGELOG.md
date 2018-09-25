@@ -1,3 +1,6 @@
+#### 2.0.0-bate.7
+- Resolve method index changed and move right does not work (#173).
+
 #### 2.0.0-bate.6
 - Added EventEmitter for the indexChanged event (#168).
 
