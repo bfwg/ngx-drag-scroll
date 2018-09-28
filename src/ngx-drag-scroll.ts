@@ -87,7 +87,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   /**
    * The parentNode of carousel Element
    */
-  parentNode: HTMLElement | null = null;
+  parentNode: HTMLElement;
 
   /**
    * The carousel Element
@@ -97,7 +97,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
 
-  wrapper: HTMLDivElement | null = null;
+  wrapper: HTMLDivElement | null;
 
   scrollbarWidth: string | null = null;
 
@@ -261,7 +261,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     clearTimeout(this.scrollToTimer);
   }
 
-  onScrollHandler(event: Event) {
+  onScrollHandler() {
     const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
     if (scrollLeftPos >= this._contentRef.nativeElement.scrollWidth) {
       this.scrollReachesRightEnd = true;
@@ -296,7 +296,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * Nav button
    */
   moveLeft() {
-    if ((this.currIndex !== 0 || this.snapDisabled) && !this.isAnimating) {
+    if ((this.currIndex !== 0 || this.snapDisabled)) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -304,7 +304,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   moveRight() {
-    if (!this.scrollReachesRightEnd && this._children['_results'][this.currIndex + 1] && !this.isAnimating) {
+    const container = this.wrapper || this.parentNode;
+    const containerWidth = container ? container.clientWidth : 0;
+
+    if (!this.scrollReachesRightEnd && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -312,11 +315,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   moveTo(index: number) {
-    if (index >= 0 &&
-        index !== this.currIndex &&
-        this._children &&
-        this._children['_results'] &&
-        this._children['_results'][index]) {
+    const container = this.wrapper || this.parentNode;
+    const containerWidth = container ? container.clientWidth : 0;
+    if (
+      index >= 0 &&
+      index !== this.currIndex &&
+      this.currIndex < this.maximumIndex(containerWidth, this._children)
+        ) {
       this.currIndex = index;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -498,22 +503,22 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private locateCurrentIndex(snap?: boolean) {
     this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
-      if (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
-          this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth) {
-
+      if (
+        this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
+        this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth
+        ) {
         if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
-          if (!this.isAnimating) {
-            this.currIndex = idx;
-          }
+          this.currIndex = idx;
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
         } else {
           // forward scrolling
-          if (!this.isAnimating) {
-            this.currIndex = idx + 1;
-          }
+          const container = this.wrapper || this.parentNode;
+          const containerWidth = container ? container.clientWidth : 0;
+
+          this.currIndex = idx + 1;
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentChildWidth, this.snapDuration);
           }
@@ -536,7 +541,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     };
     for (let i = 0; i < this._children['_results'].length; i++) {
       if (i === this._children['_results'].length - 1) {
-        this.currIndex = i;
         break;
       }
       if (shouldBreak) {
@@ -567,5 +571,21 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.elWidth = this._elementRef.nativeElement.style.width || (this._elementRef.nativeElement.offsetWidth + 'px');
       this.elHeight = this._elementRef.nativeElement.style.height || (this._elementRef.nativeElement.offsetHeight + 'px');
     }
+  }
+
+  private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {
+    let count = 0;
+    let childrenWidth = 0;
+    for (let i = 0; i <= childrenElements['_results'].length; i++) {
+      // last N element
+      const dragScrollItemDirective: DragScrollItemDirective = childrenElements['_results'][childrenElements['_results'].length - 1 - i];
+      childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
+      if (childrenWidth < containerWidth) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return childrenElements.length - count;
   }
 }
