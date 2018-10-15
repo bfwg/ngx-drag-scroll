@@ -1,8 +1,5 @@
 import {
   Component,
-  Output,
-  Renderer2,
-  ElementRef,
   ViewChild
 } from '@angular/core';
 import {
@@ -13,7 +10,6 @@ import { DragScrollComponent } from './ngx-drag-scroll';
 import { DragScrollModule } from './ngx-drag-scroll.module';
 
 import {
-  inject,
   async,
   TestBed,
   fakeAsync,
@@ -28,9 +24,20 @@ class TestComponent {
   @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
   elementClicked = false;
 
-  elementOnClicked(event) {
-    console.log('clicked');
+  elementOnClicked() {
     this.elementClicked = true;
+  }
+
+  moveLeft() {
+    this.ds.moveLeft();
+  }
+
+  moveRight() {
+    this.ds.moveRight();
+  }
+
+  onIndexChanged(idx) {
+    console.log('current index: ' + idx);
   }
 }
 
@@ -380,6 +387,37 @@ describe('DragScrollComponent', () => {
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
       document.dispatchEvent(new MouseEvent('mouseup'));
       fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledTimes(0));
+    });
+  }));
+
+  it('should trigger currentIndex once on navigation button click', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `
+        <drag-scroll
+          (indexChanged)="onIndexChanged($event)"
+          style="width: 100px; height: 50px;" #nav>
+          <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+          <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+          <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+          <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+        </drag-scroll>
+        <button (click)="moveLeft()">left</button>
+        <button (click)="moveRight()">right</button>
+        `
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      spyOn(fixture.componentInstance.ds.indexChanged, 'emit');
+      fixture.componentInstance.moveRight();
+      expect(fixture.componentInstance.ds.indexChanged.emit).toHaveBeenCalledWith(1);
+      fixture.componentInstance.moveRight();
+      expect(fixture.componentInstance.ds.indexChanged.emit).toHaveBeenCalledWith(2);
+      fixture.componentInstance.moveRight();
+      expect(fixture.componentInstance.ds.indexChanged.emit).toHaveBeenCalledWith(3);
+      expect(fixture.componentInstance.ds.indexChanged.emit).toHaveBeenCalledTimes(3);
     });
   }));
 });

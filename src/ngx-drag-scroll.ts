@@ -502,26 +502,33 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private locateCurrentIndex(snap?: boolean) {
-    this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx, stop) => {
+    this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx: number, stop) => {
       if (
-        this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
-        this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth
+        (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
+        this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
         ) {
         if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
-          this.currIndex = idx;
+          if (!this.isAnimating) {
+            this.currIndex = idx;
+          }
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
         } else {
           // forward scrolling
-          const container = this.wrapper || this.parentNode;
-          const containerWidth = container ? container.clientWidth : 0;
-
-          this.currIndex = idx + 1;
+          if (!this.isAnimating) {
+            this.currIndex = idx + 1;
+          }
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth + currentChildWidth, this.snapDuration);
           }
+        }
+        stop();
+      } else if ((idx + 1) === (this._children['_results'].length - 1)) {
+        // reaches last index
+        if (!this.isAnimating) {
+          this.currIndex = idx + 1;
         }
         stop();
       }

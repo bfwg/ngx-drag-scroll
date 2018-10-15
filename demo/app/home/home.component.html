@@ -4,7 +4,7 @@
     <drag-scroll class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
-      (indexChanged)="index = $event"
+      (indexChanged)="onIndexChanged($event)"
       (reachesLeftBound)="leftBoundStat($event)"
       (reachesRightBound)="rightBoundStat($event)"
       (snapAnimationFinished)="onSnapAnimationFinished()"

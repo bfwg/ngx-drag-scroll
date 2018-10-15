@@ -92,4 +92,8 @@ export class HomeComponent implements OnInit {
     console.log('snap animation finished');
   }
 
+  onIndexChanged(idx) {
+    this.index = idx;
+    console.log('current index: ' + idx);
+  }
 }
