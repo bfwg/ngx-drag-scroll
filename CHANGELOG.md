@@ -1,3 +1,6 @@
+#### 2.0.1
+- Resolve right click and left click not working (#174)
+
 #### 2.0.0-bate.7
 - Resolve method index changed and move right does not work (#173).
 
