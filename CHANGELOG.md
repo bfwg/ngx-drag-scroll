@@ -1,3 +1,6 @@
+#### 2.0.2
+- Resolve method indexChanged / moveRight doesn't work (#171)
+
 #### 2.0.1
 - Resolve right click and left click not working (#174)
 
