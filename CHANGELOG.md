@@ -1,4 +1,4 @@
-#### 2.0.3
+#### 2.0.2
 - Resolve method indexChanged / moveRight doesn't work (#171)
 
 #### 2.0.1
