@@ -1,3 +1,6 @@
+#### 2.1.1
+- Angular 7 support (#182)
+
 #### 2.0.2
 - Resolve method indexChanged / moveRight doesn't work (#171)
 
