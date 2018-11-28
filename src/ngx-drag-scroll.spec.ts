@@ -5,6 +5,7 @@ import {
 import {
   By
 } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 import { DragScrollComponent } from './ngx-drag-scroll';
 import { DragScrollModule } from './ngx-drag-scroll.module';
@@ -46,7 +47,10 @@ describe('DragScrollComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DragScrollModule],
-      declarations: [TestComponent]
+      declarations: [TestComponent],
+      providers: [
+        { provide: DOCUMENT, useValue: document }
+      ]
     });
   });
 

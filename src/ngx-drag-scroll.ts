@@ -11,8 +11,10 @@ import {
   ViewChild,
   ContentChildren,
   AfterViewChecked,
-  QueryList
+  QueryList,
+  Inject
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
@@ -168,8 +170,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   set snapDuration(value: number) { this._snapDuration = value; }
 
   constructor(
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
+    @Inject(ElementRef) private _elementRef: ElementRef,
+    @Inject(Renderer2) private _renderer: Renderer2,
+    @Inject(DOCUMENT) private _document: any
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
   }
@@ -436,7 +439,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._renderer.setStyle(outer, 'width', '100px');
     this._renderer.setStyle(outer, 'msOverflowStyle', 'scrollbar');  // needed for WinJS apps
     // document.body.appendChild(outer);
-    this._renderer.appendChild(document.body, outer);
+    this._renderer.appendChild(this._document.body, outer);
     // this._renderer.appendChild(this._renderer.selectRootElement('body'), outer);
     const widthNoScroll = outer.offsetWidth;
     // force scrollbars
@@ -450,7 +453,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const widthWithScroll = inner.offsetWidth;
 
     // remove divs
-    this._renderer.removeChild(document.body, outer);
+    this._renderer.removeChild(this._document.body, outer);
 
     /**
      * Scrollbar width will be 0 on Mac OS with the
