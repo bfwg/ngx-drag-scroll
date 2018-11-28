@@ -66,9 +66,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    */
   isScrolling = false;
 
-  scrollTimer = -1;
+  scrollTimer: any = -1;
 
-  scrollToTimer = -1;
+  scrollToTimer: any = -1;
 
   /**
    * The x coordinates on the element
@@ -103,7 +103,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   scrollbarWidth: string | null = null;
 
-  get currIndex() {return this._index; }
+  get currIndex() { return this._index; }
   set currIndex(value) {
     if (value !== this._index) {
       this._index = value;
@@ -197,7 +197,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     // auto assign computed css
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
 
-    this.displayType = window.getComputedStyle(this._elementRef.nativeElement).display;
+    this.displayType = typeof window != "undefined" ? window.getComputedStyle(this._elementRef.nativeElement).display : "block";
 
     this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
     this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
@@ -275,7 +275,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer);
-      this.scrollTimer = window.setTimeout(() => {
+      this.scrollTimer = setTimeout(() => {
         this.isScrolling = false;
         this.locateCurrentIndex(true);
       }, 500);
@@ -324,7 +324,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       index >= 0 &&
       index !== this.currIndex &&
       this.currIndex < this.maximumIndex(containerWidth, this._children)
-        ) {
+    ) {
       this.currIndex = index;
       clearTimeout(this.scrollToTimer);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -335,7 +335,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     setTimeout(() => {
       const onlyOneItem = Boolean(this._children['_results'].length <= 1);
       const containerIsLargerThanContent = Boolean(this._contentRef.nativeElement.scrollWidth <=
-                                                   this._contentRef.nativeElement.clientWidth);
+        this._contentRef.nativeElement.clientWidth);
       if (onlyOneItem || containerIsLargerThanContent) {
         // only one element
         this.reachesLeftBound.emit(true);
@@ -345,7 +345,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this.reachesLeftBound.emit(false);
         this.reachesRightBound.emit(true);
       } else if (this._contentRef.nativeElement.scrollLeft === 0 &&
-                this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
+        this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
         // reached left end
         this.reachesLeftBound.emit(true);
         this.reachesRightBound.emit(false);
@@ -376,7 +376,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
       this._renderer.setStyle(this.wrapper, 'width', '100%');
       this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
-          || this._elementRef.nativeElement.offsetHeight + 'px');
+        || this._elementRef.nativeElement.offsetHeight + 'px');
 
       this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
@@ -488,11 +488,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       return -c / 2 * (t * (t - 2) - 1) + b;
     };
 
-    const animateScroll = function() {
+    const animateScroll = function () {
       currentTime += increment;
       element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
       if (currentTime < duration) {
-          self.scrollToTimer = window.setTimeout(animateScroll, increment);
+        self.scrollToTimer = setTimeout(animateScroll, increment);
       } else {
         // run one more frame to make sure the animation is fully finished
         setTimeout(() => {
@@ -508,8 +508,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx: number, stop) => {
       if (
         (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
-        this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
-        ) {
+          this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
+      ) {
         if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
           // roll back scrolling
           if (!this.isAnimating) {
@@ -546,7 +546,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     breakFunc: () => void) => void) {
     let childrenWidth = 0;
     let shouldBreak = false;
-    const breakFunc = function() {
+    const breakFunc = function () {
       shouldBreak = true;
     };
     for (let i = 0; i < this._children['_results'].length; i++) {
