@@ -66,9 +66,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    */
   isScrolling = false;
 
-  scrollTimer: any = -1;
+  scrollTimer: number | NodeJS.Timer = -1;
 
-  scrollToTimer: any = -1;
+  scrollToTimer: number | NodeJS.Timer = -1;
 
   /**
    * The x coordinates on the element
@@ -261,7 +261,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
-    clearTimeout(this.scrollToTimer);
+    clearTimeout(this.scrollToTimer as number);
   }
 
   onScrollHandler() {
@@ -274,7 +274,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.checkNavStatus();
     if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
       this.isScrolling = true;
-      clearTimeout(this.scrollTimer);
+      clearTimeout(this.scrollTimer as number);
       this.scrollTimer = setTimeout(() => {
         this.isScrolling = false;
         this.locateCurrentIndex(true);
@@ -301,7 +301,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   moveLeft() {
     if ((this.currIndex !== 0 || this.snapDisabled)) {
       this.currIndex--;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
@@ -312,7 +312,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
     if (!this.scrollReachesRightEnd && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
       this.currIndex++;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
@@ -326,7 +326,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.currIndex < this.maximumIndex(containerWidth, this._children)
     ) {
       this.currIndex = index;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
