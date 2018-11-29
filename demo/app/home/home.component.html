@@ -4,6 +4,7 @@
     <drag-scroll class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
+      (dsInitialized)="onDragScrollInitialized()"
       (indexChanged)="onIndexChanged($event)"
       (reachesLeftBound)="leftBoundStat($event)"
       (reachesRightBound)="rightBoundStat($event)"

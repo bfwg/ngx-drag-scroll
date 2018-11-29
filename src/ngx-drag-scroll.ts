@@ -115,6 +115,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   prevChildrenLength = 0;
 
+  @Output() dsInitialized = new EventEmitter<void>();
+
   @Output() indexChanged = new EventEmitter<number>();
 
   @Output() reachesLeftBound = new EventEmitter<boolean>();
@@ -222,6 +224,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       e.preventDefault();
     });
     this.checkNavStatus();
+    this.dsInitialized.emit();
   }
 
   ngAfterViewChecked() {

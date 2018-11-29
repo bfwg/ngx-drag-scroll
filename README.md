@@ -112,6 +112,7 @@ class SampleCarousel {}
 | reachesRightBound      | @Output | Whether reaching the right carousel bound.                                    |  n/a  |
 | snapAnimationFinished  | @Output | The snap animation for the new selection has finished.                        |  n/a  |
 | indexChanged           | @Output | Executes when the current index of the carousel changes.                      |  n/a  |
+| dsInitialized          | @Output | Executes when the drag scroll component has been initialized.                 |  n/a  |
 
 ___
 
