@@ -113,8 +113,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   isAnimating = false;
 
-  scrollReachesRightEnd = false;
-
   prevChildrenLength = 0;
 
   @Output() indexChanged = new EventEmitter<number>();
@@ -267,12 +265,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onScrollHandler() {
-    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
-    if (scrollLeftPos >= this._contentRef.nativeElement.scrollWidth) {
-      this.scrollReachesRightEnd = true;
-    } else {
-      this.scrollReachesRightEnd = false;
-    }
     this.checkNavStatus();
     if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
       this.isScrolling = true;
@@ -312,7 +304,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
 
-    if (!this.scrollReachesRightEnd && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
+    if (!this.isScrollReachesRightEnd() && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -342,7 +334,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         // only one element
         this.reachesLeftBound.emit(true);
         this.reachesRightBound.emit(true);
-      } else if (this.scrollReachesRightEnd) {
+      } else if (this.isScrollReachesRightEnd()) {
         // reached right end
         this.reachesLeftBound.emit(false);
         this.reachesRightBound.emit(true);
@@ -512,7 +504,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
           this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
       ) {
-        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
+        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.isScrollReachesRightEnd()) {
           // roll back scrolling
           if (!this.isAnimating) {
             this.currIndex = idx;
@@ -599,5 +591,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       }
     }
     return childrenElements.length - count;
+  }
+
+  private isScrollReachesRightEnd(): boolean {
+    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
+    return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
   }
 }
