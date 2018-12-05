@@ -56,9 +56,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
-  private _onMouseMoveHandler: any;
+  private _onMouseMoveListener: any;
 
-  private _onMouseUpHandler: any;
+  private _onMouseUpListener: any;
 
   /**
    * Is the user currently pressing the element
@@ -362,22 +362,22 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private _startGlobalListening() {
-    if (!this._onMouseMoveHandler) {
-      this._onMouseMoveHandler = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+    if (!this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
     }
 
-    if (!this._onMouseUpHandler) {
-      this._onMouseUpHandler = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+    if (!this._onMouseUpListener) {
+      this._onMouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
     }
   }
 
   private _stopGlobalListening() {
-    if (this._onMouseMoveHandler) {
-      this._onMouseMoveHandler = this._onMouseMoveHandler();
+    if (this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._onMouseMoveListener();
     }
 
-    if (this._onMouseUpHandler) {
-      this._onMouseUpHandler = this._onMouseUpHandler();
+    if (this._onMouseUpListener) {
+      this._onMouseUpListener = this._onMouseUpListener();
     }
   }
 
