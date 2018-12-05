@@ -56,6 +56,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
+  private _onMouseMoveHandler: any;
+
+  private _onMouseUpHandler: any;
+
   /**
    * Is the user currently pressing the element
    */
@@ -215,8 +219,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
-    this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
-    this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
 
     // prevent Firefox from dragging images
@@ -264,6 +266,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
+
+    this._startGlobalListening();
+
     clearTimeout(this.scrollToTimer as number);
   }
 
@@ -282,6 +287,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseUpHandler(event: MouseEvent) {
+    this._stopGlobalListening();
+
     if (this.isPressed) {
       this.isPressed = false;
       if (!this.snapDisabled) {
@@ -352,6 +359,26 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this.reachesRightBound.emit(false);
       }
     }, 0);
+  }
+
+  private _startGlobalListening() {
+    if (!this._onMouseMoveHandler) {
+      this._onMouseMoveHandler = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+    }
+
+    if (!this._onMouseUpHandler) {
+      this._onMouseUpHandler = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+    }
+  }
+
+  private _stopGlobalListening() {
+    if (this._onMouseMoveHandler) {
+      this._onMouseMoveHandler = this._onMouseMoveHandler();
+    }
+
+    if (this._onMouseUpHandler) {
+      this._onMouseUpHandler = this._onMouseUpHandler();
+    }
   }
 
   private disableScroll(axis: string): void {
