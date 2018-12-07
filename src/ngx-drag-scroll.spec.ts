@@ -469,7 +469,9 @@ describe('DragScrollComponent', () => {
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
       document.dispatchEvent(new MouseEvent('mouseup'));
-      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(1));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => {
+        expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(1);
+      });
     });
   }) );
 });
