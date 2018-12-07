@@ -245,7 +245,7 @@ describe('DragScrollComponent', () => {
       document.dispatchEvent(new MouseEvent('mouseup'));
       // compiled.componentInstance.locateCurrentIndex(true);
 
-      fixture.whenRenderingDone().then(() => expect(compiled.nativeElement.scrollLeft).toBe(50));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => expect(compiled.nativeElement.scrollLeft).toBe(50));
     });
   }));
 
@@ -266,7 +266,7 @@ describe('DragScrollComponent', () => {
       document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
-      fixture.whenRenderingDone().then(() => expect(compiled.nativeElement.scrollLeft).toBe(40));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => expect(compiled.nativeElement.scrollLeft).toBe(40));
     });
   }));
 
@@ -363,11 +363,11 @@ describe('DragScrollComponent', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
-      spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
       document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
       document.dispatchEvent(new MouseEvent('mouseup'));
-      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledWith(2));
+
+      compiled.componentInstance.snapAnimationFinished.subscribe((result) => expect(result).toBe(2));
     });
   }));
 
@@ -424,5 +424,54 @@ describe('DragScrollComponent', () => {
       expect(fixture.componentInstance.ds.indexChanged.emit).toHaveBeenCalledTimes(3);
     });
   }));
-});
 
+  it('should not listen to mousemove when mousedown is not triggered', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      spyOn(fixture.componentInstance.ds, 'onMouseMove');
+
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -20  }));
+      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(0));
+    });
+  }) );
+
+  it('should listen to mousemove when mousedown is triggered', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      spyOn(fixture.componentInstance.ds, 'onMouseMove');
+
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => {
+        expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(1);
+      });
+    });
+  }) );
+});

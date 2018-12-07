@@ -56,6 +56,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
+  private _onMouseMoveListener: any;
+
+  private _onMouseUpListener: any;
+
   /**
    * Is the user currently pressing the element
    */
@@ -215,8 +219,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
-    this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
-    this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
 
     // prevent Firefox from dragging images
@@ -243,6 +245,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseMoveHandler(event: MouseEvent) {
+    this.onMouseMove(event);
+  }
+
+  onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
@@ -261,9 +267,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseDownHandler(event: MouseEvent) {
+    this._startGlobalListening();
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
+
     clearTimeout(this.scrollToTimer as number);
   }
 
@@ -289,6 +297,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       } else {
         this.locateCurrentIndex();
       }
+      this._stopGlobalListening();
     }
   }
 
@@ -352,6 +361,26 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this.reachesRightBound.emit(false);
       }
     }, 0);
+  }
+
+  private _startGlobalListening() {
+    if (!this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+    }
+
+    if (!this._onMouseUpListener) {
+      this._onMouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+    }
+  }
+
+  private _stopGlobalListening() {
+    if (this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._onMouseMoveListener();
+    }
+
+    if (this._onMouseUpListener) {
+      this._onMouseUpListener = this._onMouseUpListener();
+    }
   }
 
   private disableScroll(axis: string): void {
