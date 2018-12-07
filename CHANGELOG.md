@@ -1,3 +1,6 @@
+#### 2.0.4
+- feat: bind global handlers (mouseup, mousemove) on mousedown (#193)
+
 #### 2.0.3
 - feat: add output for ds initialization (#192)
     Closes ##185
