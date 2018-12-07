@@ -245,6 +245,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseMoveHandler(event: MouseEvent) {
+    this.onMouseMove(event);
+  }
+
+  onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
@@ -263,11 +267,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseDownHandler(event: MouseEvent) {
+    this._startGlobalListening();
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
 
-    this._startGlobalListening();
 
     clearTimeout(this.scrollToTimer as number);
   }
@@ -287,7 +291,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseUpHandler(event: MouseEvent) {
-    this._stopGlobalListening();
 
     if (this.isPressed) {
       this.isPressed = false;
@@ -296,6 +299,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       } else {
         this.locateCurrentIndex();
       }
+      this._stopGlobalListening();
     }
   }
 
