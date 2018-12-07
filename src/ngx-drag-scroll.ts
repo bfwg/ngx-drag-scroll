@@ -272,7 +272,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.downX = event.clientX;
     this.downY = event.clientY;
 
-
     clearTimeout(this.scrollToTimer as number);
   }
 
@@ -291,7 +290,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseUpHandler(event: MouseEvent) {
-
     if (this.isPressed) {
       this.isPressed = false;
       if (!this.snapDisabled) {
