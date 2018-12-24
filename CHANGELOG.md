@@ -1,3 +1,6 @@
+#### 2.1.1
+- Angular 7 support (#182)
+
 #### 2.0.4
 - feat: bind global handlers (mouseup, mousemove) on mousedown (#193)
 
