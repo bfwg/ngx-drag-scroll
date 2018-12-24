@@ -11,8 +11,10 @@ import {
   ViewChild,
   ContentChildren,
   AfterViewChecked,
-  QueryList
+  QueryList,
+  Inject
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
@@ -54,6 +56,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
+  private _onMouseMoveListener: any;
+
+  private _onMouseUpListener: any;
+
   /**
    * Is the user currently pressing the element
    */
@@ -64,9 +70,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    */
   isScrolling = false;
 
-  scrollTimer = -1;
+  scrollTimer: number | NodeJS.Timer = -1;
 
-  scrollToTimer = -1;
+  scrollToTimer: number | NodeJS.Timer = -1;
 
   /**
    * The x coordinates on the element
@@ -101,7 +107,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   scrollbarWidth: string | null = null;
 
-  get currIndex() {return this._index; }
+  get currIndex() { return this._index; }
   set currIndex(value) {
     if (value !== this._index) {
       this._index = value;
@@ -111,9 +117,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   isAnimating = false;
 
-  scrollReachesRightEnd = false;
-
   prevChildrenLength = 0;
+
+  @Output() dsInitialized = new EventEmitter<void>();
 
   @Output() indexChanged = new EventEmitter<number>();
 
@@ -168,8 +174,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   set snapDuration(value: number) { this._snapDuration = value; }
 
   constructor(
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
+    @Inject(ElementRef) private _elementRef: ElementRef,
+    @Inject(Renderer2) private _renderer: Renderer2,
+    @Inject(DOCUMENT) private _document: any
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
   }
@@ -194,7 +201,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     // auto assign computed css
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'true');
 
-    this.displayType = window.getComputedStyle(this._elementRef.nativeElement).display;
+    this.displayType = typeof window !== 'undefined' ? window.getComputedStyle(this._elementRef.nativeElement).display : 'block';
 
     this._renderer.setStyle(this._contentRef.nativeElement, 'display', this.displayType);
     this._renderer.setStyle(this._contentRef.nativeElement, 'whiteSpace', 'noWrap');
@@ -210,15 +217,16 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
 
     this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
+    this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
     this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
-    this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
-    this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+    this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
 
     // prevent Firefox from dragging images
     this._renderer.listen('document', 'dragstart', (e) => {
       e.preventDefault();
     });
     this.checkNavStatus();
+    this.dsInitialized.emit();
   }
 
   ngAfterViewChecked() {
@@ -237,6 +245,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseMoveHandler(event: MouseEvent) {
+    this.onMouseMove(event);
+  }
+
+  onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
@@ -255,24 +267,20 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseDownHandler(event: MouseEvent) {
+    this._startGlobalListening();
     this.isPressed = true;
     this.downX = event.clientX;
     this.downY = event.clientY;
-    clearTimeout(this.scrollToTimer);
+
+    clearTimeout(this.scrollToTimer as number);
   }
 
   onScrollHandler() {
-    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
-    if (scrollLeftPos >= this._contentRef.nativeElement.scrollWidth) {
-      this.scrollReachesRightEnd = true;
-    } else {
-      this.scrollReachesRightEnd = false;
-    }
     this.checkNavStatus();
     if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
       this.isScrolling = true;
-      clearTimeout(this.scrollTimer);
-      this.scrollTimer = window.setTimeout(() => {
+      clearTimeout(this.scrollTimer as number);
+      this.scrollTimer = setTimeout(() => {
         this.isScrolling = false;
         this.locateCurrentIndex(true);
       }, 500);
@@ -289,6 +297,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       } else {
         this.locateCurrentIndex();
       }
+      this._stopGlobalListening();
     }
   }
 
@@ -298,7 +307,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   moveLeft() {
     if ((this.currIndex !== 0 || this.snapDisabled)) {
       this.currIndex--;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
@@ -307,9 +316,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
 
-    if (!this.scrollReachesRightEnd && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
+    if (!this.isScrollReachesRightEnd() && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
       this.currIndex++;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
@@ -321,9 +330,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       index >= 0 &&
       index !== this.currIndex &&
       this.currIndex < this.maximumIndex(containerWidth, this._children)
-        ) {
+    ) {
       this.currIndex = index;
-      clearTimeout(this.scrollToTimer);
+      clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
   }
@@ -332,17 +341,17 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     setTimeout(() => {
       const onlyOneItem = Boolean(this._children['_results'].length <= 1);
       const containerIsLargerThanContent = Boolean(this._contentRef.nativeElement.scrollWidth <=
-                                                   this._contentRef.nativeElement.clientWidth);
+        this._contentRef.nativeElement.clientWidth);
       if (onlyOneItem || containerIsLargerThanContent) {
         // only one element
         this.reachesLeftBound.emit(true);
         this.reachesRightBound.emit(true);
-      } else if (this.scrollReachesRightEnd) {
+      } else if (this.isScrollReachesRightEnd()) {
         // reached right end
         this.reachesLeftBound.emit(false);
         this.reachesRightBound.emit(true);
       } else if (this._contentRef.nativeElement.scrollLeft === 0 &&
-                this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
+        this._contentRef.nativeElement.scrollWidth > this._contentRef.nativeElement.clientWidth) {
         // reached left end
         this.reachesLeftBound.emit(true);
         this.reachesRightBound.emit(false);
@@ -352,6 +361,26 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this.reachesRightBound.emit(false);
       }
     }, 0);
+  }
+
+  private _startGlobalListening() {
+    if (!this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+    }
+
+    if (!this._onMouseUpListener) {
+      this._onMouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+    }
+  }
+
+  private _stopGlobalListening() {
+    if (this._onMouseMoveListener) {
+      this._onMouseMoveListener = this._onMouseMoveListener();
+    }
+
+    if (this._onMouseUpListener) {
+      this._onMouseUpListener = this._onMouseUpListener();
+    }
   }
 
   private disableScroll(axis: string): void {
@@ -373,7 +402,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
       this._renderer.setStyle(this.wrapper, 'width', '100%');
       this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
-          || this._elementRef.nativeElement.offsetHeight + 'px');
+        || this._elementRef.nativeElement.offsetHeight + 'px');
 
       this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
@@ -436,7 +465,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._renderer.setStyle(outer, 'width', '100px');
     this._renderer.setStyle(outer, 'msOverflowStyle', 'scrollbar');  // needed for WinJS apps
     // document.body.appendChild(outer);
-    this._renderer.appendChild(document.body, outer);
+    this._renderer.appendChild(this._document.body, outer);
     // this._renderer.appendChild(this._renderer.selectRootElement('body'), outer);
     const widthNoScroll = outer.offsetWidth;
     // force scrollbars
@@ -450,7 +479,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const widthWithScroll = inner.offsetWidth;
 
     // remove divs
-    this._renderer.removeChild(document.body, outer);
+    this._renderer.removeChild(this._document.body, outer);
 
     /**
      * Scrollbar width will be 0 on Mac OS with the
@@ -485,11 +514,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       return -c / 2 * (t * (t - 2) - 1) + b;
     };
 
-    const animateScroll = function() {
+    const animateScroll = function () {
       currentTime += increment;
       element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
       if (currentTime < duration) {
-          self.scrollToTimer = window.setTimeout(animateScroll, increment);
+        self.scrollToTimer = setTimeout(animateScroll, increment);
       } else {
         // run one more frame to make sure the animation is fully finished
         setTimeout(() => {
@@ -505,9 +534,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx: number, stop) => {
       if (
         (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
-        this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
-        ) {
-        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.scrollReachesRightEnd) {
+          this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
+      ) {
+        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.isScrollReachesRightEnd()) {
           // roll back scrolling
           if (!this.isAnimating) {
             this.currIndex = idx;
@@ -543,7 +572,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     breakFunc: () => void) => void) {
     let childrenWidth = 0;
     let shouldBreak = false;
-    const breakFunc = function() {
+    const breakFunc = function () {
       shouldBreak = true;
     };
     for (let i = 0; i < this._children['_results'].length; i++) {
@@ -594,5 +623,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       }
     }
     return childrenElements.length - count;
+  }
+
+  private isScrollReachesRightEnd(): boolean {
+    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
+    return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
   }
 }

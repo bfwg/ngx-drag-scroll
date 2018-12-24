@@ -96,4 +96,8 @@ export class HomeComponent implements OnInit {
     this.index = idx;
     console.log('current index: ' + idx);
   }
+
+  onDragScrollInitialized() {
+    console.log('first demo drag scroll has been initialized.');
+  }
 }

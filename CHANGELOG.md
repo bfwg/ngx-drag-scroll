@@ -1,6 +1,19 @@
 #### 2.1.1
 - Angular 7 support (#182)
 
+#### 2.0.4
+- feat: bind global handlers (mouseup, mousemove) on mousedown (#193)
+
+#### 2.0.3
+- feat: add output for ds initialization (#192)
+    Closes ##185
+- fix: scrollReachesRightEnd should be recalculated (#191)
+    Closes #184
+- refactor: lagging on mobile device (#190)
+    * refactor: remove the lag when dragging on mobile devices
+- fix: fixed a bug window is not defined (#189)
+- fix: document is not defined, resolve providers on node for lazy loading (#188)
+
 #### 2.0.2
 - Resolve method indexChanged / moveRight doesn't work (#171)
 
