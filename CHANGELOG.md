@@ -1,3 +1,7 @@
+#### 7.0.0
+- support Angular 7.1.4 (#198)
+- resolve ngDevMode issue (#199)
+
 #### 2.1.1
 - Angular 7 support (#182)
 

@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "2.1.1",
+  "version": "7.0.0",
   "description": "Lightweight drag to scroll library for Angular",
   "contributors": [
     {
@@ -41,23 +41,24 @@
   },
   "homepage": "https://github.com/bfwg/ngx-drag-scroll#readme",
   "requiredAngularVersion": ">=7.0.0",
-  "dependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/compiler": "^7.0.0",
-    "@angular/core": "^7.0.0",
+  "peerDependencies": {
+    "@angular/common": "^7.1.4",
+    "@angular/compiler": "^7.1.4",
+    "@angular/core": "^7.1.4",
     "tsickle": "^0.33.0"
   },
   "devDependencies": {
+    "@angular/common": "^7.1.4",
+    "@angular/compiler": "^7.1.4",
+    "@angular/core": "^7.1.4",
+    "tsickle": "^0.33.0",
     "@angular-devkit/build-angular": "^0.10.2",
     "@angular-devkit/core": "^7.0.1",
-    "@angular-devkit/schematics": "^7.0.1",
-    "@angular/animations": "^7.0.0",
-    "@angular/cdk": "^7.0.0",
-    "@angular/cli": "^7.0.0",
-    "@angular/common": "^7.0.0",
-    "@angular/compiler": "^7.0.0",
-    "@angular/compiler-cli": "^7.0.0",
-    "@angular/core": "^7.0.0",
+    "@angular-devkit/schematics": "^7.1.4",
+    "@angular/animations": "^7.1.4",
+    "@angular/cdk": "^7.1.4",
+    "@angular/cli": "^7.1.4",
+    "@angular/compiler-cli": "^7.1.4",
     "@angular/flex-layout": "^7.0.0-beta.15",
     "@angular/forms": "^7.0.0",
     "@angular/http": "^7.0.0",
