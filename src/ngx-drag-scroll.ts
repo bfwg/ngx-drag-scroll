@@ -56,9 +56,19 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
-  private _onMouseMoveListener: any;
+  private _onMouseMoveListener: Function;
 
-  private _onMouseUpListener: any;
+  private _onMouseUpListener: Function;
+
+  private _onMouseDownListener: Function;
+
+  private _onTouchStartListener: Function;
+
+  private _onScrollListener: Function;
+
+  private _onTouchEndListener: Function;
+
+  private _onDragStartListener: Function;
 
   /**
    * Is the user currently pressing the element
@@ -216,13 +226,12 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.checkScrollbar();
     }
 
-    this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
-    this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
-    this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
-    this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
-
+    this._onMouseDownListener = this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
+    this._onTouchStartListener = this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
+    this._onScrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
+    this._onTouchEndListener = this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
     // prevent Firefox from dragging images
-    this._renderer.listen('document', 'dragstart', (e) => {
+    this._onDragStartListener = this._renderer.listen('document', 'dragstart', (e) => {
       e.preventDefault();
     });
     this.checkNavStatus();
@@ -242,6 +251,21 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   ngOnDestroy() {
     this._renderer.setAttribute(this._contentRef.nativeElement, 'drag-scroll', 'false');
+    if (this._onMouseDownListener) {
+      this._onMouseDownListener = this._onMouseDownListener();
+    }
+    if (this._onTouchStartListener) {
+      this._onTouchStartListener = this._onTouchStartListener();
+    }
+    if (this._onScrollListener) {
+      this._onScrollListener = this._onScrollListener();
+    }
+    if (this._onTouchEndListener) {
+      this._onTouchEndListener = this._onTouchEndListener();
+    }
+    if (this._onDragStartListener) {
+      this._onDragStartListener = this._onDragStartListener();
+    }
   }
 
   onMouseMoveHandler(event: MouseEvent) {
