@@ -1,3 +1,6 @@
+#### 7.0.1
+- renderer listen document dragstart (#200)
+
 #### 7.0.0
 - support Angular 7.1.4 (#198)
 - resolve ngDevMode issue (#199)
