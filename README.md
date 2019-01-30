@@ -98,6 +98,8 @@ class SampleCarousel {}
 
 ## API REFERENCE
 
+### DragScrollComponent 
+
 | Name                   | Type    | Description                                                                   |Default|
 |------------------------|---------|-------------------------------------------------------------------------------|-------|
 | scrollbar-hidden       | @Input  | Whether the scroll bar for this element is hidden.                            | false |
@@ -113,6 +115,14 @@ class SampleCarousel {}
 | snapAnimationFinished  | @Output | The snap animation for the new selection has finished.                        |  n/a  |
 | indexChanged           | @Output | Executes when the current index of the carousel changes.                      |  n/a  |
 | dsInitialized          | @Output | Executes when the drag scroll component has been initialized.                 |  n/a  |
+
+___
+
+### DragScrollItemDirective 
+
+| Name                   | Type    | Description                                                                   |Default|
+|------------------------|---------|-------------------------------------------------------------------------------|-------|
+| drag-disabled          | @Input  | Whether draging on the item is disabled.                                      | false |
 
 ___
 

@@ -267,6 +267,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseDownHandler(event: MouseEvent) {
+    const dragScrollItem: DragScrollItemDirective | null = this.locateDragScrollItem(event.target as Element);
+    if (dragScrollItem && dragScrollItem.dragDisabled) {
+      return;
+    }
+
     this._startGlobalListening();
     this.isPressed = true;
     this.downX = event.clientX;
@@ -597,6 +602,16 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       to += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
     }
     return to;
+  }
+
+  private locateDragScrollItem(element: Element): DragScrollItemDirective | null {
+    let item: DragScrollItemDirective | null = null;
+    for (let i = 0; i < this._children['_results'].length; i++) {
+      if (element === this._children['_results'][i]._elementRef.nativeElement) {
+        item = this._children['_results'][i];
+      }
+    }
+    return item;
   }
 
   private markElDimension() {
