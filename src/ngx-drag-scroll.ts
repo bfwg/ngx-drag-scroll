@@ -119,6 +119,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   prevChildrenLength = 0;
 
+  indexBound = 0;
+
   @Output() dsInitialized = new EventEmitter<void>();
 
   @Output() indexChanged = new EventEmitter<number>();
@@ -622,6 +624,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.elWidth = this._elementRef.nativeElement.style.width || (this._elementRef.nativeElement.offsetWidth + 'px');
       this.elHeight = this._elementRef.nativeElement.style.height || (this._elementRef.nativeElement.offsetHeight + 'px');
     }
+    const container = this.wrapper || this.parentNode;
+    const containerWidth = container ? container.clientWidth : 0;
+    this.indexBound =  this.maximumIndex(containerWidth, this._children);
   }
 
   private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {

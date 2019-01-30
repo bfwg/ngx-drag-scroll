@@ -1,3 +1,7 @@
+#### 7.1.0
+- add index bound (#202)
+- drag-scroll-disabled alternative for children (#144)
+
 #### 7.0.0
 - support Angular 7.1.4 (#198)
 - resolve ngDevMode issue (#199)
