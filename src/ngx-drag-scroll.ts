@@ -659,14 +659,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     for (let i = 0; i <= childrenElements['_results'].length; i++) {
       // last N element
       const dragScrollItemDirective: DragScrollItemDirective = childrenElements['_results'][childrenElements['_results'].length - 1 - i];
-      if (dragScrollItemDirective) {
-        return childrenElements.length;
-      }
-      childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
-      if (childrenWidth < containerWidth) {
-        count++;
-      } else {
+      if (!dragScrollItemDirective) {
         break;
+      } else {
+        childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
+        if (childrenWidth < containerWidth) {
+          count++;
+        } else {
+          break;
+        }
       }
     }
     return childrenElements.length - count;
