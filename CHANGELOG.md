@@ -1,3 +1,7 @@
+#### 7.1.0
+- add index bound (#202)
+- drag-scroll-disabled alternative for children (#144)
+k
 #### 7.0.1
 - renderer listen document dragstart (#200)
 

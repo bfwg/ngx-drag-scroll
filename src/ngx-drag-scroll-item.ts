@@ -1,10 +1,16 @@
-import { Directive, ElementRef, Renderer2, HostBinding, Inject } from '@angular/core';
+import { Directive, ElementRef, Input, HostBinding, Inject } from '@angular/core';
 @Directive({
   selector: '[drag-scroll-item]'
 })
 export class DragScrollItemDirective {
   @HostBinding('style.display')
   display = 'inline-block';
+
+  @Input('drag-disabled')
+  get dragDisabled() { return this._dragDisabled; }
+  set dragDisabled(value: boolean) { this._dragDisabled = value; }
+
+  _dragDisabled = false;
 
   _elementRef: ElementRef;
 

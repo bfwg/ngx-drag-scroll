@@ -164,6 +164,29 @@ describe('DragScrollComponent', () => {
     });
   }));
 
+  it('should not drag and horizontally when the item is drag disabled', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
+                   <div drag-scroll-item drag-disabled style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`
+    }});
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      expect(compiled.nativeElement.scrollLeft).toBe(0);
+
+      compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
+      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mouseup'));
+
+      fixture.detectChanges();
+      expect(compiled.nativeElement.scrollLeft).toBe(0);
+    });
+  }));
+
   it('should only hide horizontal scroll bar', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
       template: `<drag-scroll style="width: 50px; height: 350px;" scrollbar-hidden="true">
@@ -473,5 +496,5 @@ describe('DragScrollComponent', () => {
         expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(1);
       });
     });
-  }) );
+  }));
 });

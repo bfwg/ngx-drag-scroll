@@ -129,6 +129,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   prevChildrenLength = 0;
 
+  indexBound = 0;
+
   @Output() dsInitialized = new EventEmitter<void>();
 
   @Output() indexChanged = new EventEmitter<number>();
@@ -291,6 +293,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseDownHandler(event: MouseEvent) {
+    const dragScrollItem: DragScrollItemDirective | null = this.locateDragScrollItem(event.target as Element);
+    if (dragScrollItem && dragScrollItem.dragDisabled) {
+      return;
+    }
+
     this._startGlobalListening();
     this.isPressed = true;
     this.downX = event.clientX;
@@ -623,6 +630,16 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     return to;
   }
 
+  private locateDragScrollItem(element: Element): DragScrollItemDirective | null {
+    let item: DragScrollItemDirective | null = null;
+    for (let i = 0; i < this._children['_results'].length; i++) {
+      if (element === this._children['_results'][i]._elementRef.nativeElement) {
+        item = this._children['_results'][i];
+      }
+    }
+    return item;
+  }
+
   private markElDimension() {
     if (this.wrapper) {
       this.elWidth = this.wrapper.style.width;
@@ -631,6 +648,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.elWidth = this._elementRef.nativeElement.style.width || (this._elementRef.nativeElement.offsetWidth + 'px');
       this.elHeight = this._elementRef.nativeElement.style.height || (this._elementRef.nativeElement.offsetHeight + 'px');
     }
+    const container = this.wrapper || this.parentNode;
+    const containerWidth = container ? container.clientWidth : 0;
+    this.indexBound =  this.maximumIndex(containerWidth, this._children);
   }
 
   private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {
@@ -639,11 +659,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     for (let i = 0; i <= childrenElements['_results'].length; i++) {
       // last N element
       const dragScrollItemDirective: DragScrollItemDirective = childrenElements['_results'][childrenElements['_results'].length - 1 - i];
-      childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
-      if (childrenWidth < containerWidth) {
-        count++;
-      } else {
+      if (!dragScrollItemDirective) {
         break;
+      } else {
+        childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
+        if (childrenWidth < containerWidth) {
+          count++;
+        } else {
+          break;
+        }
       }
     }
     return childrenElements.length - count;
