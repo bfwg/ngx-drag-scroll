@@ -12,7 +12,8 @@ import {
   ContentChildren,
   AfterViewChecked,
   QueryList,
-  Inject
+  Inject,
+  HostListener
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -431,9 +432,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this._renderer.setAttribute(this.wrapper, 'class', 'drag-scroll-wrapper');
       this._renderer.addClass(this.wrapper, 'drag-scroll-container');
 
-      this._renderer.setStyle(this.wrapper, 'width', '100%');
-      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
-        || this._elementRef.nativeElement.offsetHeight + 'px');
+      this.refreshWrapperDimensions();
 
       this._renderer.setStyle(this.wrapper, 'overflow', 'hidden');
 
@@ -518,6 +517,14 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
      * setting default width to 20;
      */
     return widthNoScroll - widthWithScroll || 20;
+  }
+
+  private refreshWrapperDimensions() {
+    if (this.wrapper) {
+      this._renderer.setStyle(this.wrapper, 'width', '100%');
+      this._renderer.setStyle(this.wrapper, 'height', this._elementRef.nativeElement.style.height
+        || this._elementRef.nativeElement.offsetHeight + 'px');
+    }
   }
 
   /*
@@ -676,5 +683,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private isScrollReachesRightEnd(): boolean {
     const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
     return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
+  }
+
+  @HostListener('window:resize')
+  private onWindowResize() {
+    this.refreshWrapperDimensions();
   }
 }

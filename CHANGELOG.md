@@ -1,3 +1,5 @@
+#### 7.1.1
+- refresh wrapper's dimensions after window resize when scrollbar is hidden
 #### 7.1.0
 - add index bound (#202)
 - drag-scroll-disabled alternative for children (#144)

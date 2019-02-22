@@ -497,4 +497,32 @@ describe('DragScrollComponent', () => {
       });
     });
   }));
+
+  it('should update wrapper\'s height after window resize if scrollbar is hidden', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll scrollbar-hidden="true" #nav>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                 </drag-scroll>`,
+        styles: [`
+          drag-scroll {
+            width: 100px;
+            height: 100px;
+          }
+        `]
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const dragScroll = fixture.nativeElement.querySelector('drag-scroll');
+      const dragScrollWrapper = fixture.nativeElement.querySelector('.drag-scroll-wrapper');
+
+      dragScroll.style.height = '50px';
+      window.dispatchEvent(new Event('resize'));
+
+      expect(dragScrollWrapper.offsetHeight).toBe(50);
+    });
+  }));
 });

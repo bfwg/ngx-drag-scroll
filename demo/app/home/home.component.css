@@ -12,6 +12,17 @@
   width: 260px;
 }
 
+@media (max-width: 1000px) {
+  .demo-one {
+    height: 200px;
+  }
+
+  .demo-one img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
 .demo-two {
   height: 500px;
 }
