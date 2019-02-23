@@ -11,10 +11,11 @@ import { DragScrollComponent } from './ngx-drag-scroll';
 import { DragScrollModule } from './ngx-drag-scroll.module';
 
 import {
-    async,
-    TestBed,
-    fakeAsync,
-    flush, ComponentFixture
+  async,
+  TestBed,
+  fakeAsync,
+  flush,
+  ComponentFixture
 } from '@angular/core/testing';
 
 @Component({
