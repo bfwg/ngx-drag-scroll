@@ -1,3 +1,5 @@
+#### 7.1.2
+- allow to scroll horizontally using mouse wheel
 #### 7.1.1
 - refresh wrapper's dimensions after window resize when scrollbar is hidden
 #### 7.1.0

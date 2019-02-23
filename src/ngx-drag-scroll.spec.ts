@@ -11,10 +11,10 @@ import { DragScrollComponent } from './ngx-drag-scroll';
 import { DragScrollModule } from './ngx-drag-scroll.module';
 
 import {
-  async,
-  TestBed,
-  fakeAsync,
-  flush
+    async,
+    TestBed,
+    fakeAsync,
+    flush, ComponentFixture
 } from '@angular/core/testing';
 
 @Component({
@@ -525,4 +525,81 @@ describe('DragScrollComponent', () => {
       expect(dragScrollWrapper.offsetHeight).toBe(50);
     });
   }));
+
+  describe('When scrolling horizontally with mouse wheel', () => {
+    let fixture: ComponentFixture<TestComponent>;
+    let dragScroll: HTMLElement;
+    let dragScrollContent: HTMLElement;
+    let fakeWheelEvent: WheelEvent;
+
+    beforeEach(() => {
+      TestBed.overrideComponent(TestComponent, {
+        set: {
+          template: `<drag-scroll scroll-x-wheel-enabled="true" #nav>
+                     <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                     <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   </drag-scroll>`,
+          styles: [`
+            drag-scroll {
+              width: 50px;
+              height: 50px;
+            }
+          `]
+        }
+      });
+      TestBed.compileComponents();
+
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      dragScroll = fixture.nativeElement.querySelector('drag-scroll');
+      dragScrollContent = fixture.nativeElement.querySelector('.drag-scroll-content');
+
+      fakeWheelEvent = new WheelEvent('wheel');
+    });
+
+    it('should move left by one item if snapping enabled', () => {
+      dragScrollContent.scrollBy(50, 0);
+      spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-1);
+      dragScroll.dispatchEvent(fakeWheelEvent);
+
+      fixture.whenStable().then(() => {
+        expect(dragScrollContent.scrollLeft).toBe(0);
+      });
+    });
+
+    it('should move right by one item if snapping enabled', () => {
+      spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(1);
+      dragScroll.dispatchEvent(fakeWheelEvent);
+
+      fixture.whenStable().then(() => {
+        expect(dragScrollContent.scrollLeft).toBe(50);
+      });
+    });
+
+    it('should move left by scroll delta if snapping disabled', () => {
+      dragScrollContent.scrollBy(13, 0);
+      fixture.componentInstance['_snapDisabled'] = true;
+      fixture.detectChanges();
+
+      spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-7);
+      dragScroll.dispatchEvent(fakeWheelEvent);
+
+      fixture.whenStable().then(() => {
+        expect(dragScrollContent.scrollLeft).toBe(6);
+      });
+    });
+
+    it('should move right by scroll delta if snapping disabled', () => {
+      fixture.componentInstance['_snapDisabled'] = true;
+      fixture.detectChanges();
+
+      spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(13);
+      dragScroll.dispatchEvent(fakeWheelEvent);
+
+      fixture.whenStable().then(() => {
+        expect(dragScrollContent.scrollLeft).toBe(13);
+      });
+    });
+  });
 });
