@@ -1,3 +1,5 @@
+#### 7.1.3
+- remove debug console log
 #### 7.1.2
 - allow to scroll horizontally using mouse wheel
 #### 7.1.1

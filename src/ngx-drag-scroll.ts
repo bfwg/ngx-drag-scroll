@@ -700,7 +700,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       event.preventDefault();
 
       if (this._snapDisabled) {
-          console.log('x');
           this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
       } else {
         if (event.deltaY < 0) {
