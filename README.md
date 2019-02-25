@@ -105,6 +105,7 @@ class SampleCarousel {}
 | scrollbar-hidden       | @Input  | Whether the scroll bar for this element is hidden.                            | false |
 | drag-scroll-disabled   | @Input  | Whether all draging and scrolling events is disabled.                         | false |
 | drag-scroll-x-disabled | @Input  | Whether horizontally dragging and scrolling events is disabled.               | false |
+| scroll-x-wheel-enabled | @Input  | Whether scrolling horizontally with mouse wheel is enabled                    | false |
 | drag-scroll-y-disabled | @Input  | Whether vertically dragging and scrolling events is disabled.                 | false |
 | drag-disabled          | @Input  | Whether draging is disabled.                                                  | false |
 | snap-disabled          | @Input  | Whether snapping is disabled.                                                 | false |

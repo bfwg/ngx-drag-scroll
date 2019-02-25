@@ -47,6 +47,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _xDisabled = false;
 
+  private _xWheelEnabled = false;
+
   private _yDisabled = false;
 
   private _dragDisabled = false;
@@ -169,6 +171,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @Input('drag-scroll-y-disabled')
   get yDisabled() { return this._yDisabled; }
   set yDisabled(value: boolean) { this._yDisabled = value; }
+
+  /**
+   * Whether scrolling horizontally with mouse wheel is enabled
+   */
+  @Input('scroll-x-wheel-enabled')
+  get xWheelEnabled() { return this._xWheelEnabled; }
+  set xWheelEnabled(value: boolean) { this._xWheelEnabled = value; }
 
   @Input('drag-disabled')
   get dragDisabled() { return this._dragDisabled; }
@@ -683,6 +692,24 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private isScrollReachesRightEnd(): boolean {
     const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
     return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
+  }
+
+  @HostListener('wheel', ['$event'])
+  private onWheel(event: WheelEvent) {
+    if (this._xWheelEnabled) {
+      event.preventDefault();
+
+      if (this._snapDisabled) {
+          console.log('x');
+          this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
+      } else {
+        if (event.deltaY < 0) {
+          this.moveLeft();
+        } else if (event.deltaY > 0) {
+          this.moveRight();
+        }
+      }
+    }
   }
 
   @HostListener('window:resize')
