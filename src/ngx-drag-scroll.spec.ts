@@ -234,6 +234,37 @@ describe('DragScrollComponent', () => {
     });
   }));
 
+  it('should add pixels to the last item', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+                   <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
+                   <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
+                 </drag-scroll>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const compiledChildren = fixture.debugElement.queryAll(By.css('.ds-item'));
+      expect(compiledChildren[compiledChildren.length - 1].nativeElement.style.marginRight).toBe(scrollbarWidth);
+    });
+  }));
+
+  it('should not add pixels to the last item when there is only one item', async(() => {
+    TestBed.overrideComponent(TestComponent, {set: {
+      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+                   <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
+                 </drag-scroll>`
+    }});
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const compiledChildren = fixture.debugElement.queryAll(By.css('.ds-item'));
+      expect(compiledChildren[compiledChildren.length - 1].nativeElement.style.marginRight).toBe('0px');
+    });
+  }));
+
   it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
     TestBed.overrideComponent(TestComponent, {set: {
       template: `<drag-scroll scrollbar-hidden="true" style="width: 50px; height: 50px;">
