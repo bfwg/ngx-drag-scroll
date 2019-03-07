@@ -248,6 +248,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     });
     this.checkNavStatus();
     this.dsInitialized.emit();
+    this.adjustMarginToLastChild();
   }
 
   ngAfterViewChecked() {
@@ -453,6 +454,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
       // Append content element to container element.
       this._renderer.appendChild(this.wrapper, this._contentRef.nativeElement);
+
+      this.adjustMarginToLastChild();
     }
   }
 
@@ -465,6 +468,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this.parentNode.appendChild(this._contentRef.nativeElement);
       }
       this.wrapper = null;
+
+      this.adjustMarginToLastChild();
     }
   }
 
@@ -714,5 +719,20 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @HostListener('window:resize')
   private onWindowResize() {
     this.refreshWrapperDimensions();
+  }
+
+  /**
+   * adds a margin right style to the last child element which will resolve the issue
+   * of last item gets cutoff.
+   */
+  private adjustMarginToLastChild(): void {
+    if (this._children && this.hideScrollbar) {
+      const lastItem = this._children['_results'][this._children['_results'].length - 1]._elementRef.nativeElement;
+      if (this.wrapper && this._children['_results'].length > 1) {
+        this._renderer.setStyle(lastItem, 'margin-right', this.scrollbarWidth);
+      } else {
+        this._renderer.setStyle(lastItem, 'margin-right', 0);
+      }
+    }
   }
 }
