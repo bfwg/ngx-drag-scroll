@@ -1,3 +1,5 @@
+#### 7.1.4
+- fix last image gets cut when hide X scroll
 #### 7.1.3
 - remove debug console log
 #### 7.1.2
