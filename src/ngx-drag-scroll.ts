@@ -122,15 +122,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   get currIndex() { return this._index; }
   set currIndex(value) {
-    if (value === this._index) { return; }
-
-    const container = this.wrapper || this.parentNode;
-    const containerWidth = container ? container.clientWidth : 0;
-    const newIndex = Math.min(value, this.maximumIndex(containerWidth, this._children));
-
-    if (newIndex !== this._index) {
-      this._index = newIndex;
-      this.indexChanged.emit(newIndex);
+    if (value !== this._index) {
+      this._index = value;
+      this.indexChanged.emit(value);
     }
   }
 
@@ -379,7 +373,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       index !== this.currIndex &&
       this.currIndex <= this.maximumIndex(containerWidth, this._children)
     ) {
-      this.currIndex = index;
+      this.currIndex = Math.min(index, this.maximumIndex(containerWidth, this._children));
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
