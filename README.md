@@ -157,6 +157,13 @@ class Sample {
   moveTo(index) {
     this.ds.moveTo(index);
   }
+
+  ngAfterViewInit() {
+    // Starting ngx-drag-scroll from specified index(3)
+    setTimeout(() => {
+      this.ds.moveTo(3);
+    }, 0);
+  }
 }
 ```
 
