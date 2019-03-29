@@ -16,8 +16,8 @@
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
     <button mat-raised-button color="primary"  (click)="moveTo(0)">first</button>
-    <button mat-raised-button color="primary"  (click)="moveLeft()">left</button>
-    <button mat-raised-button color="primary"  (click)="moveRight()">right</button>
+    <button mat-raised-button color="primary"  [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
+    <button mat-raised-button color="primary"  [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
     <button mat-raised-button color="primary"  (click)="moveTo(imagelist.length - 1)">last</button>
   </div>
   <p class="title">PLAY WITH IT!</p>
