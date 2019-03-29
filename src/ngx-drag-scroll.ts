@@ -122,12 +122,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   get currIndex() { return this._index; }
   set currIndex(value) {
-    if (value !== this._index) {
-      const container = this.wrapper || this.parentNode;
-      const containerWidth = container ? container.clientWidth : 0;
+    if (value === this._index) { return; }
 
-      this._index = Math.min(value, this.maximumIndex(containerWidth, this._children));
-      this.indexChanged.emit(value);
+    const container = this.wrapper || this.parentNode;
+    const containerWidth = container ? container.clientWidth : 0;
+    const newIndex = Math.min(value, this.maximumIndex(containerWidth, this._children));
+
+    if (newIndex !== this._index) {
+      this._index = newIndex;
+      this.indexChanged.emit(newIndex);
     }
   }
 
