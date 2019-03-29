@@ -140,6 +140,7 @@ ___
   </drag-scroll>
   <button (click)="moveLeft()">Left</button>
   <button (click)="moveRight()">Right</button>
+  <button (click)="moveTo(2)">Last</button>
   `
 })
 class Sample {
@@ -151,6 +152,10 @@ class Sample {
 
   moveRight() {
     this.ds.moveRight();
+  }
+
+  moveTo(index) {
+    this.ds.moveTo(index);
   }
 }
 ```
