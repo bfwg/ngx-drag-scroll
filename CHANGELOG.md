@@ -1,3 +1,5 @@
+#### 7.1.5
+- fix the issue where method moveTo can cause currIndex to enter undesired state (#217)
 #### 7.1.4
 - fix last image gets cut when hide X scroll
 #### 7.1.3
