@@ -8,11 +8,6 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-
-  .right {
-    margin-left: auto;
-    float: right;
-  }
 }
 
 .app-navbar span {
