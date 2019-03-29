@@ -38,6 +38,10 @@ class TestComponent {
     this.ds.moveRight();
   }
 
+  moveTo(idx: number) {
+    this.ds.moveTo(idx);
+  }
+
   onIndexChanged(idx) {
     console.log('current index: ' + idx);
   }
@@ -632,6 +636,61 @@ describe('DragScrollComponent', () => {
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(13);
       });
+    });
+  });
+
+  it('currIndex can be set to an arbitrarily large number (for backwards compatibility)', () => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll #nav>
+                    <div drag-scroll-item ></div>
+                  </drag-scroll>`
+      }
+    }).compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.componentInstance.ds.currIndex = 9001;
+
+      expect(fixture.componentInstance.ds.currIndex).toBe(9001);
+    });
+  });
+
+  describe('moveTo', () => {
+    let fixture: ComponentFixture<TestComponent>;
+
+    beforeEach(() => {
+      TestBed.overrideComponent(TestComponent, {
+        set: {
+          template: `<drag-scroll #nav (indexChanged)="onIndexChanged($event)">
+                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                    </drag-scroll>`
+        }
+      }).compileComponents();
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+    });
+
+    it('less than or equal to maximumIndex executes when index is equal to maximumIndex', () => {
+      fixture.componentInstance.ds.currIndex = 5;
+      fixture.componentInstance.moveTo(0);
+
+      expect(fixture.componentInstance.ds.currIndex).toEqual(0);
+    });
+
+    it('does not set index greater than maxIndex', () => {
+      fixture.componentInstance.moveTo(9001);
+
+      expect(fixture.componentInstance.ds.currIndex).toEqual(5);
+    });
+
+    it('does not change index if index is current index', () => {
+      spyOn(fixture.componentInstance.ds.indexChanged, 'emit');
+      fixture.componentInstance.moveTo(0);
+
+      expect(fixture.componentInstance.ds.indexChanged.emit).not.toHaveBeenCalled();
     });
   });
 });
