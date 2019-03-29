@@ -80,6 +80,10 @@ export class HomeComponent implements OnInit {
     this.ds.moveRight();
   }
 
+  moveTo(idx: number) {
+    this.ds.moveTo(idx);
+  }
+
   leftBoundStat(reachesLeftBound: boolean) {
     this.leftNavDisabled = reachesLeftBound;
   }

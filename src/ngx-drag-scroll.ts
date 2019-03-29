@@ -371,9 +371,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (
       index >= 0 &&
       index !== this.currIndex &&
-      this.currIndex < this.maximumIndex(containerWidth, this._children)
+      this.currIndex <= this.maximumIndex(containerWidth, this._children)
     ) {
-      this.currIndex = index;
+      this.currIndex = Math.min(index, this.maximumIndex(containerWidth, this._children));
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
