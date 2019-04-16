@@ -1,3 +1,5 @@
+#### 7.1.6
+- fix: cannot compile with aot (#220)
 #### 7.1.5
 - fix the issue where method moveTo can cause currIndex to enter undesired state (#217)
 #### 7.1.4
