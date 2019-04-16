@@ -405,6 +405,28 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }, 0);
   }
 
+  @HostListener('wheel', ['$event'])
+  public onWheel(event: WheelEvent) {
+    if (this._xWheelEnabled) {
+      event.preventDefault();
+
+      if (this._snapDisabled) {
+        this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
+      } else {
+        if (event.deltaY < 0) {
+          this.moveLeft();
+        } else if (event.deltaY > 0) {
+          this.moveRight();
+        }
+      }
+    }
+  }
+
+  @HostListener('window:resize')
+  public onWindowResize() {
+    this.refreshWrapperDimensions();
+  }
+
   private _startGlobalListening() {
     if (!this._onMouseMoveListener) {
       this._onMouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
@@ -697,28 +719,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private isScrollReachesRightEnd(): boolean {
     const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
     return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
-  }
-
-  @HostListener('wheel', ['$event'])
-  private onWheel(event: WheelEvent) {
-    if (this._xWheelEnabled) {
-      event.preventDefault();
-
-      if (this._snapDisabled) {
-          this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
-      } else {
-        if (event.deltaY < 0) {
-          this.moveLeft();
-        } else if (event.deltaY > 0) {
-          this.moveRight();
-        }
-      }
-    }
-  }
-
-  @HostListener('window:resize')
-  private onWindowResize() {
-    this.refreshWrapperDimensions();
   }
 
   /**
