@@ -666,7 +666,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private toChildrenLocation(): number {
-    let to = 0;
+    let to = this.scrollbarHidden ? this.getScrollbarWidth() : 0;
     for (let i = 0; i < this.currIndex; i++) {
       to += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
     }
