@@ -1,3 +1,5 @@
+#### 7.2.9
+- fix: moveTo doesn't include the margin of the last item when the scroll bars are hidden.
 #### 7.1.6
 - fix: cannot compile with aot (#220)
 #### 7.1.5
