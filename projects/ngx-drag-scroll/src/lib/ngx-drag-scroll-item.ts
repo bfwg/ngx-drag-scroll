@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Input, HostBinding, Inject } from '@angular/core';
+
 @Directive({
   selector: '[drag-scroll-item]'
 })
