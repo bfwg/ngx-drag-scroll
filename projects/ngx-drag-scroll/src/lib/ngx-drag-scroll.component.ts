@@ -13,7 +13,8 @@ import {
   AfterViewChecked,
   QueryList,
   Inject,
-  HostListener
+  HostListener,
+  HostBinding
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -59,6 +60,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
+  private _isDragging = false;
+
   private _onMouseMoveListener: Function;
 
   private _onMouseUpListener: Function;
@@ -82,6 +85,19 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * Is the user currently scrolling the element
    */
   isScrolling = false;
+
+  /**
+   * Is the user currently dragging the element
+   */
+  get isDragging(): boolean {
+    return this._isDragging;
+  }
+  set isDragging(value: boolean) {
+    if (this._isDragging === value) return;
+
+    this._isDragging = value;
+    value ? this.dragStart.emit() : this.dragEnd.emit();
+  }
 
   scrollTimer: number | NodeJS.Timer = -1;
 
@@ -116,6 +132,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
 
+  @HostBinding('style.pointer-events') _pointerEvents = 'auto';
+
   wrapper: HTMLDivElement | null;
 
   scrollbarWidth: string | null = null;
@@ -143,6 +161,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @Output() reachesRightBound = new EventEmitter<boolean>();
 
   @Output() snapAnimationFinished = new EventEmitter<number>();
+
+  @Output() dragStart = new EventEmitter<void>();
+
+  @Output() dragEnd = new EventEmitter<void>();
 
   /**
    * Whether the scrollbar is hidden
@@ -239,7 +261,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
 
     this._onMouseDownListener = this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
-    this._onTouchStartListener = this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
+    this._onTouchStartListener = this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onTouchStartHandler.bind(this));
     this._onScrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
     this._onTouchEndListener = this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
     // prevent Firefox from dragging images
@@ -287,7 +309,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
-      // // Drag X
+      // Workaround for prevent scroll stuck if browser lost focus 
+      if (!event.which && !event.button){
+        return this.onMouseUpHandler(event);
+      }
+
+      this.isDragging = true;
+      this._pointerEvents = 'none';
+
+      // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         this._contentRef.nativeElement.scrollLeft =
           this._contentRef.nativeElement.scrollLeft - event.clientX + this.downX;
@@ -334,6 +364,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
+      this.isDragging = false;
+      this._pointerEvents = 'auto';
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
       } else {
@@ -341,6 +373,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       }
       this._stopGlobalListening();
     }
+  }
+
+  onTouchStartHandler(event: MouseEvent) {
+    this.isDragging = true;
+    this.onMouseDownHandler(event);
   }
 
   /*
