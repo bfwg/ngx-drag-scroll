@@ -7,7 +7,7 @@ import {
 } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 
-import { DragScrollComponent } from './ngx-drag-scroll';
+import { DragScrollComponent } from './ngx-drag-scroll.component';
 import { DragScrollModule } from './ngx-drag-scroll.module';
 
 import {

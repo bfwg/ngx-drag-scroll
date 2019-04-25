@@ -1,7 +1,7 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DragScrollComponent } from '../../../src/ngx-drag-scroll';
+import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
 
 @Component({
   selector: 'app-home',
@@ -36,16 +36,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     matIconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer,
-    private element: ElementRef,
-    private renderer: Renderer2
+    sanitizer: DomSanitizer
   ) {
     matIconRegistry
         .addSvgIcon('github',
             sanitizer.bypassSecurityTrustResourceUrl('/assets/img/github.svg'))
         .registerFontClassAlias('fontawesome', 'fa');
   }
-
 
   ngOnInit() {
   }

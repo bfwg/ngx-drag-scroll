@@ -169,7 +169,7 @@ class Sample {
 
 
 ### Contributing
-Clone the repository, and run `npm install`, `npm start`. The demo app will starts on port :4200. I usually do my development on the demo app.
+Clone the repository, and run `npm install`, `npm run build ngx-drag-scroll`, `npm start`. The demo app will starts on port :4200. I usually do my development on the demo app.
 
 I'll accept pretty much everything so feel free to open a Pull-Request. 
 
