@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DragScrollComponent } from 'ngx-drag-scroll';
+import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
 
 @Component({
   selector: 'app-home',
