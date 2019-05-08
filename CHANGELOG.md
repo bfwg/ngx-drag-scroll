@@ -1,3 +1,5 @@
+#### 7.3.2
+fix: issue #226 making drag-scroll work properly with touch-input 
 #### 7.3.1
 - feat: build library as universal angular package (#224)
 #### 7.2.9
