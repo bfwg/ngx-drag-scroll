@@ -13,8 +13,8 @@ import {
   AfterViewChecked,
   QueryList,
   Inject,
-  HostListener,
-  HostBinding
+  HostBinding,
+  HostListener
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -311,9 +311,12 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (this.isPressed && !this.disabled) {
       const isTouchEvent = event.type === 'touchmove';
 
-      // Workaround for prevent scroll stuck if browser lost focus 
-      if (!event.which && !event.button){
-        return this.onMouseUpHandler(event);
+      // Workaround for prevent scroll stuck if browser lost focus
+      if (!isTouchEvent) {
+        const mouseEvent = event as MouseEvent;
+        if (!mouseEvent.which && !mouseEvent.button){
+          return this.onMouseUpHandler(mouseEvent);
+        }
       }
 
       this.isDragging = true;
@@ -357,7 +360,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.downX = mouseEvent.clientX;
       this.downY = mouseEvent.clientY;
     }
-
 
     clearTimeout(this.scrollToTimer as number);
   }
