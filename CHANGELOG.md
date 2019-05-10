@@ -1,3 +1,5 @@
+#### 7.3.1
+- feat: build library as universal angular package (#224)
 #### 7.2.9
 - fix: moveTo doesn't include the margin of the last item when the scroll bars are hidden.
 #### 7.1.6

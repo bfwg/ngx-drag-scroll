@@ -307,8 +307,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.onMouseMove(event);
   }
 
-  onMouseMove(event: MouseEvent) {
+  onMouseMove(event: MouseEvent | TouchEvent) {
     if (this.isPressed && !this.disabled) {
+      const isTouchEvent = event.type === 'touchmove';
+
       // Workaround for prevent scroll stuck if browser lost focus 
       if (!event.which && !event.button){
         return this.onMouseUpHandler(event);
@@ -319,30 +321,43 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
       // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
+        const clientX = isTouchEvent ? (event as TouchEvent).touches[0].clientX : (event as MouseEvent).clientX;
         this._contentRef.nativeElement.scrollLeft =
-          this._contentRef.nativeElement.scrollLeft - event.clientX + this.downX;
-        this.downX = event.clientX;
+          this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
+        this.downX = clientX;
       }
 
       // Drag Y
       if (!this.yDisabled && !this.dragDisabled) {
+        const clientY = isTouchEvent ? (event as TouchEvent).touches[0].clientY : (event as MouseEvent).clientY;
         this._contentRef.nativeElement.scrollTop =
-          this._contentRef.nativeElement.scrollTop - event.clientY + this.downY;
-        this.downY = event.clientY;
+          this._contentRef.nativeElement.scrollTop - clientY + this.downY;
+        this.downY = clientY;
       }
     }
   }
 
-  onMouseDownHandler(event: MouseEvent) {
+  onMouseDownHandler(event: MouseEvent | TouchEvent) {
     const dragScrollItem: DragScrollItemDirective | null = this.locateDragScrollItem(event.target as Element);
     if (dragScrollItem && dragScrollItem.dragDisabled) {
       return;
     }
 
-    this._startGlobalListening();
+    const isTouchEvent = event.type === 'touchstart';
+
+    this._startGlobalListening(isTouchEvent);
     this.isPressed = true;
-    this.downX = event.clientX;
-    this.downY = event.clientY;
+
+    if (isTouchEvent) {
+      const touchEvent = event as TouchEvent;
+      this.downX = touchEvent.touches[0].clientX;
+      this.downY = touchEvent.touches[0].clientY;
+    } else {
+      const mouseEvent = event as MouseEvent;
+      this.downX = mouseEvent.clientX;
+      this.downY = mouseEvent.clientY;
+    }
+
 
     clearTimeout(this.scrollToTimer as number);
   }
@@ -464,13 +479,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.refreshWrapperDimensions();
   }
 
-  private _startGlobalListening() {
+  private _startGlobalListening(isTouchEvent: boolean) {
     if (!this._onMouseMoveListener) {
-      this._onMouseMoveListener = this._renderer.listen('document', 'mousemove', this.onMouseMoveHandler.bind(this));
+      const eventName = isTouchEvent ? 'touchmove' : 'mousemove';
+      this._onMouseMoveListener = this._renderer.listen('document', eventName, this.onMouseMoveHandler.bind(this));
     }
 
     if (!this._onMouseUpListener) {
-      this._onMouseUpListener = this._renderer.listen('document', 'mouseup', this.onMouseUpHandler.bind(this));
+      const eventName = isTouchEvent ? 'touchend' : 'mouseup';
+      this._onMouseUpListener = this._renderer.listen('document', eventName, this.onMouseUpHandler.bind(this));
     }
   }
 
