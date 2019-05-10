@@ -1,0 +1,115 @@
+.title {
+  margin-top: 60px;
+}
+
+.demo-one {
+  height: 260px;
+  background-color: #FFFFFF;
+}
+
+.demo-one img {
+  height: 260px;
+  width: 260px;
+}
+
+@media (max-width: 1000px) {
+  .demo-one {
+    height: 200px;
+  }
+
+  .demo-one img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.demo-two {
+  height: 500px;
+}
+
+.demo-border {
+  padding: 10px 10px 10px 10px;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-color: #CFCFCF;
+  margin-bottom: 20px;
+}
+
+.toggle-box {
+  width: 49%;
+  display: inline-block;
+}
+
+.toggle-box mat-slide-toggle {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.footer {
+  font-weight: 300;
+  font-size: 15px;
+  background-color: rgb(33, 33, 33);
+}
+
+.footer a {
+  background-color: transparent;
+  text-decoration: none;
+  cursor: auto;
+}
+
+.docs-api-properties-table {
+  border-collapse: collapse;
+  border-radius: 2px;
+  border-spacing: 0;
+  margin: 0 0 32px;
+  width: 100%;
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+}
+
+.docs-api-properties-table p {
+  margin: 0;
+}
+
+.docs-api-properties-table th {
+  max-width: 100px;
+  padding: 13px 32px;
+  text-align: left;
+}
+
+.docs-api-properties-table td {
+  font-weight: 400;
+  padding: 8px 30px;
+  color: rgba(0,0,0,.54);
+  border: 1px solid rgba(0,0,0,.03);
+}
+
+
+@media only screen and  (max-width: 960px) {
+  .toggle-box {
+    width: 100%;
+    display: block;
+  }
+
+  .demo-content {
+    margin: 16px;
+  }
+}
+
+.content {
+  margin: 50px 70px;
+}
+
+@media screen and (min-width: 600px) and (max-width: 1279px) {
+  .content {
+    margin: 20px 30px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .content {
+    margin: 8px 12px;
+  }
+  .api-table-containter {
+    display: none;
+  }
+}
