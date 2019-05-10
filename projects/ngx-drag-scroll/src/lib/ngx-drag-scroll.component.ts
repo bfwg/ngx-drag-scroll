@@ -93,7 +93,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     return this._isDragging;
   }
   set isDragging(value: boolean) {
-    if (this._isDragging === value) return;
+    if (this._isDragging === value) {
+      return;
+    }
 
     this._isDragging = value;
     value ? this.dragStart.emit() : this.dragEnd.emit();
@@ -310,14 +312,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseMove(event: MouseEvent | TouchEvent) {
     if (this.isPressed && !this.disabled) {
       const isTouchEvent = event.type === 'touchmove';
-
-      // Workaround for prevent scroll stuck if browser lost focus
-      if (!isTouchEvent) {
-        const mouseEvent = event as MouseEvent;
-        if (!mouseEvent.which && !mouseEvent.button){
-          return this.onMouseUpHandler(mouseEvent);
-        }
-      }
 
       this.isDragging = true;
       this._pointerEvents = 'none';
