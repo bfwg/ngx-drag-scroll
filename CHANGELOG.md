@@ -1,3 +1,5 @@
+#### 7.3.3
+fix: prevent scroll stuck if browser lost focus (#231)
 #### 7.3.2
 fix: issue #226 making drag-scroll work properly with touch-input 
 #### 7.3.1
