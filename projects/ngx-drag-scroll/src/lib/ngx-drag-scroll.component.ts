@@ -288,6 +288,17 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseMove(event: MouseEvent | TouchEvent) {
     if (this.isPressed && !this.disabled) {
       const isTouchEvent = event.type === 'touchmove';
+
+      // Workaround for prevent scroll stuck if browser lost focus
+      if (!isTouchEvent) {
+        const mouseEvent = event as MouseEvent;
+        // MouseEvent.buttons not support by Safari
+        // tslint:disable-next-line:deprecation
+        if (!mouseEvent.buttons && !mouseEvent.which) {
+          return this.onMouseUpHandler(mouseEvent);
+        }
+      }
+
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         const clientX = isTouchEvent ? (event as TouchEvent).touches[0].clientX : (event as MouseEvent).clientX;
