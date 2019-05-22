@@ -1,3 +1,5 @@
+#### 7.3.4
+fix: help npm to find README.md
 #### 7.3.3
 fix: prevent scroll stuck if browser lost focus (#231)
 #### 7.3.2
