@@ -1,3 +1,5 @@
+#### 7.3.5
+feat: allow to work wit angular 8 (#228)
 #### 7.3.4
 fix: help npm to find README.md
 #### 7.3.3
