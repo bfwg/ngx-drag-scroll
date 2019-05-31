@@ -247,7 +247,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   ngAfterViewChecked() {
     // avoid extra checks
     if (this._children['_results'].length !== this.prevChildrenLength) {
-
       this.markElDimension();
       this.checkScrollbar();
       this.prevChildrenLength = this._children['_results'].length;
@@ -689,7 +688,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
-    this.indexBound =  this.maximumIndex(containerWidth, this._children);
+    if (this._children['_results'].length > 1) {
+      this.indexBound =  this.maximumIndex(containerWidth, this._children);
+    }
   }
 
   private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {
