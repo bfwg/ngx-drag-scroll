@@ -28,7 +28,6 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
   `,
   styles: [`
     :host {
-      overflow: hidden;
       display: block;
     }
     .drag-scroll-content {
@@ -65,11 +64,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _onMouseDownListener: Function;
 
-  private _onTouchStartListener: Function;
-
   private _onScrollListener: Function;
-
-  private _onTouchEndListener: Function;
 
   private _onDragStartListener: Function;
 
@@ -239,9 +234,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
 
     this._onMouseDownListener = this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
-    this._onTouchStartListener = this._renderer.listen(this._contentRef.nativeElement, 'touchstart', this.onMouseDownHandler.bind(this));
     this._onScrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
-    this._onTouchEndListener = this._renderer.listen(this._contentRef.nativeElement, 'touchend', this.onMouseUpHandler.bind(this));
     // prevent Firefox from dragging images
     this._onDragStartListener = this._renderer.listen('document', 'dragstart', (e) => {
       e.preventDefault();
@@ -267,14 +260,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (this._onMouseDownListener) {
       this._onMouseDownListener = this._onMouseDownListener();
     }
-    if (this._onTouchStartListener) {
-      this._onTouchStartListener = this._onTouchStartListener();
-    }
     if (this._onScrollListener) {
       this._onScrollListener = this._onScrollListener();
-    }
-    if (this._onTouchEndListener) {
-      this._onTouchEndListener = this._onTouchEndListener();
     }
     if (this._onDragStartListener) {
       this._onDragStartListener = this._onDragStartListener();
@@ -285,12 +272,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.onMouseMove(event);
   }
 
-  onMouseMove(event: MouseEvent | TouchEvent) {
+  onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
-      const isTouchEvent = event.type === 'touchmove';
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
-        const clientX = isTouchEvent ? (event as TouchEvent).touches[0].clientX : (event as MouseEvent).clientX;
+        const clientX = (event as MouseEvent).clientX;
         this._contentRef.nativeElement.scrollLeft =
           this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
         this.downX = clientX;
@@ -298,7 +284,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
       // Drag Y
       if (!this.yDisabled && !this.dragDisabled) {
-        const clientY = isTouchEvent ? (event as TouchEvent).touches[0].clientY : (event as MouseEvent).clientY;
+        const clientY = (event as MouseEvent).clientY;
         this._contentRef.nativeElement.scrollTop =
           this._contentRef.nativeElement.scrollTop - clientY + this.downY;
         this.downY = clientY;
@@ -306,7 +292,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
   }
 
-  onMouseDownHandler(event: MouseEvent | TouchEvent) {
+  onMouseDownHandler(event: MouseEvent) {
     const dragScrollItem: DragScrollItemDirective | null = this.locateDragScrollItem(event.target as Element);
     if (dragScrollItem && dragScrollItem.dragDisabled) {
       return;
@@ -317,15 +303,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._startGlobalListening(isTouchEvent);
     this.isPressed = true;
 
-    if (isTouchEvent) {
-      const touchEvent = event as TouchEvent;
-      this.downX = touchEvent.touches[0].clientX;
-      this.downY = touchEvent.touches[0].clientY;
-    } else {
-      const mouseEvent = event as MouseEvent;
-      this.downX = mouseEvent.clientX;
-      this.downY = mouseEvent.clientY;
-    }
+    const mouseEvent = event as MouseEvent;
+    this.downX = mouseEvent.clientX;
+    this.downY = mouseEvent.clientY;
 
 
     clearTimeout(this.scrollToTimer as number);
@@ -682,7 +662,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private toChildrenLocation(): number {
-    let to = this.scrollbarHidden ? this.getScrollbarWidth() : 0;
+    let to = 0;
     for (let i = 0; i < this.currIndex; i++) {
       to += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
     }
@@ -721,7 +701,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       if (!dragScrollItemDirective) {
         break;
       } else {
-        childrenWidth += dragScrollItemDirective._elementRef.nativeElement.clientWidth;
+        let itemWidth = dragScrollItemDirective._elementRef.nativeElement.clientWidth;
+        if (itemWidth === 0) {
+          itemWidth = dragScrollItemDirective._elementRef.nativeElement.firstElementChild.clientWidth;
+        }
+        childrenWidth += itemWidth;
         if (childrenWidth < containerWidth) {
           count++;
         } else {
