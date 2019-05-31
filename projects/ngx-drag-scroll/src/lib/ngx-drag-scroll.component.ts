@@ -59,8 +59,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
-  private _isDragging = false;
-
   private _onMouseMoveListener: Function;
 
   private _onMouseUpListener: Function;
@@ -80,13 +78,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * Is the user currently scrolling the element
    */
   isScrolling = false;
-
-  /**
-   * Is the user currently dragging the element
-   */
-  get isDragging(): boolean {
-    return this._isDragging;
-  }
 
   scrollTimer: number | NodeJS.Timer = -1;
 
@@ -150,10 +141,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @Output() reachesRightBound = new EventEmitter<boolean>();
 
   @Output() snapAnimationFinished = new EventEmitter<number>();
-
-  @Output() dragStart = new EventEmitter<void>();
-
-  @Output() dragEnd = new EventEmitter<void>();
 
   /**
    * Whether the scrollbar is hidden
@@ -290,11 +277,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
-
-      this._setIsDragging(true);
       this._pointerEvents = 'none';
 
-      // Drag X
+      // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         const clientX = (event as MouseEvent).clientX;
         this._contentRef.nativeElement.scrollLeft =
@@ -327,6 +312,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.downX = mouseEvent.clientX;
     this.downY = mouseEvent.clientY;
 
+
     clearTimeout(this.scrollToTimer as number);
   }
 
@@ -347,7 +333,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
-      this._setIsDragging(false);
       this._pointerEvents = 'auto';
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
@@ -440,15 +425,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @HostListener('window:resize')
   public onWindowResize() {
     this.refreshWrapperDimensions();
-  }
-
-  private _setIsDragging(value: boolean) {
-    if (this._isDragging === value) {
-      return;
-    }
-
-    this._isDragging = value;
-    value ? this.dragStart.emit() : this.dragEnd.emit();
   }
 
   private _startGlobalListening(isTouchEvent: boolean) {
