@@ -12,7 +12,6 @@
       #nav
       >
       <img drag-scroll-item *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
-      <span drag-scroll-item ><div style="width: 260px; height: 260px;"> + </div></span>
     </drag-scroll>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
