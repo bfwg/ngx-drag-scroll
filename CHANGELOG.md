@@ -1,3 +1,5 @@
+#### 7.3.7
+fix: resolved a dragging bug in iOS devices
 #### 7.3.6
 fix: add README.md to npm
 #### 7.3.5
