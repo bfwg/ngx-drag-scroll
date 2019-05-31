@@ -250,7 +250,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   ngAfterViewChecked() {
     // avoid extra checks
     if (this._children['_results'].length !== this.prevChildrenLength) {
-
       this.markElDimension();
       this.checkScrollbar();
       this.prevChildrenLength = this._children['_results'].length;
@@ -277,6 +276,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
+      // Workaround for prevent scroll stuck if browser lost focus
+      // MouseEvent.buttons not support by Safari
+      // tslint:disable-next-line:deprecation
+      if (!event.buttons && !event.which) {
+        return this.onMouseUpHandler(event);
+      }
+
       this._pointerEvents = 'none';
 
       // // Drag X
@@ -695,7 +701,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
-    this.indexBound =  this.maximumIndex(containerWidth, this._children);
+    if (this._children['_results'].length > 1) {
+      this.indexBound =  this.maximumIndex(containerWidth, this._children);
+    }
   }
 
   private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {
