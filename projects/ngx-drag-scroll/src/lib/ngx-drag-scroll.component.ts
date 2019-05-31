@@ -58,6 +58,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private _snapDuration = 500;
 
+  private _isDragging = false;
+
   private _onMouseMoveListener: Function;
 
   private _onMouseUpListener: Function;
@@ -81,6 +83,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   scrollTimer: number | NodeJS.Timer = -1;
 
   scrollToTimer: number | NodeJS.Timer = -1;
+
+  /**
+   * Is the user currently dragging the element
+   */
+  get isDragging(): boolean {
+    return this._isDragging;
+  }
 
   /**
    * The x coordinates on the element
@@ -138,6 +147,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @Output() reachesRightBound = new EventEmitter<boolean>();
 
   @Output() snapAnimationFinished = new EventEmitter<number>();
+
+  @Output() dragStart = new EventEmitter<void>();
+
+  @Output() dragEnd = new EventEmitter<void>();
 
   /**
    * Whether the scrollbar is hidden
@@ -280,7 +293,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         return this.onMouseUpHandler(event);
       }
 
-      // // Drag X
+      this._setIsDragging(true);
+
+      // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         const clientX = (event as MouseEvent).clientX;
         this._contentRef.nativeElement.scrollLeft =
@@ -313,7 +328,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.downX = mouseEvent.clientX;
     this.downY = mouseEvent.clientY;
 
-
     clearTimeout(this.scrollToTimer as number);
   }
 
@@ -334,6 +348,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
+      this._setIsDragging(false);
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
       } else {
@@ -425,6 +440,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @HostListener('window:resize')
   public onWindowResize() {
     this.refreshWrapperDimensions();
+  }
+
+  private _setIsDragging(value: boolean) {
+    if (this._isDragging === value) {
+      return;
+    }
+
+    this._isDragging = value;
+    value ? this.dragStart.emit() : this.dragEnd.emit();
   }
 
   private _startGlobalListening(isTouchEvent: boolean) {
