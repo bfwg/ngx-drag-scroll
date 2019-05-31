@@ -90,14 +90,6 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   get isDragging(): boolean {
     return this._isDragging;
   }
-  private set IsDragging(value: boolean) {
-    if (this._isDragging === value) {
-      return;
-    }
-
-    this._isDragging = value;
-    value ? this.dragStart.emit() : this.dragEnd.emit();
-  }
 
   /**
    * The x coordinates on the element
@@ -295,7 +287,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   onMouseMove(event: MouseEvent) {
     if (this.isPressed && !this.disabled) {
-      this.IsDragging = true;
+      this._setIsDragging(true);
 
       // // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
@@ -350,7 +342,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
-      this.IsDragging = false;
+      this._setIsDragging(false);
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
       } else {
@@ -442,6 +434,15 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @HostListener('window:resize')
   public onWindowResize() {
     this.refreshWrapperDimensions();
+  }
+
+  private _setIsDragging(value: boolean) {
+    if (this._isDragging === value) {
+      return;
+    }
+
+    this._isDragging = value;
+    value ? this.dragStart.emit() : this.dragEnd.emit();
   }
 
   private _startGlobalListening(isTouchEvent: boolean) {
