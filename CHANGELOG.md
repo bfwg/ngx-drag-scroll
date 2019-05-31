@@ -1,3 +1,15 @@
+#### 7.3.7
+fix: resolved a dragging bug in iOS devices
+#### 7.3.6
+fix: add README.md to npm
+#### 7.3.5
+feat: allow to work wit angular 8 (#228)
+#### 7.3.4
+fix: help npm to find README.md
+#### 7.3.3
+fix: prevent scroll stuck if browser lost focus (#231)
+#### 7.3.2
+fix: issue #226 making drag-scroll work properly with touch-input 
 #### 7.3.1
 - feat: build library as universal angular package (#224)
 #### 7.2.9
