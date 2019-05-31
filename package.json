@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "package": "ng build ngx-drag-scroll && node copy-artifacts.js",
-    "postbuild": "node copy-artifacts.js",
+    "artifacts": "node copy-artifacts.js",
     "test": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
