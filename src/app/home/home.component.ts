@@ -101,4 +101,12 @@ export class HomeComponent implements OnInit {
   onDragScrollInitialized() {
     console.log('first demo drag scroll has been initialized.');
   }
+
+  onDragStart() {
+    console.log('drag start');
+  }
+
+  onDragEnd() {
+    console.log('drag end');
+  }
 }
