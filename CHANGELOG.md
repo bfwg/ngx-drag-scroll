@@ -1,3 +1,8 @@
+#### 7.4.0
+feat: add dragStart and dragEnd events (close #222) (#237) 
+fix: prevent scroll stuck if browser lost focus on Windows (#236)
+fix: error in the demo console log (#239)
+fix: copy artifacts on package build (#238) 
 #### 7.3.7
 fix: resolved a dragging bug in iOS devices
 #### 7.3.6
