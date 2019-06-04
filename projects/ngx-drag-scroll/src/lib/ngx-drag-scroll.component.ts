@@ -13,6 +13,7 @@ import {
   AfterViewChecked,
   QueryList,
   Inject,
+  HostBinding,
   HostListener
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -119,6 +120,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @ViewChild('contentRef') _contentRef: ElementRef;
 
   @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
+
+  @HostBinding('style.pointer-events') _pointerEvents = 'auto';
 
   wrapper: HTMLDivElement | null;
 
@@ -293,6 +296,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         return this.onMouseUpHandler(event);
       }
 
+      this._pointerEvents = 'none';
       this._setIsDragging(true);
 
       // Drag X
@@ -348,6 +352,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
+      this._pointerEvents = 'auto';
       this._setIsDragging(false);
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
