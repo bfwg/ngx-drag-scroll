@@ -29,6 +29,7 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
   `,
   styles: [`
     :host {
+      overflow: hidden;
       display: block;
     }
     .drag-scroll-content {
@@ -649,7 +650,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
-        } else {
+        } else if (this._contentRef.nativeElement.scrollLeft !== 0) {
           // forward scrolling
           if (!this.isAnimating) {
             this.currIndex = idx + 1;
