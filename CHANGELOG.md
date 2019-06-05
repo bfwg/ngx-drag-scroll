@@ -1,6 +1,7 @@
+#### 7.4.2
+fix: prevent click on drag end (close #154) (#230) 
 #### 7.4.1
 fix: forward snap should not happen when the scroll left is 0
-fix: prevent click on drag end (close #154) (#230) 
 #### 7.4.0
 feat: add dragStart and dragEnd events (close #222) (#237) 
 fix: prevent scroll stuck if browser lost focus on Windows (#236)
