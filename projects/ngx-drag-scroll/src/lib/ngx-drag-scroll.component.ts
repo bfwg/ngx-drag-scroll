@@ -13,6 +13,7 @@ import {
   AfterViewChecked,
   QueryList,
   Inject,
+  HostBinding,
   HostListener
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -28,6 +29,7 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
   `,
   styles: [`
     :host {
+      overflow: hidden;
       display: block;
     }
     .drag-scroll-content {
@@ -119,6 +121,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @ViewChild('contentRef') _contentRef: ElementRef;
 
   @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
+
+  @HostBinding('style.pointer-events') _pointerEvents = 'auto';
 
   wrapper: HTMLDivElement | null;
 
@@ -293,6 +297,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         return this.onMouseUpHandler(event);
       }
 
+      this._pointerEvents = 'none';
       this._setIsDragging(true);
 
       // Drag X
@@ -348,6 +353,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   onMouseUpHandler(event: MouseEvent) {
     if (this.isPressed) {
       this.isPressed = false;
+      this._pointerEvents = 'auto';
       this._setIsDragging(false);
       if (!this.snapDisabled) {
         this.locateCurrentIndex(true);
@@ -644,7 +650,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
-        } else {
+        } else if (this._contentRef.nativeElement.scrollLeft !== 0) {
           // forward scrolling
           if (!this.isAnimating) {
             this.currIndex = idx + 1;
