@@ -1,3 +1,5 @@
+#### 7.4.3
+fix: handle first child undifined issue (#241) 
 #### 7.4.2
 fix: prevent click on drag end (close #154) (#230) 
 #### 7.4.1
