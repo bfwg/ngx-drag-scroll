@@ -1,13 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  MatCommonModule,
-  MatIconModule,
-  MatSlideToggleModule,
-  MatToolbarModule,
-  MatButtonModule,
-  MatBadgeModule
-} from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCommonModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragScrollModule } from 'ngx-drag-scroll';
 import { AppComponent } from './app.component';
