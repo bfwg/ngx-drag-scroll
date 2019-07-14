@@ -1,3 +1,5 @@
+#### 8.0.0-beta.1
+feat: update packages (#243)
 #### 7.4.3
 fix: handle first child undifined issue (#241) 
 #### 7.4.2

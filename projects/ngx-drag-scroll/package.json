@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "7.4.3",
+  "version": "8.0.0-beta.1",
   "description": "Lightweight drag to scroll library for Angular",
   "contributors": [
     {
