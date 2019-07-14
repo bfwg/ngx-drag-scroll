@@ -17,13 +17,14 @@ import {
   flush,
   ComponentFixture
 } from '@angular/core/testing';
+import { doesNotReject } from 'assert';
 
 @Component({
   selector: 'app-test-component',
   template: ''
 })
 class TestComponent {
-  @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
+  @ViewChild('nav', { static: false, read: DragScrollComponent }) ds: DragScrollComponent;
   elementClicked = false;
 
   elementOnClicked() {
@@ -60,11 +61,13 @@ describe('DragScrollComponent', () => {
   });
 
   it('should drag to scroll horizontally and vertically', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -72,13 +75,13 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.scrollLeft).toBe(100);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientY: -123}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientY: -123 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.scrollTop).toBe(123);
@@ -86,11 +89,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should disable drag and scroll horizontally and vertically', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-disabled="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-disabled="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -98,14 +103,14 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-x']).toBe('hidden');
       expect(compiled.nativeElement.scrollLeft).toBe(0);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientY: -123}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientY: -123 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-y']).toBe('hidden');
@@ -114,11 +119,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should disable drag and scroll horizontally', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -126,14 +133,14 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-x']).toBe('hidden');
       expect(compiled.nativeElement.scrollLeft).toBe(0);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientY: -123}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientY: -123 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-y']).toBe('auto');
@@ -142,11 +149,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should disable drag and scroll horizontally', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-y-disabled="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-y-disabled="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -154,14 +163,14 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-x']).toBe('auto');
       expect(compiled.nativeElement.scrollLeft).toBe(100);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientY: -123}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientY: -123 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       expect(compiled.nativeElement.style['overflow-y']).toBe('hidden');
@@ -170,12 +179,14 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should not drag and horizontally when the item is drag disabled', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
                    <div drag-scroll-item drag-disabled style="width: 50px; height: 50px;"></div>
                    <div drag-scroll-item style="width: 50px; height: 50px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -184,7 +195,7 @@ describe('DragScrollComponent', () => {
       expect(compiled.nativeElement.scrollLeft).toBe(0);
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
       fixture.detectChanges();
@@ -193,11 +204,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should only hide horizontal scroll bar', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 350px;" scrollbar-hidden="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 350px;" scrollbar-hidden="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -208,11 +221,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should only hide vertical scroll bar', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 350px; height: 50px;" scrollbar-hidden="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 350px; height: 50px;" scrollbar-hidden="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -223,11 +238,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should hide all scroll bars', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
                    <div drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -239,12 +256,14 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should add pixels to the last item', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
                    <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
                    <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -255,11 +274,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should not add pixels to the last item when there is only one item', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
                    <div class="ds-item" drag-scroll-item style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -270,11 +291,13 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll scrollbar-hidden="true" style="width: 50px; height: 50px;">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll scrollbar-hidden="true" style="width: 50px; height: 50px;">
                    <div drag-scroll-item style="width: 49px; height: 49px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -286,57 +309,68 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not show part of previous element on snap when snap-offset is not set', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 100px; height: 100px;" scrollbar-hidden="true">
+  it('should not show part of previous element on snap when snap-offset is not set', (done) => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 100px;" scrollbar-hidden="true">
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -45 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
-      // compiled.componentInstance.locateCurrentIndex(true);
 
-      compiled.componentInstance.snapAnimationFinished.subscribe(() => expect(compiled.nativeElement.scrollLeft).toBe(50));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => {
+        expect(compiled.nativeElement.scrollLeft).toBe(50);
+        done();
+      });
     });
-  }));
+  });
 
-  it('should show part of previous element on snap when snap-offset is set', async(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 100px; height: 100px;" snap-offset="10">
+  it('should show part of previous element on snap when snap-offset is set', (done) => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 100px;" snap-offset="10">
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                    <img drag-scroll-item style="width: 50px; height: 100px;"/>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -45 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
-      compiled.componentInstance.snapAnimationFinished.subscribe(() => expect(compiled.nativeElement.scrollLeft).toBe(40));
+      compiled.componentInstance.snapAnimationFinished.subscribe(() => {
+        expect(compiled.nativeElement.scrollLeft).toBe(40);
+        done();
+      });
     });
-  }));
+  });
 
   it('should not show part of previous element on moveRight/moveLeft when snap-offset is not set', fakeAsync(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 100px; height: 100px; font-size: 0;" #nav>
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 100px; font-size: 0;" #nav>
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -353,13 +387,15 @@ describe('DragScrollComponent', () => {
   }));
 
   it('should show part of previous element on moveRight/moveLeft when snap-offset is set', fakeAsync(() => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 100px; height: 100px; font-size: 0;" #nav snap-offset="10">
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 100px; height: 100px; font-size: 0;" #nav snap-offset="10">
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                    <div drag-scroll-item style="width: 50px; height: 100px; display: inline-block;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -383,12 +419,14 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not trigger onclick event on elements when drag', () => {
-    TestBed.overrideComponent(TestComponent, {set: {
-      template: `<drag-scroll style="width: 50px; height: 50px;">
+  it('should not trigger onclick event on elements when drag', (done) => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll style="width: 50px; height: 50px;">
                    <div drag-scroll-item class="item" (click)="elementOnClicked()" style="width: 300px; height: 300px;"></div>
                  </drag-scroll>`
-    }});
+      }
+    });
 
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
@@ -401,13 +439,14 @@ describe('DragScrollComponent', () => {
       fixture.componentInstance.elementClicked = false;
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -100}));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -100 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
       expect(fixture.componentInstance.elementClicked).toBeFalsy();
+      done();
     });
   });
 
-  it('should trigger snapAnimationFinished event with currentIndex when snap is enabled', async(() => {
+  it('should trigger snapAnimationFinished event with currentIndex when snap is enabled', (done) => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
@@ -423,14 +462,17 @@ describe('DragScrollComponent', () => {
       fixture.detectChanges();
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
 
-      compiled.componentInstance.snapAnimationFinished.subscribe((result) => expect(result).toBe(2));
+      compiled.componentInstance.snapAnimationFinished.subscribe((result) => {
+        expect(result).toBe(2);
+        done();
+      });
     });
-  }));
+  });
 
-  it('should not trigger snapAnimationFinished event when snap is disabled', async(() => {
+  it('should not trigger snapAnimationFinished event when snap is disabled', (done) => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll snap-disabled="true" style="width: 100px; height: 50px;" #nav>
@@ -447,11 +489,14 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
       spyOn(fixture.componentInstance.ds.snapAnimationFinished, 'emit');
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
-      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledTimes(0));
+      fixture.whenRenderingDone().then(() => {
+        expect(fixture.componentInstance.ds.snapAnimationFinished.emit).toHaveBeenCalledTimes(0);
+        done();
+      });
     });
-  }));
+  });
 
   it('should trigger currentIndex once on navigation button click', async(() => {
     TestBed.overrideComponent(TestComponent, {
@@ -484,7 +529,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not listen to mousemove when mousedown is not triggered', async(() => {
+  it('should not listen to mousemove when mousedown is not triggered', (done) => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
@@ -498,17 +543,20 @@ describe('DragScrollComponent', () => {
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
 
-      const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      fixture.detectChanges();
       spyOn(fixture.componentInstance.ds, 'onMouseMove');
 
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
-      document.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, clientX: -45}));
-      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -20  }));
-      fixture.whenRenderingDone().then(() => expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(0));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -45 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -45 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -20 }));
+      fixture.whenRenderingDone().then(() => {
+        expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(0);
+        done();
+      });
     });
-  }) );
+  });
 
-  it('should listen to mousemove when mousedown is triggered', async(() => {
+  it('should listen to mousemove when mousedown is triggered', (done) => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 100px; height: 50px;" #nav>
@@ -523,16 +571,18 @@ describe('DragScrollComponent', () => {
       const fixture = TestBed.createComponent(TestComponent);
 
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      fixture.detectChanges();
       spyOn(fixture.componentInstance.ds, 'onMouseMove');
 
       compiled.triggerEventHandler('mousedown', new MouseEvent('mousedown'));
-      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101  }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: -101 }));
       document.dispatchEvent(new MouseEvent('mouseup'));
       compiled.componentInstance.snapAnimationFinished.subscribe(() => {
         expect(fixture.componentInstance.ds.onMouseMove).toHaveBeenCalledTimes(1);
+        done();
       });
     });
-  }));
+  });
 
   it('should update wrapper\'s height after window resize if scrollbar is hidden', async(() => {
     TestBed.overrideComponent(TestComponent, {
@@ -590,32 +640,35 @@ describe('DragScrollComponent', () => {
 
       dragScroll = fixture.nativeElement.querySelector('drag-scroll');
       dragScrollContent = fixture.nativeElement.querySelector('.drag-scroll-content');
+      fixture.componentInstance.ds.snapDisabled = false;
 
       fakeWheelEvent = new WheelEvent('wheel');
     });
 
-    it('should move left by one item if snapping enabled', () => {
+    it('should move left by one item if snapping enabled', (done) => {
       dragScrollContent.scrollBy(50, 0);
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-1);
       dragScroll.dispatchEvent(fakeWheelEvent);
 
       fixture.whenStable().then(() => {
-        expect(dragScrollContent.scrollLeft).toBe(0);
+        expect(dragScrollContent.scrollLeft).toBe(50);
+        done();
       });
     });
 
-    it('should move right by one item if snapping enabled', () => {
+    it('should move right by one item if snapping enabled', (done) => {
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(1);
       dragScroll.dispatchEvent(fakeWheelEvent);
 
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(50);
+        done();
       });
     });
 
-    it('should move left by scroll delta if snapping disabled', () => {
+    it('should move left by scroll delta if snapping disabled', (done) => {
       dragScrollContent.scrollBy(13, 0);
-      fixture.componentInstance['_snapDisabled'] = true;
+      fixture.componentInstance.ds.snapDisabled = true;
       fixture.detectChanges();
 
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-7);
@@ -623,11 +676,12 @@ describe('DragScrollComponent', () => {
 
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(6);
+        done();
       });
     });
 
-    it('should move right by scroll delta if snapping disabled', () => {
-      fixture.componentInstance['_snapDisabled'] = true;
+    it('should move right by scroll delta if snapping disabled', (done) => {
+      fixture.componentInstance.ds.snapDisabled = true;
       fixture.detectChanges();
 
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(13);
@@ -635,11 +689,12 @@ describe('DragScrollComponent', () => {
 
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(13);
+        done();
       });
     });
   });
 
-  it('currIndex can be set to an arbitrarily large number (for backwards compatibility)', () => {
+  it('currIndex can be set to an arbitrarily large number (for backwards compatibility)', (done) => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll #nav>
@@ -648,9 +703,11 @@ describe('DragScrollComponent', () => {
       }
     }).compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
       fixture.componentInstance.ds.currIndex = 9001;
 
       expect(fixture.componentInstance.ds.currIndex).toBe(9001);
+      done();
     });
   });
 

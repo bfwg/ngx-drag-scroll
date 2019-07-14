@@ -118,7 +118,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * The carousel Element
    */
 
-  @ViewChild('contentRef') _contentRef: ElementRef;
+  @ViewChild('contentRef', { static: true }) _contentRef: ElementRef;
 
   @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
 

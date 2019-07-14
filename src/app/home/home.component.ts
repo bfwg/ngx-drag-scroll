@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
 
 @Component({
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   rightNavDisabled = false;
   index = 0;
 
-  @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent;
+  @ViewChild('nav', { read: DragScrollComponent, static: true }) ds: DragScrollComponent;
 
   constructor(
     matIconRegistry: MatIconRegistry,
