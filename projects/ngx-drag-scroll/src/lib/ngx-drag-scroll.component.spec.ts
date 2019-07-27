@@ -60,6 +60,37 @@ describe('DragScrollComponent', () => {
     });
   });
 
+  it('should not throw error in case of empty content', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll>
+                 </drag-scroll>`
+      }
+    });
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      expect().nothing();
+    });
+  }));
+
+  it('should not throw error in case of items without drag-scroll-item', async(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll>
+                    <div style="width: 300px; height: 300px;"></div>
+                 </drag-scroll>`
+      }
+    });
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      expect().nothing();
+    });
+  }));
+
   it('should drag to scroll horizontally and vertically', async(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {

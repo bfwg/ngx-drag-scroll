@@ -263,10 +263,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   ngAfterViewChecked() {
     // avoid extra checks
-    if (this._children['_results'].length !== this.prevChildrenLength) {
+    if (this._children.length !== this.prevChildrenLength) {
       this.markElDimension();
       this.checkScrollbar();
-      this.prevChildrenLength = this._children['_results'].length;
+      this.prevChildrenLength = this._children.length;
       this.checkNavStatus();
     }
   }
@@ -379,7 +379,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
 
-    if (!this.isScrollReachesRightEnd() && this.currIndex < this.maximumIndex(containerWidth, this._children)) {
+    if (!this.isScrollReachesRightEnd() && this.currIndex < this.maximumIndex(containerWidth, this._children.toArray())) {
       this.currIndex++;
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
@@ -392,9 +392,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (
       index >= 0 &&
       index !== this.currIndex &&
-      this.currIndex <= this.maximumIndex(containerWidth, this._children)
+      this.currIndex <= this.maximumIndex(containerWidth, this._children.toArray())
     ) {
-      this.currIndex = Math.min(index, this.maximumIndex(containerWidth, this._children));
+      this.currIndex = Math.min(index, this.maximumIndex(containerWidth, this._children.toArray()));
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(this._contentRef.nativeElement, this.toChildrenLocation(), this.snapDuration);
     }
@@ -402,7 +402,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   checkNavStatus() {
     setTimeout(() => {
-      const onlyOneItem = Boolean(this._children['_results'].length <= 1);
+      const onlyOneItem = Boolean(this._children.length <= 1);
       const containerIsLargerThanContent = Boolean(this._contentRef.nativeElement.scrollWidth <=
         this._contentRef.nativeElement.clientWidth);
       if (onlyOneItem || containerIsLargerThanContent) {
@@ -660,7 +660,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
           }
         }
         stop();
-      } else if ((idx + 1) === (this._children['_results'].length - 1)) {
+      } else if ((idx + 1) === (this._children.length - 1)) {
         // reaches last index
         if (!this.isAnimating) {
           this.currIndex = idx + 1;
@@ -681,16 +681,18 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const breakFunc = function () {
       shouldBreak = true;
     };
-    for (let i = 0; i < this._children['_results'].length; i++) {
-      if (i === this._children['_results'].length - 1) {
+    const childrenArr = this._children.toArray();
+
+    for (let i = 0; i < childrenArr.length; i++) {
+      if (i === childrenArr.length - 1) {
         break;
       }
       if (shouldBreak) {
         break;
       }
 
-      const nextChildrenWidth = childrenWidth + this._children['_results'][i + 1]._elementRef.nativeElement.clientWidth;
-      const currentClildWidth = this._children['_results'][i]._elementRef.nativeElement.clientWidth;
+      const nextChildrenWidth = childrenWidth + childrenArr[i + 1]._elementRef.nativeElement.clientWidth;
+      const currentClildWidth = childrenArr[i]._elementRef.nativeElement.clientWidth;
       cb(currentClildWidth, nextChildrenWidth, childrenWidth, i, breakFunc);
 
       childrenWidth += currentClildWidth;
@@ -699,17 +701,19 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   private toChildrenLocation(): number {
     let to = 0;
+    const childrenArr = this._children.toArray();
     for (let i = 0; i < this.currIndex; i++) {
-      to += this._children['_results'][i]._elementRef.nativeElement.clientWidth;
+      to += childrenArr[i]._elementRef.nativeElement.clientWidth;
     }
     return to;
   }
 
   private locateDragScrollItem(element: Element): DragScrollItemDirective | null {
     let item: DragScrollItemDirective | null = null;
-    for (let i = 0; i < this._children['_results'].length; i++) {
-      if (element === this._children['_results'][i]._elementRef.nativeElement) {
-        item = this._children['_results'][i];
+    const childrenArr = this._children.toArray();
+    for (let i = 0; i < childrenArr.length; i++) {
+      if (element === childrenArr[i]._elementRef.nativeElement) {
+        item = childrenArr[i];
       }
     }
     return item;
@@ -725,17 +729,17 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
-    if (this._children['_results'].length > 1) {
-      this.indexBound =  this.maximumIndex(containerWidth, this._children);
+    if (this._children.length > 1) {
+      this.indexBound =  this.maximumIndex(containerWidth, this._children.toArray());
     }
   }
 
-  private maximumIndex(containerWidth: number, childrenElements: QueryList<DragScrollItemDirective>): number {
+  private maximumIndex(containerWidth: number, childrenElements: DragScrollItemDirective[]): number {
     let count = 0;
     let childrenWidth = 0;
-    for (let i = 0; i <= childrenElements['_results'].length; i++) {
+    for (let i = 0; i <= childrenElements.length; i++) {
       // last N element
-      const dragScrollItemDirective: DragScrollItemDirective = childrenElements['_results'][childrenElements['_results'].length - 1 - i];
+      const dragScrollItemDirective: DragScrollItemDirective = childrenElements[childrenElements.length - 1 - i];
       if (!dragScrollItemDirective) {
         break;
       } else {
@@ -765,9 +769,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
    * of last item gets cutoff.
    */
   private adjustMarginToLastChild(): void {
-    if (this._children && this.hideScrollbar) {
-      const lastItem = this._children['_results'][this._children['_results'].length - 1]._elementRef.nativeElement;
-      if (this.wrapper && this._children['_results'].length > 1) {
+    if (this._children && this._children.length > 0 && this.hideScrollbar) {
+      const childrenArr = this._children.toArray();
+      const lastItem = childrenArr[childrenArr.length - 1]._elementRef.nativeElement;
+      if (this.wrapper && childrenArr.length > 1) {
         this._renderer.setStyle(lastItem, 'margin-right', this.scrollbarWidth);
       } else {
         this._renderer.setStyle(lastItem, 'margin-right', 0);
