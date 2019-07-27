@@ -1,3 +1,6 @@
+#### 8.0.0-beta.2
+fix: prevent error in case of no content or drag-scroll-item is used (#245)
+ci: update travis config to latest xenial dist and use xvfb as service (#246)
 #### 8.0.0-beta.1
 feat: update packages (#243)
 #### 7.4.3
