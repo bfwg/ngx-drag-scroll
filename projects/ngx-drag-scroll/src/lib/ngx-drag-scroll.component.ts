@@ -446,6 +446,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   @HostListener('window:resize')
   public onWindowResize() {
     this.refreshWrapperDimensions();
+    this.checkNavStatus();
   }
 
   private _setIsDragging(value: boolean) {
