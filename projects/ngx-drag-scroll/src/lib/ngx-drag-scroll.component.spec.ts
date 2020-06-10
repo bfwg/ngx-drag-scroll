@@ -24,7 +24,7 @@ import { doesNotReject } from 'assert';
   template: ''
 })
 class TestComponent {
-  @ViewChild('nav', { static: false, read: DragScrollComponent }) ds: DragScrollComponent;
+  @ViewChild('nav', { read: DragScrollComponent }) ds: DragScrollComponent;
   elementClicked = false;
 
   elementOnClicked() {
