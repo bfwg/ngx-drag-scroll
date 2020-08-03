@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "9.0.0-beta.2",
+  "version": "9.0.0-beta.3",
   "description": "Lightweight drag to scroll library for Angular",
   "contributors": [
     {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/bfwg/ngx-drag-scroll#readme",
   "peerDependencies": {
-    "@angular/common": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0",
-    "@angular/core": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0"
+    "@angular/common": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
+    "@angular/core": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0"
   }
 }
