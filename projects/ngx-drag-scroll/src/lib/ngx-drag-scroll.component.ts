@@ -224,7 +224,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       this.enableScroll('x');
     }
 
-    if (this.yDisabled || this.disabled || this._scrollbarHidden) {
+    if (this.yDisabled || this.disabled) {
       this.disableScroll('y');
     } else {
       this.enableScroll('y');
