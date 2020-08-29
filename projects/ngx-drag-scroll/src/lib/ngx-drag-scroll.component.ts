@@ -120,7 +120,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
 
   @ViewChild('contentRef', { static: true }) _contentRef: ElementRef;
 
-  @ContentChildren(DragScrollItemDirective) _children: QueryList<DragScrollItemDirective>;
+  @ContentChildren(DragScrollItemDirective, { descendants: true }) _children: QueryList<DragScrollItemDirective>;
 
   @HostBinding('style.pointer-events') _pointerEvents = 'auto';
 
@@ -731,7 +731,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
     if (this._children.length > 1) {
-      this.indexBound =  this.maximumIndex(containerWidth, this._children.toArray());
+      this.indexBound = this.maximumIndex(containerWidth, this._children.toArray());
     }
   }
 
