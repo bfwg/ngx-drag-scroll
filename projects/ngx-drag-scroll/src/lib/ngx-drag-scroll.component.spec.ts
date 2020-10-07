@@ -781,4 +781,30 @@ describe('DragScrollComponent', () => {
       expect(fixture.componentInstance.ds.indexChanged.emit).not.toHaveBeenCalled();
     });
   });
+
+  it('should still recognize ContentChildren even with wrapping element', (done) => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `
+            <drag-scroll style="width: 100px; height: 50px;" #nav>
+                <div class="wrapper">
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                   <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
+                </div>
+            </drag-scroll>
+        `
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      fixture.whenRenderingDone().then(() => {
+        expect(fixture.componentInstance.ds._children.length).toEqual(4);
+        done();
+      });
+    });
+  });
 });
