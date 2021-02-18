@@ -1,19 +1,21 @@
+#### 8.0.0-beta.3
+fix: limit drag restriction of other elements to the contents of drag-scroll (#262)
 #### 8.0.0-beta.2
 fix: prevent error in case of no content or drag-scroll-item is used (#245)
 ci: update travis config to latest xenial dist and use xvfb as service (#246)
 #### 8.0.0-beta.1
 feat: update packages (#243)
 #### 7.4.3
-fix: handle first child undifined issue (#241) 
+fix: handle first child undifined issue (#241)
 #### 7.4.2
-fix: prevent click on drag end (close #154) (#230) 
+fix: prevent click on drag end (close #154) (#230)
 #### 7.4.1
 fix: forward snap should not happen when the scroll left is 0
 #### 7.4.0
-feat: add dragStart and dragEnd events (close #222) (#237) 
+feat: add dragStart and dragEnd events (close #222) (#237)
 fix: prevent scroll stuck if browser lost focus on Windows (#236)
 fix: error in the demo console log (#239)
-fix: copy artifacts on package build (#238) 
+fix: copy artifacts on package build (#238)
 #### 7.3.7
 fix: resolved a dragging bug in iOS devices
 #### 7.3.6
@@ -25,7 +27,7 @@ fix: help npm to find README.md
 #### 7.3.3
 fix: prevent scroll stuck if browser lost focus (#231)
 #### 7.3.2
-fix: issue #226 making drag-scroll work properly with touch-input 
+fix: issue #226 making drag-scroll work properly with touch-input
 #### 7.3.1
 - feat: build library as universal angular package (#224)
 #### 7.2.9
@@ -169,7 +171,7 @@ Issue #97  - Upgrade angular cli to 1.6.1 / flex-layout to 2.0.0-beta.12 and dow
 
 ### 1.6.0
 
-Issue #94 - Upgrade to Material 5 / Angular 5.1.0 
+Issue #94 - Upgrade to Material 5 / Angular 5.1.0
 
 #### 1.5.5
 
