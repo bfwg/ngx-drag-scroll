@@ -253,7 +253,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this._onMouseDownListener = this._renderer.listen(this._contentRef.nativeElement, 'mousedown', this.onMouseDownHandler.bind(this));
     this._onScrollListener = this._renderer.listen(this._contentRef.nativeElement, 'scroll', this.onScrollHandler.bind(this));
     // prevent Firefox from dragging images
-    this._onDragStartListener = this._renderer.listen('document', 'dragstart', (e) => {
+    this._onDragStartListener = this._renderer.listen(this._contentRef.nativeElement, 'dragstart', (e) => {
       e.preventDefault();
     });
     this.checkNavStatus();
