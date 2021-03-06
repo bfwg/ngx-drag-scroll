@@ -1,3 +1,5 @@
+#### 11.0.0-beta.1
+feat(*): Support angular 11 (#278)
 #### 8.0.0-beta.3
 fix: limit drag restriction of other elements to the contents of drag-scroll (#262)
 #### 8.0.0-beta.2
