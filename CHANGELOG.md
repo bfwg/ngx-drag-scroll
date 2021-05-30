@@ -1,3 +1,5 @@
+#### 12.0.0-beta.1
+feat(*): Support angular 12
 #### 11.0.0-beta.1
 feat(*): Support angular 11 (#278)
 #### 8.0.0-beta.3

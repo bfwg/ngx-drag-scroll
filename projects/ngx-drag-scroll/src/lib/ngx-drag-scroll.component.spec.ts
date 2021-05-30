@@ -15,7 +15,7 @@ import {
   TestBed,
   fakeAsync,
   flush,
-  ComponentFixture
+  ComponentFixture, waitForAsync
 } from '@angular/core/testing';
 import { doesNotReject } from 'assert';
 
@@ -60,7 +60,7 @@ describe('DragScrollComponent', () => {
     });
   });
 
-  it('should not throw error in case of empty content', async(() => {
+  it('should not throw error in case of empty content', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll>
@@ -75,7 +75,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not throw error in case of items without drag-scroll-item', async(() => {
+  it('should not throw error in case of items without drag-scroll-item', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll>
@@ -91,7 +91,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should drag to scroll horizontally and vertically', async(() => {
+  it('should drag to scroll horizontally and vertically', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;">
@@ -119,7 +119,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should disable drag and scroll horizontally and vertically', async(() => {
+  it('should disable drag and scroll horizontally and vertically', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-disabled="true">
@@ -149,7 +149,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should disable drag and scroll horizontally', async(() => {
+  it('should disable drag and scroll horizontally', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
@@ -179,7 +179,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should disable drag and scroll horizontally', async(() => {
+  it('should disable drag and scroll horizontally', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-y-disabled="true">
@@ -209,7 +209,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not drag and horizontally when the item is drag disabled', async(() => {
+  it('should not drag and horizontally when the item is drag disabled', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" drag-scroll-x-disabled="true">
@@ -234,7 +234,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should only hide horizontal scroll bar', async(() => {
+  it('should only hide horizontal scroll bar', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 350px;" scrollbar-hidden="true">
@@ -251,7 +251,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should only hide vertical scroll bar', async(() => {
+  it('should only hide vertical scroll bar', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 350px; height: 50px;" scrollbar-hidden="true">
@@ -268,7 +268,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should hide all scroll bars', async(() => {
+  it('should hide all scroll bars', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
@@ -286,7 +286,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should add pixels to the last item', async(() => {
+  it('should add pixels to the last item', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
@@ -304,7 +304,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not add pixels to the last item when there is only one item', async(() => {
+  it('should not add pixels to the last item when there is only one item', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll style="width: 50px; height: 50px;" scrollbar-hidden="true">
@@ -321,7 +321,7 @@ describe('DragScrollComponent', () => {
     });
   }));
 
-  it('should not trying to hide the scrollbar when there are nothing to hide', async(() => {
+  it('should not trying to hide the scrollbar when there are nothing to hide', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll scrollbar-hidden="true" style="width: 50px; height: 50px;">
@@ -529,7 +529,7 @@ describe('DragScrollComponent', () => {
     });
   });
 
-  it('should trigger currentIndex once on navigation button click', async(() => {
+  it('should trigger currentIndex once on navigation button click', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `
@@ -615,7 +615,7 @@ describe('DragScrollComponent', () => {
     });
   });
 
-  it('should update wrapper\'s height after window resize if scrollbar is hidden', async(() => {
+  it('should update wrapper\'s height after window resize if scrollbar is hidden', waitForAsync(() => {
     TestBed.overrideComponent(TestComponent, {
       set: {
         template: `<drag-scroll scrollbar-hidden="true" #nav>

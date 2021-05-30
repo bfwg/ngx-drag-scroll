@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import {TestBed, waitForAsync} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DragScrollModule } from 'ngx-drag-scroll';
+import { DragScrollModule } from '../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
@@ -17,7 +17,7 @@ import { GithubComponent } from './github/github.component';
 import { HomeComponent } from './home/home.component';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
