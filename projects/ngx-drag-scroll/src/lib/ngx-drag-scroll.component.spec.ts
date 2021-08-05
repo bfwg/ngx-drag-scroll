@@ -643,6 +643,29 @@ describe('DragScrollComponent', () => {
     });
   }));
 
+  it('should set wrapper\'s height to default if pixel values aren\'t available', waitForAsync(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll scrollbar-hidden="true" #nav>
+                   <div class="drag-scroll-wrapper drag-scroll-container"></div>
+                 </drag-scroll>`,
+        styles: [`
+          drag-scroll {
+            width: 100%;
+            height: 0px;
+          }
+        `]
+      }
+    });
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const dragScrollWrapper = fixture.nativeElement.querySelector('.drag-scroll-wrapper');
+      expect(dragScrollWrapper.style.height).toBe('100%');
+    });
+  }));
+
   describe('When scrolling horizontally with mouse wheel', () => {
     let fixture: ComponentFixture<TestComponent>;
     let dragScroll: HTMLElement;
