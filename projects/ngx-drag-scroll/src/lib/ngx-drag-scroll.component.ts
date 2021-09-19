@@ -289,6 +289,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   onMouseMove(event: MouseEvent) {
+    if (event.clientX === this.downX && event.clientY === this.downY) {
+      // Ignore 'mousemove" event triggered at the same coordinates that the last mousedown event (consequence of window resize)
+      return;
+    }
     if (this.isPressed && !this.disabled) {
       // Workaround for prevent scroll stuck if browser lost focus
       // MouseEvent.buttons not support by Safari
