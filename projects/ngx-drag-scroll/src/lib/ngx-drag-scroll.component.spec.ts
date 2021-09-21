@@ -820,6 +820,7 @@ describe('DragScrollComponent', () => {
         `
       }
     });
+
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -830,4 +831,47 @@ describe('DragScrollComponent', () => {
       });
     });
   });
+
+  it('should propagate pointer events after mousedown mousemove at same coordinates', waitForAsync(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll><div drag-scroll-item style="width: 300px; height: 300px;"></div></drag-scroll>`
+      }
+    });
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const dragScroll = fixture.debugElement.query(By.css('drag-scroll'));
+      const dragScrollContent = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      dragScrollContent.triggerEventHandler('mousedown', new MouseEvent('mousedown', { bubbles: true, clientX: 10, clientY: 10 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: 10, clientY: 10 }));
+
+      fixture.detectChanges();
+      expect(dragScroll.styles.pointerEvents).toBe('auto');
+    });
+  }));
+
+  it('should propagate pointer events after mousedown mousemove at different coordinates', waitForAsync(() => {
+    TestBed.overrideComponent(TestComponent, {
+      set: {
+        template: `<drag-scroll><div drag-scroll-item style="width: 300px; height: 300px;"></div></drag-scroll>`
+      }
+    });
+
+    TestBed.compileComponents().then(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const dragScroll = fixture.debugElement.query(By.css('drag-scroll'));
+      const dragScrollContent = fixture.debugElement.query(By.css('.drag-scroll-content'));
+      dragScrollContent.triggerEventHandler('mousedown', new MouseEvent('mousedown', { bubbles: true, clientX: 10, clientY: 10 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: +5, clientY: +5 }));
+
+      fixture.detectChanges();
+      expect(dragScroll.styles.pointerEvents).toBe('none');
+    });
+  }));
+
 });
