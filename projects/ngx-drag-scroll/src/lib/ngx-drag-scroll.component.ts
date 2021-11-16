@@ -1,24 +1,12 @@
-import {
-  ElementRef,
-  Component,
-  Renderer2,
-  OnDestroy,
-  Input,
-  Output,
-  AfterViewInit,
-  OnChanges,
-  EventEmitter,
-  ViewChild,
-  ContentChildren,
-  AfterViewChecked,
-  QueryList,
-  Inject,
-  HostBinding,
-  HostListener
-} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-
+import {
+  AfterViewChecked, AfterViewInit, Component, ContentChildren, ElementRef, EventEmitter, HostBinding,
+  HostListener, Inject, Input, OnChanges, OnDestroy, Output, QueryList, Renderer2, ViewChild
+} from '@angular/core';
+import { fromEvent, interval, Subject, Subscription } from 'rxjs';
+import { finalize, take, takeUntil, tap } from 'rxjs/operators';
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
+
 
 @Component({
   selector: 'drag-scroll',
@@ -71,6 +59,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private _onScrollListener: Function;
 
   private _onDragStartListener: Function;
+  private _isAnimating$: Subscription | undefined;
+  private ngUnsubscribe: Subject<any> = new Subject();
 
   /**
    * Is the user currently pressing the element
@@ -259,6 +249,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.checkNavStatus();
     this.dsInitialized.emit();
     this.adjustMarginToLastChild();
+
+    fromEvent(this._contentRef.nativeElement, 'mousewheel', { passive: false }).pipe(
+      tap((value: WheelEvent) => this.onWheel(value)),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe();
   }
 
   ngAfterViewChecked() {
@@ -282,6 +277,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     if (this._onDragStartListener) {
       this._onDragStartListener = this._onDragStartListener();
     }
+    this.destroySubscriptions();
   }
 
   onMouseMoveHandler(event: MouseEvent) {
@@ -430,11 +426,10 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     }, 0);
   }
 
-  @HostListener('wheel', ['$event'])
   public onWheel(event: WheelEvent) {
     if (this._xWheelEnabled) {
       event.preventDefault();
-
+      console.log('on Wheel', event, event.deltaY, this._snapDisabled);
       if (this._snapDisabled) {
         this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
       } else {
@@ -609,40 +604,47 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   * https://gist.github.com/andjosh/6764939
   */
   private scrollTo(element: Element, to: number, duration: number) {
-    const self = this;
-    self.isAnimating = true;
+    if (!!this._isAnimating$) {
+      this._isAnimating$.unsubscribe();
+    }
+
     const start = element.scrollLeft,
       change = to - start - this.snapOffset,
-      increment = 20;
+      increment = 20,
+      repeats = Math.ceil(duration / increment);
     let currentTime = 0;
 
-    // t = current time
-    // b = start value
-    // c = change in value
-    // d = duration
-    const easeInOutQuad = function (t: number, b: number, c: number, d: number) {
-      t /= d / 2;
-      if (t < 1) {
-        return c / 2 * t * t + b;
-      }
-      t--;
-      return -c / 2 * (t * (t - 2) - 1) + b;
-    };
+    this._isAnimating$ = interval(increment)
+      .pipe(
+        tap(() => {
+          currentTime += increment;
 
-    const animateScroll = function () {
-      currentTime += increment;
-      element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
-      if (currentTime < duration) {
-        self.scrollToTimer = setTimeout(animateScroll, increment);
-      } else {
-        // run one more frame to make sure the animation is fully finished
-        setTimeout(() => {
-          self.isAnimating = false;
-          self.snapAnimationFinished.emit(self.currIndex);
-        }, increment);
-      }
-    };
-    animateScroll();
+          element.scrollLeft = this.easeInOutQuad(currentTime, start, change, duration);
+        }),
+        finalize(() => {
+          this.snapAnimationFinished.emit(this.currIndex);
+        }),
+        take(repeats),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe();
+  }
+
+  /**
+   * Calculates the easing factor to assist in animation of the scrollLeft.
+   * @param t current time
+   * @param b start value
+   * @param c change in value
+   * @param d duration
+   * @returns amount to move
+   */
+   private easeInOutQuad(t: number, b: number, c: number, d: number): number {
+    t /= d / 2;
+    if (t < 1) {
+      return (c / 2) * t * t + b;
+    }
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
   }
 
   private locateCurrentIndex(snap?: boolean) {
@@ -787,5 +789,11 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
         this._renderer.setStyle(lastItem, 'margin-right', 0);
       }
     }
+  }
+
+  /** Destroys any active subscriptions on component destruction. */
+  private destroySubscriptions(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
