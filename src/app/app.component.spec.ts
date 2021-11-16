@@ -6,7 +6,6 @@ import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragScrollModule } from '../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +26,6 @@ describe('AppComponent', () => {
         MatToolbarModule,
         MatButtonModule,
         MatBadgeModule,
-        FlexLayoutModule,
         DragScrollModule,
         AppRoutingModule
       ],

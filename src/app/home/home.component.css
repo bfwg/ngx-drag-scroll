@@ -35,6 +35,15 @@
   margin-bottom: 20px;
 }
 
+.demo-border-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.demo-border-buttons > button {
+  margin-right: 5px;
+}
+
 .toggle-box {
   width: 49%;
   display: inline-block;
