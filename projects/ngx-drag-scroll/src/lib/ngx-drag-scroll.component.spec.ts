@@ -1,23 +1,18 @@
+import { DOCUMENT } from '@angular/common';
 import {
   Component,
   ViewChild
 } from '@angular/core';
 import {
+  ComponentFixture, fakeAsync, TestBed, tick, waitForAsync
+} from '@angular/core/testing';
+import {
   By
 } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
-
 import { DragScrollComponent } from './ngx-drag-scroll.component';
 import { DragScrollModule } from './ngx-drag-scroll.module';
 
-import {
-  async,
-  TestBed,
-  fakeAsync,
-  flush,
-  ComponentFixture, waitForAsync
-} from '@angular/core/testing';
-import { doesNotReject } from 'assert';
+
 
 @Component({
   selector: 'app-test-component',
@@ -49,7 +44,7 @@ class TestComponent {
 }
 
 describe('DragScrollComponent', () => {
-  const scrollbarWidth = '15px';
+  const scrollbarWidth = '17px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DragScrollModule],
@@ -405,14 +400,16 @@ describe('DragScrollComponent', () => {
     TestBed.compileComponents().then(() => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
+      fixture.componentInstance.ds.currIndex = 0;
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
+
       fixture.componentInstance.ds.moveRight();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(50);
 
       fixture.componentInstance.ds.moveLeft();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(0);
     });
   }));
@@ -433,19 +430,19 @@ describe('DragScrollComponent', () => {
       const compiled = fixture.debugElement.query(By.css('.drag-scroll-content'));
 
       fixture.componentInstance.ds.moveRight();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(40);
 
       fixture.componentInstance.ds.moveRight();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(50);
 
       fixture.componentInstance.ds.moveLeft();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(40);
 
       fixture.componentInstance.ds.moveLeft();
-      flush(500);
+      tick(500);
       expect(compiled.nativeElement.scrollLeft).toBe(0);
     });
   }));
@@ -675,7 +672,7 @@ describe('DragScrollComponent', () => {
     beforeEach(() => {
       TestBed.overrideComponent(TestComponent, {
         set: {
-          template: `<drag-scroll scroll-x-wheel-enabled="true" #nav>
+          template: `<drag-scroll [scroll-x-wheel-enabled]="true" #nav>
                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                      <div drag-scroll-item class="item" style="width: 50px; height: 50px;"></div>
                    </drag-scroll>`,
@@ -710,17 +707,18 @@ describe('DragScrollComponent', () => {
       });
     });
 
-    it('should move right by one item if snapping enabled', (done) => {
+    it('should move right by one item if snapping enabled', fakeAsync((done) => {
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(1);
       dragScroll.dispatchEvent(fakeWheelEvent);
-
+      tick(500);
       fixture.whenStable().then(() => {
+        
         expect(dragScrollContent.scrollLeft).toBe(50);
         done();
       });
-    });
+    }));
 
-    it('should move left by scroll delta if snapping disabled', (done) => {
+    it('should move left by scroll delta if snapping disabled', fakeAsync((done) => {
       dragScrollContent.scrollBy(13, 0);
       fixture.componentInstance.ds.snapDisabled = true;
       fixture.detectChanges();
@@ -728,24 +726,25 @@ describe('DragScrollComponent', () => {
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-7);
       dragScroll.dispatchEvent(fakeWheelEvent);
 
+      tick(500);
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(6);
         done();
       });
-    });
+    }));
 
-    it('should move right by scroll delta if snapping disabled', (done) => {
+    it('should move right by scroll delta if snapping disabled', fakeAsync((done) => {
       fixture.componentInstance.ds.snapDisabled = true;
       fixture.detectChanges();
 
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(13);
       dragScroll.dispatchEvent(fakeWheelEvent);
-
+      tick(500);
       fixture.whenStable().then(() => {
         expect(dragScrollContent.scrollLeft).toBe(13);
         done();
       });
-    });
+    }));
   });
 
   it('currIndex can be set to an arbitrarily large number (for backwards compatibility)', (done) => {

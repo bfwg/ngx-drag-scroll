@@ -14,6 +14,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { HomeComponent } from './home/home.component';
+import {APP_BASE_HREF} from '@angular/common';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -37,6 +38,7 @@ describe('AppComponent', () => {
         GithubComponent,
         HomeComponent
       ],
+      providers: [{provide: APP_BASE_HREF, useValue : '/' }]
     }).compileComponents();
   }));
 
