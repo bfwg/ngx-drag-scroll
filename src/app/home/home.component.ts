@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
 import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +9,7 @@ import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/n
   styleUrls: ['./home.component.css'],
   viewProviders: [MatIconRegistry]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   title = 'app works!';
   hideScrollbar;
   disabled;
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     'luke.png',
     'chubaka.png',
     'boba.png',
-    'c3po.png' ,
+    'c3po.png',
     'leia.png',
     'obi.png',
     'r2d2.png',
@@ -32,23 +32,20 @@ export class HomeComponent implements OnInit {
   rightNavDisabled = false;
   index = 0;
 
-  @ViewChild('nav', { read: DragScrollComponent, static: true }) ds: DragScrollComponent;
+  @ViewChild('nav', { read: DragScrollComponent, static: true })
+  ds: DragScrollComponent;
 
-  constructor(
-    matIconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
-  ) {
+  constructor(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     matIconRegistry
-        .addSvgIcon('github',
-            sanitizer.bypassSecurityTrustResourceUrl('/assets/img/github.svg'))
-        .registerFontClassAlias('fontawesome', 'fa');
-  }
-
-  ngOnInit() {
+      .addSvgIcon(
+        'github',
+        sanitizer.bypassSecurityTrustResourceUrl('/assets/img/github.svg')
+      )
+      .registerFontClassAlias('fontawesome', 'fa');
   }
 
   clickItem(item) {
-    console.log('item clicked');
+    console.log('item clicked: ', item);
   }
 
   remove() {

@@ -15,8 +15,8 @@
  */
 
 /***************************************************************************************************
-* BROWSER POLYFILLS
-*/
+ * BROWSER POLYFILLS
+ */
 
 import 'core-js/actual/reflect';
 
@@ -61,8 +61,7 @@ import 'core-js/actual/reflect';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js';  // Included with Angular CLI.
-
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

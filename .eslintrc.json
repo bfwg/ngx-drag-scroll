@@ -3,6 +3,14 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
+  "globals": {
+    "console": "readonly",
+    "Promise": "readonly",
+    "describe": "readonly",
+    "beforeEach": "readonly",
+    "it": "readonly",
+    "expect": "readonly"
+  },
   "overrides": [
     {
       "files": [
@@ -16,14 +24,16 @@
         "createDefaultProgram": true
       },
       "extends": [
+        "eslint:recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
       ],
       "rules": {
         "@angular-eslint/component-selector": [
           "error",
           {
-            "prefix": "lib",
+            "prefix": "app",
             "style": "kebab-case",
             "type": "element"
           }
@@ -31,9 +41,19 @@
         "@angular-eslint/directive-selector": [
           "error",
           {
-            "prefix": "lib",
+            "prefix": "app",
             "style": "camelCase",
             "type": "attribute"
+          }
+        ],
+        "sort-imports": [
+          "error",
+          {
+            "ignoreCase": false,
+            "ignoreDeclarationSort": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+            "allowSeparatedGroups": true
           }
         ]
       }
