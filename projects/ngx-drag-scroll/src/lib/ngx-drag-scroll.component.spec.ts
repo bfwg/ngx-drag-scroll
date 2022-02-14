@@ -43,7 +43,7 @@ class TestComponent {
 }
 
 describe('DragScrollComponent', () => {
-  const scrollbarWidth = '20px'; // Default is 20px, see ./ngx-drag-scroll.component.ts#L592
+  const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DragScrollModule],
@@ -423,8 +423,8 @@ describe('DragScrollComponent', () => {
           '50px'
         );
         expect(window.getComputedStyle(compiled.nativeElement).width).toBe(
-          '70px'
-        ); // This contains the `scrollbarWidth`
+          '50px'
+        );
       });
     })
   );
