@@ -10,6 +10,6 @@ addons:
   chrome: stable
 
 script:
-   - npm run lint ngx-drag-scroll
+   - npm run lint
    - npm run test ngx-drag-scroll
    - npm run build ngx-drag-scroll
