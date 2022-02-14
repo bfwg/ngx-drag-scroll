@@ -4,6 +4,8 @@
     "projects/**/*"
   ],
   "globals": {
+    "document": "readonly",
+    "window": "readonly",
     "console": "readonly",
     "Promise": "readonly",
     "describe": "readonly",
