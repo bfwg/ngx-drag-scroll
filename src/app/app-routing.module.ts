@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { NgModule } from '@angular/core';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
@@ -24,4 +24,4 @@ export const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
