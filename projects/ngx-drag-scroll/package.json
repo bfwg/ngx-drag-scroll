@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bfwg/ngx-drag-scroll.git"
+    "url": "https://github.com/bfwg/ngx-drag-scroll.git"
   },
   "keywords": [
     "Angular",
