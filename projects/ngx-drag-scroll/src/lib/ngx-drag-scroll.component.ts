@@ -32,6 +32,10 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
       overflow: hidden;
       display: block;
     }
+    .rtl-compensation {
+      direction: ltr;
+      transform: scaleX(-1);
+    }
     .drag-scroll-content {
       height: 100%;
       overflow: auto;
@@ -141,6 +145,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   prevChildrenLength = 0;
 
   indexBound = 0;
+
+  rtl = false;
 
   @Output() dsInitialized = new EventEmitter<void>();
 
@@ -259,6 +265,14 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.checkNavStatus();
     this.dsInitialized.emit();
     this.adjustMarginToLastChild();
+
+    // after rtl compensation class is added this will reset to false so first time it's true - it sticks
+    if (!this.rtl) {
+      this.rtl = getComputedStyle(this._contentRef.nativeElement).getPropertyValue('direction') === 'rtl';
+      if (this.rtl) {
+        this._contentRef.nativeElement.classList.add('rtl-compensation')
+      }
+    }
   }
 
   ngAfterViewChecked() {
@@ -307,8 +321,13 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         const clientX = (event as MouseEvent).clientX;
-        this._contentRef.nativeElement.scrollLeft =
-          this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
+        if (this.rtl) {
+          this._contentRef.nativeElement.scrollLeft =
+            this._contentRef.nativeElement.scrollLeft + clientX - this.downX;
+        } else {
+          this._contentRef.nativeElement.scrollLeft =
+            this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
+        }
         this.downX = clientX;
       }
 
