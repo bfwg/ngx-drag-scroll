@@ -1,3 +1,5 @@
+#### 13.0.1
+fix: when direction:rtl style applied, move functions failed to work
 #### 12.0.0-beta.1
 feat(*): Support angular 12
 #### 11.0.0-beta.1
