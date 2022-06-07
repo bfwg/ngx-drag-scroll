@@ -395,7 +395,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   moveTo(index: number) {
-    const container = this.wrapper || this.parentNode || this._contentRef.nativeElement.parentNode;
+    const container = this.wrapper || this.parentNode;
     const containerWidth = container ? container.clientWidth : 0;
     if (
       index >= 0 &&
