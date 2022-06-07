@@ -32,10 +32,6 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
       overflow: hidden;
       display: block;
     }
-    .rtl-compensation {
-      direction: ltr;
-      transform: scaleX(-1);
-    }
     .drag-scroll-content {
       height: 100%;
       overflow: auto;
@@ -266,13 +262,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
     this.dsInitialized.emit();
     this.adjustMarginToLastChild();
 
-    // after rtl compensation class is added this will reset to false so first time it's true - it sticks
-    if (!this.rtl) {
-      this.rtl = getComputedStyle(this._contentRef.nativeElement).getPropertyValue('direction') === 'rtl';
-      if (this.rtl) {
-        this._contentRef.nativeElement.classList.add('rtl-compensation')
-      }
-    }
+    this.rtl = getComputedStyle(this._contentRef.nativeElement).getPropertyValue('direction') === 'rtl';
   }
 
   ngAfterViewChecked() {
@@ -321,13 +311,8 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
       // Drag X
       if (!this.xDisabled && !this.dragDisabled) {
         const clientX = (event as MouseEvent).clientX;
-        if (this.rtl) {
-          this._contentRef.nativeElement.scrollLeft =
-            this._contentRef.nativeElement.scrollLeft + clientX - this.downX;
-        } else {
-          this._contentRef.nativeElement.scrollLeft =
-            this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
-        }
+        this._contentRef.nativeElement.scrollLeft =
+          this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
         this.downX = clientX;
       }
 
@@ -630,8 +615,9 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   private scrollTo(element: Element, to: number, duration: number) {
     const self = this;
     self.isAnimating = true;
+    const rtlFactor = this.rtl ? -1 : 1;
     const start = element.scrollLeft,
-      change = to - start - this.snapOffset,
+      change = (rtlFactor * to) - start - this.snapOffset,
       increment = 20;
     let currentTime = 0;
 
@@ -665,12 +651,14 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private locateCurrentIndex(snap?: boolean) {
+    const scrollLeft = Math.abs(this._contentRef.nativeElement.scrollLeft);
+
     this.currentChildWidth((currentChildWidth, nextChildrenWidth, childrenWidth, idx: number, stop) => {
       if (
-        (this._contentRef.nativeElement.scrollLeft >= childrenWidth &&
-          this._contentRef.nativeElement.scrollLeft <= nextChildrenWidth)
+        (scrollLeft >= childrenWidth &&
+          scrollLeft <= nextChildrenWidth)
       ) {
-        if (nextChildrenWidth - this._contentRef.nativeElement.scrollLeft > currentChildWidth / 2 && !this.isScrollReachesRightEnd()) {
+        if (nextChildrenWidth - scrollLeft > currentChildWidth / 2 && !this.isScrollReachesRightEnd()) {
           // roll back scrolling
           if (!this.isAnimating) {
             this.currIndex = idx;
@@ -678,7 +666,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
           if (snap) {
             this.scrollTo(this._contentRef.nativeElement, childrenWidth, this.snapDuration);
           }
-        } else if (this._contentRef.nativeElement.scrollLeft !== 0) {
+        } else if (scrollLeft !== 0) {
           // forward scrolling
           if (!this.isAnimating) {
             this.currIndex = idx + 1;
@@ -788,7 +776,7 @@ export class DragScrollComponent implements OnDestroy, AfterViewInit, OnChanges,
   }
 
   private isScrollReachesRightEnd(): boolean {
-    const scrollLeftPos = this._contentRef.nativeElement.scrollLeft + this._contentRef.nativeElement.offsetWidth;
+    const scrollLeftPos = Math.abs(this._contentRef.nativeElement.scrollLeft) + this._contentRef.nativeElement.offsetWidth;
     return scrollLeftPos >= this._contentRef.nativeElement.scrollWidth;
   }
 
