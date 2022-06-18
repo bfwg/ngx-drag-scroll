@@ -1,3 +1,5 @@
+#### 13.0.2
+fix: patch to direction:rtl flipped the content. fixing logic instead
 #### 13.0.1
 fix: when direction:rtl style applied, move functions failed to work
 #### 12.0.0-beta.1
