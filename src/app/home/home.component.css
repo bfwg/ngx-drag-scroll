@@ -99,6 +99,13 @@
   margin: 50px 70px;
 }
 
+.settings-container {
+  display: flex;
+  column-gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (min-width: 600px) and (max-width: 1279px) {
   .content {
     margin: 20px 30px;
