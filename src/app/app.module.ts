@@ -12,7 +12,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DragScrollModule } from '../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { HeaderComponent } from './header/header.component';
@@ -39,8 +38,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     MatSlideToggleModule,
     MatToolbarModule,
     MatButtonModule,
-    MatBadgeModule,
-    FlexLayoutModule
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

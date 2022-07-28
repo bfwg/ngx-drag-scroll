@@ -170,5 +170,8 @@
       }
     }
   },
-  "defaultProject": "ngx-drag-scroll-demo"
+  "defaultProject": "ngx-drag-scroll-demo",
+  "cli": {
+    "analytics": false
+  }
 }

@@ -2,7 +2,6 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DragScrollModule } from '../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,32 +16,29 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule,
-          MatCommonModule,
-          MatIconModule,
-          MatSlideToggleModule,
-          MatToolbarModule,
-          MatButtonModule,
-          MatBadgeModule,
-          FlexLayoutModule,
-          DragScrollModule,
-          AppRoutingModule
-        ],
-        declarations: [
-          AppComponent,
-          HeaderComponent,
-          NotFoundComponent,
-          FooterComponent,
-          GithubComponent,
-          HomeComponent
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        MatCommonModule,
+        MatIconModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatBadgeModule,
+        DragScrollModule,
+        AppRoutingModule
+      ],
+      declarations: [
+        AppComponent,
+        HeaderComponent,
+        NotFoundComponent,
+        FooterComponent,
+        GithubComponent,
+        HomeComponent
+      ]
+    }).compileComponents();
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
