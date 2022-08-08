@@ -45,7 +45,7 @@
     "@angular-eslint/template-parser": "14.0.2",
     "@angular/cli": "14.0.5",
     "@angular/compiler-cli": "14.0.5",
-    "@commitlint/cli": "^8.0.0",
+    "@commitlint/cli": "^17.0.3",
     "@commitlint/config-angular": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^17.0.3",
