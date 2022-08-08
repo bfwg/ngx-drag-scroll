@@ -1,3 +1,5 @@
+#### 14.0.0-beta.2
+feat(*): Support angular 14
 #### 13.0.2
 fix: patch to direction:rtl flipped the content. fixing logic instead
 #### 13.0.1
