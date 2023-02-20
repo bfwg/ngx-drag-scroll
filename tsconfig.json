@@ -11,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -26,6 +26,7 @@
       "ngx-drag-scroll/*": [
         "dist/ngx-drag-scroll/*"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   }
 }
