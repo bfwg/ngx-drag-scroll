@@ -1,3 +1,5 @@
+#### 15.0.0
+feat: Support for angular 15 (#313)
 #### 14.0.0-beta.2
 feat(*): Support angular 14
 #### 13.0.2
