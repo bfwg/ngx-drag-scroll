@@ -1,7 +1,6 @@
 package.json
 package-lock.json
 dist
-e2e/**
 node_modules/*
 karma.conf.js
 commitlint.config.js

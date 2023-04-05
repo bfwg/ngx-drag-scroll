@@ -1,7 +1,8 @@
 <div class="content">
   <p class="title">DRAG AND SCROLL!</p>
   <div class="demo-border" [matBadge]="index">
-    <drag-scroll class="demo-one"
+    <drag-scroll
+      class="demo-one"
       drag-scroll-y-disabled="true"
       scrollbar-hidden="true"
       (dsInitialized)="onDragScrollInitialized()"
@@ -12,33 +13,67 @@
       (dragStart)="onDragStart()"
       (dragEnd)="onDragEnd()"
       #nav
-      >
-      <img drag-scroll-item *ngFor="let image of imagelist" [src]="'assets/img/' + image" (click)="clickItem(image)"/>
+    >
+      <img
+        drag-scroll-item
+        *ngFor="let image of imagelist"
+        [src]="'assets/img/' + image"
+        (click)="clickItem(image)"
+      />
     </drag-scroll>
   </div>
   <div class="settings-container">
-    <button mat-raised-button color="primary"  (click)="moveTo(0)">first</button>
-    <button mat-raised-button color="primary"  [disabled]="leftNavDisabled" (click)="moveLeft()">left</button>
-    <button mat-raised-button color="primary"  [disabled]="rightNavDisabled" (click)="moveRight()">right</button>
-    <button mat-raised-button color="primary"  (click)="moveTo(imagelist.length - 1)">last</button>
+    <button mat-raised-button color="primary" (click)="moveTo(0)">first</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="leftNavDisabled"
+      (click)="moveLeft()"
+    >
+      left
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="rightNavDisabled"
+      (click)="moveRight()"
+    >
+      right
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="moveTo(imagelist.length - 1)"
+    >
+      last
+    </button>
   </div>
   <p class="title">PLAY WITH IT!</p>
   <div class="toggle-box">
-    <mat-slide-toggle (change)="toggleHideSB()">Hide scrollbar</mat-slide-toggle>
-    <mat-slide-toggle (change)="toggleDisable()">Disable drag/scroll</mat-slide-toggle>
+    <mat-slide-toggle (change)="toggleHideSB()"
+      >Hide scrollbar</mat-slide-toggle
+    >
+    <mat-slide-toggle (change)="toggleDisable()"
+      >Disable drag/scroll</mat-slide-toggle
+    >
   </div>
   <div class="toggle-box">
-    <mat-slide-toggle (change)="toggleXDisable()">Disable horizontal drag/scroll</mat-slide-toggle>
-    <mat-slide-toggle (change)="toggleYDisable()">Disable vertical drag/scroll</mat-slide-toggle>
+    <mat-slide-toggle (change)="toggleXDisable()"
+      >Disable horizontal drag/scroll</mat-slide-toggle
+    >
+    <mat-slide-toggle (change)="toggleYDisable()"
+      >Disable vertical drag/scroll</mat-slide-toggle
+    >
   </div>
   <div class="demo-border">
-    <drag-scroll class="demo-two"
-        [scrollbar-hidden]="hideScrollbar"
-        [drag-scroll-disabled]="disabled"
-        [drag-scroll-x-disabled]="xDisabled"
-        [drag-scroll-y-disabled]="yDisabled"
-      >
-      <img drag-scroll-item src='assets/img/star-wars-big.jpg' />
+    <drag-scroll
+      class="demo-two"
+      [scrollbar-hidden]="hideScrollbar"
+      [drag-scroll-disabled]="disabled"
+      [drag-scroll-x-disabled]="xDisabled"
+      [drag-scroll-y-disabled]="yDisabled"
+    >
+      <img drag-scroll-item src="assets/img/star-wars-big.jpg" />
     </drag-scroll>
   </div>
   <div class="api-table-containter">
@@ -52,110 +87,133 @@
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> scrollbar-hidden </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">scrollbar-hidden</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether the scroll bar for this element is hidden.</td>
+          <td class="docs-api-property-description">
+            Whether the scroll bar for this element is hidden.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> drag-scroll-disabled </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">drag-scroll-disabled</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether horizontally and vertically draging and scrolling events is disabled.</td>
+          <td class="docs-api-property-description">
+            Whether horizontally and vertically draging and scrolling events is
+            disabled.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> drag-scroll-x-disabled </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">drag-scroll-x-disabled</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether horizontally dragging and scrolling events is disabled.  </td>
+          <td class="docs-api-property-description">
+            Whether horizontally dragging and scrolling events is disabled.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> drag-scroll-y-disabled </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">drag-scroll-y-disabled</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether vertically dragging and scrolling events is disabled. </td>
+          <td class="docs-api-property-description">
+            Whether vertically dragging and scrolling events is disabled.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> drag-disabled </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">drag-disabled</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether draging is disabled.</td>
+          <td class="docs-api-property-description">
+            Whether draging is disabled.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> snap-disabled </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">snap-disabled</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether snapping is disabled.</td>
+          <td class="docs-api-property-description">
+            Whether snapping is disabled.
+          </td>
           <td class="docs-api-property-description">false</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Input()</div>
-            <p class="docs-api-property-name"> snap-offset </p>
+            <div class="docs-api-input-marker">@Input()</div>
+            <p class="docs-api-property-name">snap-offset</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Pixels of previous element to show on snap or moving left and right. </td>
+          <td class="docs-api-property-description">
+            Pixels of previous element to show on snap or moving left and right.
+          </td>
           <td class="docs-api-property-description">0</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Output()</div>
-            <p class="docs-api-property-name"> reachesLeftBound </p>
+            <div class="docs-api-input-marker">@Output()</div>
+            <p class="docs-api-property-name">reachesLeftBound</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether reaching the left carousel bound. </td>
+          <td class="docs-api-property-description">
+            Whether reaching the left carousel bound.
+          </td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Output()</div>
-            <p class="docs-api-property-name"> reachesRightBound </p>
+            <div class="docs-api-input-marker">@Output()</div>
+            <p class="docs-api-property-name">reachesRightBound</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Whether reaching the right carousel bound. </td>
+          <td class="docs-api-property-description">
+            Whether reaching the right carousel bound.
+          </td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Output()</div>
-            <p class="docs-api-property-name"> indexChanged </p>
+            <div class="docs-api-input-marker">@Output()</div>
+            <p class="docs-api-property-name">indexChanged</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Executes when the current index of the carousel changes. </td>
+          <td class="docs-api-property-description">
+            Executes when the current index of the carousel changes.
+          </td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Output()</div>
-            <p class="docs-api-property-name"> dragStart </p>
+            <div class="docs-api-input-marker">@Output()</div>
+            <p class="docs-api-property-name">dragStart</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Executes when drag start. </td>
+          <td class="docs-api-property-description">
+            Executes when drag start.
+          </td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
         <tr class="docs-api-properties-row">
           <td class="docs-api-properties-name-cell">
-            <div class="docs-api-input-marker"> @Output()</div>
-            <p class="docs-api-property-name"> dragEnd </p>
+            <div class="docs-api-input-marker">@Output()</div>
+            <p class="docs-api-property-name">dragEnd</p>
             <code class="docs-api-property-type"></code>
           </td>
-          <td class="docs-api-property-description"> Executes when drag end. </td>
+          <td class="docs-api-property-description">Executes when drag end.</td>
           <td class="docs-api-property-description">n/a</td>
         </tr>
       </tbody>

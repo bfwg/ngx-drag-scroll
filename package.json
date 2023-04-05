@@ -2,6 +2,7 @@
   "name": "ngx-drag-scroll-demo",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "husky install",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -10,8 +11,6 @@
     "test": "ng test --watch=false",
     "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html}' --quiet --fix",
     "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html}' --write",
-    "e2e": "ng e2e",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "changelog": "test \"`git rev-parse --abbrev-ref HEAD`\" = \"master\" && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "clean": "npm run rimraf -- node_modules",
     "rimraf": "rimraf"
@@ -46,16 +45,13 @@
     "@angular/cli": "16.0.0",
     "@angular/compiler-cli": "16.0.0",
     "@commitlint/cli": "^17.6.3",
-    "@commitlint/config-angular": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
-    "@commitlint/travis-cli": "^17.6.3",
     "@types/hammerjs": "^2.0.41",
     "@types/jasmine": "~4.3.1",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "^20.1.0",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
-    "codelyzer": "^6.0.2",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -68,11 +64,10 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.0.0",
+    "lint-staged": "^13.2.0",
     "ng-packagr": "^16.0.0",
     "prettier": "^2.8.8",
-    "protractor": "~7.0.0",
     "ts-node": "~10.9.1",
-    "tslint": "~6.1.0",
     "typescript": "5.0.4"
   }
 }
