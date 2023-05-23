@@ -1,5 +1,8 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  },
   "compilerOptions": {
     "baseUrl": "./",
     "downlevelIteration": true,
