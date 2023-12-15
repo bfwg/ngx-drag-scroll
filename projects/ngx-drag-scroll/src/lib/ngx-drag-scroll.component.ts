@@ -39,7 +39,8 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
         white-space: nowrap;
       }
     `
-  ]
+  ],
+  standalone: true
 })
 export class DragScrollComponent
   implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked
