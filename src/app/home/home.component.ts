@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragScrollComponent } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
+import { DragScrollComponent } from 'ngx-drag-scroll';
 import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({

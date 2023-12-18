@@ -4,7 +4,7 @@ import { DragScrollComponent } from './ngx-drag-scroll.component';
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
 @NgModule({
-  exports: [DragScrollComponent, DragScrollItemDirective],
-  declarations: [DragScrollComponent, DragScrollItemDirective]
+  declarations: [DragScrollComponent, DragScrollItemDirective],
+  exports: [DragScrollComponent, DragScrollItemDirective]
 })
 export class DragScrollModule {}
