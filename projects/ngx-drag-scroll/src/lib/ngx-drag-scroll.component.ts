@@ -1,20 +1,21 @@
 import {
-  ElementRef,
-  Component,
-  Renderer2,
-  OnDestroy,
-  Input,
-  Output,
-  AfterViewInit,
-  OnChanges,
-  EventEmitter,
-  ViewChild,
-  ContentChildren,
   AfterViewChecked,
-  QueryList,
-  Inject,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  ElementRef,
+  EventEmitter,
   HostBinding,
-  HostListener
+  HostListener,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  QueryList,
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -39,7 +40,9 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
         white-space: nowrap;
       }
     `
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class DragScrollComponent
   implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked

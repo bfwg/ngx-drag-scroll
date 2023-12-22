@@ -1,19 +1,20 @@
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCommonModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DragScrollModule } from '../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.module';
 import { FooterComponent } from './footer/footer.component';
 import { GithubComponent } from './github/github.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatCommonModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -26,8 +27,9 @@ describe('AppComponent', () => {
         MatToolbarModule,
         MatButtonModule,
         MatBadgeModule,
-        DragScrollModule,
-        AppRoutingModule
+        AppRoutingModule,
+        DragScrollItemDirective,
+        DragScrollComponent
       ],
       declarations: [
         AppComponent,

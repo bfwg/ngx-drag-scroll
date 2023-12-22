@@ -1,10 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
-
-import { DragScrollComponent } from './ngx-drag-scroll.component';
-import { DragScrollModule } from './ngx-drag-scroll.module';
-
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import {
   ComponentFixture,
   TestBed,
@@ -12,6 +6,9 @@ import {
   flush,
   waitForAsync
 } from '@angular/core/testing';
+import { Component, ViewChild } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-test-component',
@@ -46,7 +43,7 @@ describe('DragScrollComponent', () => {
   const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DragScrollModule],
+      imports: [DragScrollItemDirective, DragScrollComponent],
       declarations: [TestComponent],
       providers: [{ provide: DOCUMENT, useValue: document }]
     });

@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[drag-scroll-item]'
+  selector: '[drag-scroll-item]',
+  standalone: true
 })
 export class DragScrollItemDirective {
   @HostBinding('style.display')
