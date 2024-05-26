@@ -30,13 +30,12 @@ This project needs `Angular 5+` as dependencies though.
 # Setup
 
 Our component and directive are standalone now!
-You'll need to import `DragScrollComponent` and/or `DragScrollDirective` to your application module or component.
+You'll need to import `DragScrollComponent` and/or `DragScrollItemDirective` to your application module or component.
 
 ## Module:
 
 ```typescript
-import { DragScrollComponent, DragScrollDirective } from 'ngx-drag-scroll';
-import { DragScrollDirective } from './ngx-drag-scroll-item';
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 
 ...
 
@@ -61,7 +60,7 @@ export class AppModule {
 ## Component:
 
 ```typescript
-import { DragScrollComponent, DragScrollDirective } from 'ngx-drag-scroll';
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 
 @Component({
   selector: 'sample',
