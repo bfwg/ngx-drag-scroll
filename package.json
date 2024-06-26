@@ -44,8 +44,8 @@
     "@angular-eslint/template-parser": "18.0.1",
     "@angular/cli": "18.0.5",
     "@angular/compiler-cli": "18.0.4",
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@types/hammerjs": "^2.0.45",
     "@types/jasmine": "~5.1.4",
     "@types/jasminewd2": "2.0.13",
@@ -68,6 +68,6 @@
     "ng-packagr": "^18.0.0",
     "prettier": "^3.1.1",
     "ts-node": "~10.9.2",
-    "typescript": "5.5.2"
+    "typescript": "^5.4.0"
   }
 }
