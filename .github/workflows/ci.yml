@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --include=optional
       - run: npm run lint
       - run: npm run test ngx-drag-scroll -- --watch=false --browsers=ChromeHeadless
       - run: npm run build ngx-drag-scroll
