@@ -29,6 +29,7 @@
       "rules": {
         "@angular-eslint/component-selector": "off",
         "@angular-eslint/directive-selector": "off",
+        "@angular-eslint/no-input-rename": "off",
         "sort-imports": [
           "error",
           {

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, signal } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -801,8 +801,9 @@ describe('DragScrollComponent', () => {
       dragScrollContent = fixture.nativeElement.querySelector(
         '.drag-scroll-content'
       );
-      fixture.componentInstance.ds.snapDisabled = false;
-
+      fixture.componentInstance.ds.snapDisabled = signal(
+        false
+      ) as unknown as typeof fixture.componentInstance.ds.snapDisabled;
       fakeWheelEvent = new WheelEvent('wheel');
     });
 
@@ -829,7 +830,9 @@ describe('DragScrollComponent', () => {
 
     it('should move left by scroll delta if snapping disabled', (done) => {
       dragScrollContent.scrollBy(13, 0);
-      fixture.componentInstance.ds.snapDisabled = true;
+      fixture.componentInstance.ds.snapDisabled = signal(
+        true
+      ) as unknown as typeof fixture.componentInstance.ds.snapDisabled;
       fixture.detectChanges();
 
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(-7);
@@ -842,7 +845,9 @@ describe('DragScrollComponent', () => {
     });
 
     it('should move right by scroll delta if snapping disabled', (done) => {
-      fixture.componentInstance.ds.snapDisabled = true;
+      fixture.componentInstance.ds.snapDisabled = signal(
+        true
+      ) as unknown as typeof fixture.componentInstance.ds.snapDisabled;
       fixture.detectChanges();
 
       spyOnProperty(fakeWheelEvent, 'deltaY').and.returnValue(13);

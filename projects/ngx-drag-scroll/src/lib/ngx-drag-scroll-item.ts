@@ -1,26 +1,19 @@
-import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  inject,
+  input
+} from '@angular/core';
 
 @Directive({
-  selector: '[drag-scroll-item]',
-  standalone: true
+  selector: '[drag-scroll-item]'
 })
 export class DragScrollItemDirective {
   @HostBinding('style.display')
   display = 'inline-block';
 
-  @Input('drag-disabled')
-  get dragDisabled() {
-    return this._dragDisabled;
-  }
-  set dragDisabled(value: boolean) {
-    this._dragDisabled = value;
-  }
+  dragDisabled = input<boolean>(false, { alias: 'drag-disabled' });
 
-  _dragDisabled = false;
-
-  _elementRef: ElementRef;
-
-  constructor(private elementRef: ElementRef) {
-    this._elementRef = elementRef;
-  }
+  elementRef = inject(ElementRef);
 }
