@@ -787,8 +787,7 @@ export class DragScrollComponent
    * https://gist.github.com/andjosh/6764939
    */
   private scrollTo(element: Element, to: number, duration: number) {
-    const self = this;
-    self.isAnimating = true;
+    this.isAnimating = true;
     const rtlFactor = this.rtl ? -1 : 1;
     const start = element.scrollLeft,
       change = rtlFactor * to - start - this.snapOffset,
@@ -813,16 +812,16 @@ export class DragScrollComponent
       return (-c / 2) * (t * (t - 2) - 1) + b;
     };
 
-    const animateScroll = function () {
+    const animateScroll = () => {
       currentTime += increment;
       element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
       if (currentTime < duration) {
-        self.scrollToTimer = setTimeout(animateScroll, increment);
+        this.scrollToTimer = setTimeout(animateScroll, increment);
       } else {
         // run one more frame to make sure the animation is fully finished
         setTimeout(() => {
-          self.isAnimating = false;
-          self.snapAnimationFinished.emit(self.currIndex);
+          this.isAnimating = false;
+          this.snapAnimationFinished.emit(this.currIndex);
         }, increment);
       }
     };
