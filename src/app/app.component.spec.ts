@@ -29,15 +29,13 @@ describe('AppComponent', () => {
         MatBadgeModule,
         AppRoutingModule,
         DragScrollItemDirective,
-        DragScrollComponent
-      ],
-      declarations: [
-        AppComponent,
+        DragScrollComponent,
         HeaderComponent,
         NotFoundComponent,
         FooterComponent,
         GithubComponent,
-        HomeComponent
+        HomeComponent,
+        AppComponent
       ]
     }).compileComponents();
   }));

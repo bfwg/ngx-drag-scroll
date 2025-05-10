@@ -12,7 +12,8 @@ import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-test-component',
-  template: ''
+  template: '',
+  imports: [DragScrollItemDirective, DragScrollComponent]
 })
 class TestComponent {
   @ViewChild('nav', { read: DragScrollComponent }) ds: DragScrollComponent;
@@ -43,8 +44,7 @@ describe('DragScrollComponent', () => {
   const scrollbarWidth = '15px';
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DragScrollItemDirective, DragScrollComponent],
-      declarations: [TestComponent],
+      imports: [DragScrollItemDirective, DragScrollComponent, TestComponent],
       providers: [{ provide: DOCUMENT, useValue: document }]
     });
   });
