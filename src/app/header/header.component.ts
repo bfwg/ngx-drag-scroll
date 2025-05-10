@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MatToolbar } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
+import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 
 @Component({

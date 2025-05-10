@@ -1,14 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragScrollComponent } from 'ngx-drag-scroll';
-import { MatIconRegistry } from '@angular/material/icon';
-import { MatBadge } from '@angular/material/badge';
-import { DragScrollComponent as DragScrollComponent_1 } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll.component';
-import { NgFor } from '@angular/common';
-import { DragScrollItemDirective } from '../../../projects/ngx-drag-scroll/src/lib/ngx-drag-scroll-item';
-import { MatButton } from '@angular/material/button';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { GithubComponent } from '../github/github.component';
+import { MatBadge } from '@angular/material/badge';
+import { MatButton } from '@angular/material/button';
+import { MatIconRegistry } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +15,8 @@ import { GithubComponent } from '../github/github.component';
   viewProviders: [MatIconRegistry],
   imports: [
     MatBadge,
-    DragScrollComponent_1,
     NgFor,
+    DragScrollComponent,
     DragScrollItemDirective,
     MatButton,
     MatSlideToggle,

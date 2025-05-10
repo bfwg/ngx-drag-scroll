@@ -69,15 +69,15 @@ export class DragScrollComponent
 
   private _isDragging = false;
 
-  private _onMouseMoveListener: Function;
+  private _onMouseMoveListener: () => void;
 
-  private _onMouseUpListener: Function;
+  private _onMouseUpListener: () => void;
 
-  private _onMouseDownListener: Function;
+  private _onMouseDownListener: () => void;
 
-  private _onScrollListener: Function;
+  private _onScrollListener: () => void;
 
-  private _onDragStartListener: Function;
+  private _onDragStartListener: () => void;
 
   /**
    * Is the user currently pressing the element
@@ -256,9 +256,9 @@ export class DragScrollComponent
   }
 
   constructor(
-    @Inject(ElementRef) private _elementRef: ElementRef,
-    @Inject(Renderer2) private _renderer: Renderer2,
-    @Inject(DOCUMENT) private _document: any
+    private _elementRef: ElementRef,
+    private _renderer: Renderer2,
+    @Inject(DOCUMENT) private _document: Document
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
   }
@@ -366,13 +366,16 @@ export class DragScrollComponent
       'false'
     );
     if (this._onMouseDownListener) {
-      this._onMouseDownListener = this._onMouseDownListener();
+      this._onMouseDownListener();
+      this._onMouseDownListener = null;
     }
     if (this._onScrollListener) {
-      this._onScrollListener = this._onScrollListener();
+      this._onScrollListener();
+      this._onScrollListener = null;
     }
     if (this._onDragStartListener) {
-      this._onDragStartListener = this._onDragStartListener();
+      this._onDragStartListener();
+      this._onDragStartListener = null;
     }
   }
 
@@ -388,9 +391,8 @@ export class DragScrollComponent
     if (this.isPressed && !this.disabled) {
       // Workaround for prevent scroll stuck if browser lost focus
       // MouseEvent.buttons not support by Safari
-      // eslint-disable-next-line import/no-deprecated
       if (!event.buttons && !event.which) {
-        return this.onMouseUpHandler(event);
+        return this.onMouseUpHandler();
       }
 
       this._pointerEvents = 'none';
@@ -447,7 +449,7 @@ export class DragScrollComponent
     }
   }
 
-  onMouseUpHandler(event: MouseEvent) {
+  onMouseUpHandler() {
     if (this.isPressed) {
       this.isPressed = false;
       this._pointerEvents = 'auto';
@@ -577,7 +579,11 @@ export class DragScrollComponent
     }
 
     this._isDragging = value;
-    value ? this.dragStart.emit() : this.dragEnd.emit();
+    if (value) {
+      this.dragStart.emit();
+    } else {
+      this.dragEnd.emit();
+    }
   }
 
   private _startGlobalListening(isTouchEvent: boolean) {
@@ -602,11 +608,13 @@ export class DragScrollComponent
 
   private _stopGlobalListening() {
     if (this._onMouseMoveListener) {
-      this._onMouseMoveListener = this._onMouseMoveListener();
+      this._onMouseMoveListener();
+      this._onMouseMoveListener = null;
     }
 
     if (this._onMouseUpListener) {
-      this._onMouseUpListener = this._onMouseUpListener();
+      this._onMouseUpListener();
+      this._onMouseUpListener = null;
     }
   }
 

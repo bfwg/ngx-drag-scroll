@@ -1,10 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  HostBinding,
-  Inject
-} from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
 
 @Directive({
   selector: '[drag-scroll-item]',
@@ -26,7 +20,7 @@ export class DragScrollItemDirective {
 
   _elementRef: ElementRef;
 
-  constructor(@Inject(ElementRef) elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef) {
     this._elementRef = elementRef;
   }
 }

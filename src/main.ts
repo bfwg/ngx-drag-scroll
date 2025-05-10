@@ -1,23 +1,20 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 import 'hammerjs';
-
-import { environment } from './environments/environment';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { MatCommonModule, MatRippleModule } from '@angular/material/core';
+import { enableProdMode, importProvidersFrom } from '@angular/core';
 import {
   provideHttpClient,
   withInterceptorsFromDi
 } from '@angular/common/http';
+import { AppComponent } from './app/app.component';
 import { AppRoutingModule } from './app/app-routing.module';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { MatRippleModule, MatCommonModule } from '@angular/material/core';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatBadgeModule } from '@angular/material/badge';
-import { AppComponent } from './app/app.component';
+import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();

@@ -1,4 +1,4 @@
-import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
+import { Component, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -6,7 +6,7 @@ import {
   flush,
   waitForAsync
 } from '@angular/core/testing';
-import { Component, ViewChild } from '@angular/core';
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { By } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 
