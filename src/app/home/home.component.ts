@@ -1,13 +1,27 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
+import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragScrollComponent } from 'ngx-drag-scroll';
+import { GithubComponent } from '../github/github.component';
+import { MatBadge } from '@angular/material/badge';
+import { MatButton } from '@angular/material/button';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  viewProviders: [MatIconRegistry]
+  viewProviders: [MatIconRegistry],
+  imports: [
+    MatBadge,
+    NgFor,
+    DragScrollComponent,
+    DragScrollItemDirective,
+    MatButton,
+    MatSlideToggle,
+    GithubComponent
+  ]
 })
 export class HomeComponent {
   title = 'app works!';
@@ -32,8 +46,7 @@ export class HomeComponent {
   rightNavDisabled = false;
   index = 0;
 
-  @ViewChild('nav', { read: DragScrollComponent, static: true })
-  ds: DragScrollComponent;
+  readonly ds = viewChild('nav', { read: DragScrollComponent });
 
   constructor(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     matIconRegistry
@@ -67,15 +80,15 @@ export class HomeComponent {
   }
 
   moveLeft() {
-    this.ds.moveLeft();
+    this.ds().moveLeft();
   }
 
   moveRight() {
-    this.ds.moveRight();
+    this.ds().moveRight();
   }
 
   moveTo(idx: number) {
-    this.ds.moveTo(idx);
+    this.ds().moveTo(idx);
   }
 
   leftBoundStat(reachesLeftBound: boolean) {

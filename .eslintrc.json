@@ -1,6 +1,5 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
   "globals": {
     "document": "readonly",
     "window": "readonly",
@@ -18,29 +17,19 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
       "extends": [
         "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:prettier/recommended"
       ],
       "rules": {
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "prefix": "app",
-            "style": "kebab-case",
-            "type": "element"
-          }
-        ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "prefix": "app",
-            "style": "camelCase",
-            "type": "attribute"
-          }
-        ],
+        "@angular-eslint/component-selector": "off",
+        "@angular-eslint/directive-selector": "off",
+        "@angular-eslint/no-input-rename": "off",
         "sort-imports": [
           "error",
           {

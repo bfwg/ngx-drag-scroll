@@ -5,17 +5,16 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  EventEmitter,
   HostBinding,
   HostListener,
   Inject,
-  Input,
   OnChanges,
   OnDestroy,
-  Output,
   QueryList,
   Renderer2,
-  ViewChild
+  ViewChild,
+  input,
+  output
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -41,43 +40,24 @@ import { DragScrollItemDirective } from './ngx-drag-scroll-item';
       }
     `
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DragScrollComponent
   implements OnDestroy, AfterViewInit, OnChanges, AfterViewChecked
 {
   private _index = 0;
 
-  private _scrollbarHidden = false;
-
-  private _disabled = false;
-
-  private _xDisabled = false;
-
-  private _xWheelEnabled = false;
-
-  private _yDisabled = false;
-
-  private _dragDisabled = false;
-
-  private _snapDisabled = false;
-
-  private _snapOffset = 0;
-
-  private _snapDuration = 500;
-
   private _isDragging = false;
 
-  private _onMouseMoveListener: Function;
+  private _onMouseMoveListener: () => void | null = null;
 
-  private _onMouseUpListener: Function;
+  private _onMouseUpListener: () => void | null = null;
 
-  private _onMouseDownListener: Function;
+  private _onMouseDownListener: () => void | null = null;
 
-  private _onScrollListener: Function;
+  private _onScrollListener: () => void | null = null;
 
-  private _onDragStartListener: Function;
+  private _onDragStartListener: () => void | null = null;
 
   /**
    * Is the user currently pressing the element
@@ -154,111 +134,57 @@ export class DragScrollComponent
 
   rtl = false;
 
-  @Output() dsInitialized = new EventEmitter<void>();
+  dsInitialized = output<void>();
 
-  @Output() indexChanged = new EventEmitter<number>();
+  indexChanged = output<number>();
 
-  @Output() reachesLeftBound = new EventEmitter<boolean>();
+  reachesLeftBound = output<boolean>();
 
-  @Output() reachesRightBound = new EventEmitter<boolean>();
+  reachesRightBound = output<boolean>();
 
-  @Output() snapAnimationFinished = new EventEmitter<number>();
+  snapAnimationFinished = output<number>();
 
-  @Output() dragStart = new EventEmitter<void>();
+  dragStart = output<void>();
 
-  @Output() dragEnd = new EventEmitter<void>();
+  dragEnd = output<void>();
 
   /**
    * Whether the scrollbar is hidden
    */
-  @Input('scrollbar-hidden')
-  get scrollbarHidden() {
-    return this._scrollbarHidden;
-  }
-  set scrollbarHidden(value: boolean) {
-    this._scrollbarHidden = value;
-  }
+  scrollbarHidden = input<boolean>(false, { alias: 'scrollbar-hidden' });
 
   /**
    * Whether horizontally and vertically draging and scrolling is be disabled
    */
-  @Input('drag-scroll-disabled')
-  get disabled() {
-    return this._disabled;
-  }
-  set disabled(value: boolean) {
-    this._disabled = value;
-  }
+  disabled = input<boolean>(false, { alias: 'drag-scroll-disabled' });
 
   /**
    * Whether horizontally dragging and scrolling is be disabled
    */
-  @Input('drag-scroll-x-disabled')
-  get xDisabled() {
-    return this._xDisabled;
-  }
-  set xDisabled(value: boolean) {
-    this._xDisabled = value;
-  }
+  xDisabled = input<boolean>(false, { alias: 'drag-scroll-x-disabled' });
 
   /**
    * Whether vertically dragging and scrolling events is disabled
    */
-  @Input('drag-scroll-y-disabled')
-  get yDisabled() {
-    return this._yDisabled;
-  }
-  set yDisabled(value: boolean) {
-    this._yDisabled = value;
-  }
+  yDisabled = input<boolean>(false, { alias: 'drag-scroll-y-disabled' });
 
   /**
    * Whether scrolling horizontally with mouse wheel is enabled
    */
-  @Input('scroll-x-wheel-enabled')
-  get xWheelEnabled() {
-    return this._xWheelEnabled;
-  }
-  set xWheelEnabled(value: boolean) {
-    this._xWheelEnabled = value;
-  }
+  xWheelEnabled = input<boolean>(false, { alias: 'scroll-x-wheel-enabled' });
 
-  @Input('drag-disabled')
-  get dragDisabled() {
-    return this._dragDisabled;
-  }
-  set dragDisabled(value: boolean) {
-    this._dragDisabled = value;
-  }
+  dragDisabled = input<boolean>(false, { alias: 'drag-disabled' });
 
-  @Input('snap-disabled')
-  get snapDisabled() {
-    return this._snapDisabled;
-  }
-  set snapDisabled(value: boolean) {
-    this._snapDisabled = value;
-  }
+  snapDisabled = input<boolean>(false, { alias: 'snap-disabled' });
 
-  @Input('snap-offset')
-  get snapOffset() {
-    return this._snapOffset;
-  }
-  set snapOffset(value: number) {
-    this._snapOffset = value;
-  }
+  snapOffset = input<number>(0, { alias: 'snap-offset' });
 
-  @Input('snap-duration')
-  get snapDuration() {
-    return this._snapDuration;
-  }
-  set snapDuration(value: number) {
-    this._snapDuration = value;
-  }
+  snapDuration = input<number>(500, { alias: 'snap-duration' });
 
   constructor(
-    @Inject(ElementRef) private _elementRef: ElementRef,
-    @Inject(Renderer2) private _renderer: Renderer2,
-    @Inject(DOCUMENT) private _document: any
+    private _elementRef: ElementRef,
+    private _renderer: Renderer2,
+    @Inject(DOCUMENT) private _document: Document
   ) {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
   }
@@ -266,13 +192,13 @@ export class DragScrollComponent
   ngOnChanges() {
     this.setScrollBar();
 
-    if (this.xDisabled || this.disabled || this._scrollbarHidden) {
+    if (this.xDisabled() || this.disabled() || this.scrollbarHidden()) {
       this.disableScroll('x');
     } else {
       this.enableScroll('x');
     }
 
-    if (this.yDisabled || this.disabled) {
+    if (this.yDisabled() || this.disabled()) {
       this.disableScroll('y');
     } else {
       this.enableScroll('y');
@@ -366,13 +292,16 @@ export class DragScrollComponent
       'false'
     );
     if (this._onMouseDownListener) {
-      this._onMouseDownListener = this._onMouseDownListener();
+      this._onMouseDownListener();
+      this._onMouseDownListener = null;
     }
     if (this._onScrollListener) {
-      this._onScrollListener = this._onScrollListener();
+      this._onScrollListener();
+      this._onScrollListener = null;
     }
     if (this._onDragStartListener) {
-      this._onDragStartListener = this._onDragStartListener();
+      this._onDragStartListener();
+      this._onDragStartListener = null;
     }
   }
 
@@ -385,19 +314,18 @@ export class DragScrollComponent
       // Ignore 'mousemove" event triggered at the same coordinates that the last mousedown event (consequence of window resize)
       return;
     }
-    if (this.isPressed && !this.disabled) {
+    if (this.isPressed && !this.disabled()) {
       // Workaround for prevent scroll stuck if browser lost focus
       // MouseEvent.buttons not support by Safari
-      // eslint-disable-next-line import/no-deprecated
       if (!event.buttons && !event.which) {
-        return this.onMouseUpHandler(event);
+        return this.onMouseUpHandler();
       }
 
       this._pointerEvents = 'none';
       this._setIsDragging(true);
 
       // Drag X
-      if (!this.xDisabled && !this.dragDisabled) {
+      if (!this.xDisabled() && !this.dragDisabled()) {
         const clientX = (event as MouseEvent).clientX;
         this._contentRef.nativeElement.scrollLeft =
           this._contentRef.nativeElement.scrollLeft - clientX + this.downX;
@@ -405,7 +333,7 @@ export class DragScrollComponent
       }
 
       // Drag Y
-      if (!this.yDisabled && !this.dragDisabled) {
+      if (!this.yDisabled() && !this.dragDisabled()) {
         const clientY = (event as MouseEvent).clientY;
         this._contentRef.nativeElement.scrollTop =
           this._contentRef.nativeElement.scrollTop - clientY + this.downY;
@@ -417,7 +345,7 @@ export class DragScrollComponent
   onMouseDownHandler(event: MouseEvent) {
     const dragScrollItem: DragScrollItemDirective | null =
       this.locateDragScrollItem(event.target as Element);
-    if (dragScrollItem && dragScrollItem.dragDisabled) {
+    if (dragScrollItem && dragScrollItem.dragDisabled()) {
       return;
     }
 
@@ -435,7 +363,7 @@ export class DragScrollComponent
 
   onScrollHandler() {
     this.checkNavStatus();
-    if (!this.isPressed && !this.isAnimating && !this.snapDisabled) {
+    if (!this.isPressed && !this.isAnimating && !this.snapDisabled()) {
       this.isScrolling = true;
       clearTimeout(this.scrollTimer as number);
       this.scrollTimer = setTimeout(() => {
@@ -447,17 +375,17 @@ export class DragScrollComponent
     }
   }
 
-  onMouseUpHandler(event: MouseEvent) {
+  onMouseUpHandler() {
     if (this.isPressed) {
       this.isPressed = false;
       this._pointerEvents = 'auto';
       this._setIsDragging(false);
-      if (!this.snapDisabled) {
+      if (!this.snapDisabled()) {
         this.locateCurrentIndex(true);
       } else {
         this.locateCurrentIndex();
       }
-      this._stopGlobalListening();
+      this.stopGlobalListening();
     }
   }
 
@@ -465,13 +393,13 @@ export class DragScrollComponent
    * Nav button
    */
   moveLeft() {
-    if (this.currIndex !== 0 || this.snapDisabled) {
+    if (this.currIndex !== 0 || this.snapDisabled()) {
       this.currIndex--;
       clearTimeout(this.scrollToTimer as number);
       this.scrollTo(
         this._contentRef.nativeElement,
         this.toChildrenLocation(),
-        this.snapDuration
+        this.snapDuration()
       );
     }
   }
@@ -490,7 +418,7 @@ export class DragScrollComponent
       this.scrollTo(
         this._contentRef.nativeElement,
         this.toChildrenLocation(),
-        this.snapDuration
+        this.snapDuration()
       );
     }
   }
@@ -512,7 +440,7 @@ export class DragScrollComponent
       this.scrollTo(
         this._contentRef.nativeElement,
         this.toChildrenLocation(),
-        this.snapDuration
+        this.snapDuration()
       );
     }
   }
@@ -550,10 +478,10 @@ export class DragScrollComponent
 
   @HostListener('wheel', ['$event'])
   public onWheel(event: WheelEvent) {
-    if (this._xWheelEnabled) {
+    if (this.xWheelEnabled()) {
       event.preventDefault();
 
-      if (this._snapDisabled) {
+      if (this.snapDisabled()) {
         this._contentRef.nativeElement.scrollBy(event.deltaY, 0);
       } else {
         if (event.deltaY < 0) {
@@ -577,7 +505,11 @@ export class DragScrollComponent
     }
 
     this._isDragging = value;
-    value ? this.dragStart.emit() : this.dragEnd.emit();
+    if (value) {
+      this.dragStart.emit();
+    } else {
+      this.dragEnd.emit();
+    }
   }
 
   private _startGlobalListening(isTouchEvent: boolean) {
@@ -600,13 +532,15 @@ export class DragScrollComponent
     }
   }
 
-  private _stopGlobalListening() {
+  private stopGlobalListening() {
     if (this._onMouseMoveListener) {
-      this._onMouseMoveListener = this._onMouseMoveListener();
+      this._onMouseMoveListener();
+      this._onMouseMoveListener = null;
     }
 
     if (this._onMouseUpListener) {
-      this._onMouseUpListener = this._onMouseUpListener();
+      this._onMouseUpListener();
+      this._onMouseUpListener = null;
     }
   }
 
@@ -709,7 +643,7 @@ export class DragScrollComponent
   }
 
   private setScrollBar(): void {
-    if (this.scrollbarHidden) {
+    if (this.scrollbarHidden()) {
       this.hideScrollbar();
     } else {
       this.showScrollbar();
@@ -779,11 +713,10 @@ export class DragScrollComponent
    * https://gist.github.com/andjosh/6764939
    */
   private scrollTo(element: Element, to: number, duration: number) {
-    const self = this;
-    self.isAnimating = true;
+    this.isAnimating = true;
     const rtlFactor = this.rtl ? -1 : 1;
     const start = element.scrollLeft,
-      change = rtlFactor * to - start - this.snapOffset,
+      change = rtlFactor * to - start - this.snapOffset(),
       increment = 20;
     let currentTime = 0;
 
@@ -805,16 +738,16 @@ export class DragScrollComponent
       return (-c / 2) * (t * (t - 2) - 1) + b;
     };
 
-    const animateScroll = function () {
+    const animateScroll = () => {
       currentTime += increment;
       element.scrollLeft = easeInOutQuad(currentTime, start, change, duration);
       if (currentTime < duration) {
-        self.scrollToTimer = setTimeout(animateScroll, increment);
+        this.scrollToTimer = setTimeout(animateScroll, increment);
       } else {
         // run one more frame to make sure the animation is fully finished
         setTimeout(() => {
-          self.isAnimating = false;
-          self.snapAnimationFinished.emit(self.currIndex);
+          this.isAnimating = false;
+          this.snapAnimationFinished.emit(this.currIndex);
         }, increment);
       }
     };
@@ -845,7 +778,7 @@ export class DragScrollComponent
               this.scrollTo(
                 this._contentRef.nativeElement,
                 childrenWidth,
-                this.snapDuration
+                this.snapDuration()
               );
             }
           } else if (scrollLeft !== 0) {
@@ -857,7 +790,7 @@ export class DragScrollComponent
               this.scrollTo(
                 this._contentRef.nativeElement,
                 childrenWidth + currentChildWidth,
-                this.snapDuration
+                this.snapDuration()
               );
             }
           }
@@ -898,10 +831,9 @@ export class DragScrollComponent
       }
 
       const nextChildrenWidth =
-        childrenWidth +
-        childrenArr[i + 1]._elementRef.nativeElement.clientWidth;
+        childrenWidth + childrenArr[i + 1].elementRef.nativeElement.clientWidth;
       const currentClildWidth =
-        childrenArr[i]._elementRef.nativeElement.clientWidth;
+        childrenArr[i].elementRef.nativeElement.clientWidth;
       cb(currentClildWidth, nextChildrenWidth, childrenWidth, i, breakFunc);
 
       childrenWidth += currentClildWidth;
@@ -912,7 +844,7 @@ export class DragScrollComponent
     let to = 0;
     const childrenArr = this._children.toArray();
     for (let i = 0; i < this.currIndex; i++) {
-      to += childrenArr[i]._elementRef.nativeElement.clientWidth;
+      to += childrenArr[i].elementRef.nativeElement.clientWidth;
     }
     return to;
   }
@@ -923,7 +855,7 @@ export class DragScrollComponent
     let item: DragScrollItemDirective | null = null;
     const childrenArr = this._children.toArray();
     for (let i = 0; i < childrenArr.length; i++) {
-      if (element === childrenArr[i]._elementRef.nativeElement) {
+      if (element === childrenArr[i].elementRef.nativeElement) {
         item = childrenArr[i];
       }
     }
@@ -965,11 +897,11 @@ export class DragScrollComponent
       if (!dragScrollItemDirective) {
         break;
       } else {
-        const nativeElement = dragScrollItemDirective._elementRef.nativeElement;
+        const nativeElement = dragScrollItemDirective.elementRef.nativeElement;
         let itemWidth = nativeElement.clientWidth;
         if (itemWidth === 0 && nativeElement.firstElementChild) {
           itemWidth =
-            dragScrollItemDirective._elementRef.nativeElement.firstElementChild
+            dragScrollItemDirective.elementRef.nativeElement.firstElementChild
               .clientWidth;
         }
         childrenWidth += itemWidth;
@@ -998,7 +930,7 @@ export class DragScrollComponent
     if (this._children && this._children.length > 0 && this.hideScrollbar) {
       const childrenArr = this._children.toArray();
       const lastItem =
-        childrenArr[childrenArr.length - 1]._elementRef.nativeElement;
+        childrenArr[childrenArr.length - 1].elementRef.nativeElement;
       if (this.wrapper && childrenArr.length > 1) {
         this._renderer.setStyle(lastItem, 'margin-right', this.scrollbarWidth);
       } else {
