@@ -1,4 +1,4 @@
-import { Component, ViewChild, signal } from '@angular/core';
+import { Component, ViewChild, signal, DOCUMENT } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -8,7 +8,6 @@ import {
 } from '@angular/core/testing';
 import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { By } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-test-component',

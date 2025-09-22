@@ -14,9 +14,9 @@ import {
   Renderer2,
   ViewChild,
   input,
-  output
+  output,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
