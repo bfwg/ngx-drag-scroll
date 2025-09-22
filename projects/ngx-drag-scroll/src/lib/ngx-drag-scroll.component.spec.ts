@@ -1,4 +1,4 @@
-import { Component, ViewChild, signal, DOCUMENT } from '@angular/core';
+import { Component, DOCUMENT, ViewChild, signal } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -40,7 +40,7 @@ class TestComponent {
 }
 
 describe('DragScrollComponent', () => {
-  const scrollbarWidth = '15px';
+  const scrollbarWidth = '20px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DragScrollItemDirective, DragScrollComponent, TestComponent],

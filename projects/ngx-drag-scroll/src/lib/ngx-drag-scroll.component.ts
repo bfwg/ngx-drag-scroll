@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   HostBinding,
   HostListener,
@@ -14,8 +15,7 @@ import {
   Renderer2,
   ViewChild,
   input,
-  output,
-  DOCUMENT
+  output
 } from '@angular/core';
 
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
