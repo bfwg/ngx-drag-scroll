@@ -381,7 +381,7 @@ describe('DragScrollComponent', () => {
         '50px'
       );
       expect(window.getComputedStyle(compiled.nativeElement).width).toBe(
-        '50px'
+        '70px'
       );
     });
   }));

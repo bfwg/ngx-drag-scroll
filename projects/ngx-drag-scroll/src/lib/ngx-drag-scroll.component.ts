@@ -279,7 +279,9 @@ export class DragScrollComponent
     // avoid extra checks
     if (this._children.length !== this.prevChildrenLength) {
       this.markElDimension();
-      this.checkScrollbar();
+      if (this.wrapper) {
+        this.checkScrollbar();
+      }
       this.prevChildrenLength = this._children.length;
       this.checkNavStatus();
     }
