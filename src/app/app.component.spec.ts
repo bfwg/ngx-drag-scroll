@@ -2,7 +2,6 @@ import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,7 +20,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MatCommonModule,
         MatIconModule,
         MatSlideToggleModule,
         MatToolbarModule,

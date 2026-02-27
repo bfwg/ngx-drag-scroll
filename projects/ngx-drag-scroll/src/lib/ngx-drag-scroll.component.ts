@@ -7,7 +7,7 @@ import {
   ElementRef,
   HostBinding,
   HostListener,
-  Inject,
+  inject,
   OnChanges,
   OnDestroy,
   QueryList,
@@ -181,11 +181,11 @@ export class DragScrollComponent
 
   snapDuration = input<number>(500, { alias: 'snap-duration' });
 
-  constructor(
-    private _elementRef: ElementRef,
-    private _renderer: Renderer2,
-    @Inject(DOCUMENT) private _document: Document
-  ) {
+  private _elementRef = inject(ElementRef);
+  private _renderer = inject(Renderer2);
+  private _document = inject(DOCUMENT);
+
+  constructor() {
     this.scrollbarWidth = `${this.getScrollbarWidth()}px`;
   }
 
@@ -450,7 +450,7 @@ export class DragScrollComponent
       const onlyOneItem = Boolean(this._children.length <= 1);
       const containerIsLargerThanContent = Boolean(
         this._contentRef.nativeElement.scrollWidth <=
-          this._contentRef.nativeElement.clientWidth
+        this._contentRef.nativeElement.clientWidth
       );
       if (onlyOneItem || containerIsLargerThanContent) {
         // only one element
