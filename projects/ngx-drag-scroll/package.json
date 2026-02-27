@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-scroll",
-  "version": "18.0.0",
+  "version": "21.0.0",
   "description": "Lightweight drag to scroll library for Angular",
   "contributors": [
     {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/bfwg/ngx-drag-scroll#readme",
   "peerDependencies": {
-    "@angular/common": ">=5.0.0 <20.0.0",
-    "@angular/core": ">=5.0.0 <20.0.0"
+    "@angular/common": ">=16.0.0 <22.0.0",
+    "@angular/core": ">=16.0.0 <22.0.0"
   }
 }
