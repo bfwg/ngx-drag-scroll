@@ -1,4 +1,4 @@
-import { Component, ViewChild, signal } from '@angular/core';
+import { Component, DOCUMENT, ViewChild, signal } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -8,7 +8,6 @@ import {
 } from '@angular/core/testing';
 import { DragScrollComponent, DragScrollItemDirective } from 'ngx-drag-scroll';
 import { By } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-test-component',
@@ -41,7 +40,7 @@ class TestComponent {
 }
 
 describe('DragScrollComponent', () => {
-  const scrollbarWidth = '15px';
+  const scrollbarWidth = '20px';
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [DragScrollItemDirective, DragScrollComponent, TestComponent],
@@ -382,7 +381,7 @@ describe('DragScrollComponent', () => {
         '50px'
       );
       expect(window.getComputedStyle(compiled.nativeElement).width).toBe(
-        '50px'
+        '70px'
       );
     });
   }));

@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  DOCUMENT,
   ElementRef,
   HostBinding,
   HostListener,
@@ -16,7 +17,6 @@ import {
   input,
   output
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 import { DragScrollItemDirective } from './ngx-drag-scroll-item';
 
@@ -279,7 +279,9 @@ export class DragScrollComponent
     // avoid extra checks
     if (this._children.length !== this.prevChildrenLength) {
       this.markElDimension();
-      this.checkScrollbar();
+      if (this.wrapper) {
+        this.checkScrollbar();
+      }
       this.prevChildrenLength = this._children.length;
       this.checkNavStatus();
     }
