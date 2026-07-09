@@ -270,9 +270,11 @@ export class DragScrollComponent
     this.adjustMarginToLastChild();
 
     this.rtl =
-      getComputedStyle(this._contentRef.nativeElement).getPropertyValue(
-        'direction'
-      ) === 'rtl';
+      typeof window !== 'undefined'
+        ? window
+            .getComputedStyle(this._contentRef.nativeElement)
+            .getPropertyValue('direction') === 'rtl'
+        : false;
   }
 
   ngAfterViewChecked() {
